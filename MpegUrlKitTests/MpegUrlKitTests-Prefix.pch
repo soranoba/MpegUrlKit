@@ -1,0 +1,18 @@
+//
+//  MpegUrlKitTests-Prefix.pch
+//  MpegUrlKit
+//
+//  Created by Hinagiku Soranoba on 2017/01/06.
+//  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
+//
+
+#ifndef MpegUrlKitTests_Prefix_pch
+#define MpegUrlKitTests_Prefix_pch
+
+#import <Foundation/Foundation.h>
+#import <Quick/Quick.h>
+#import <Nimble/Nimble-Swift.h>
+#import <Nimble/Nimble.h>
+#import <OCMock/OCMock.h>
+
+#endif /* MpegUrlKitTests_Prefix_pch */

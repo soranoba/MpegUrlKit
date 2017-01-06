@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		A4CAA3601E1F83BF00628B88 /* MpegUrlKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA35F1E1F83BF00628B88 /* MpegUrlKitTests.m */; };
+		A4CAA38A1E1FC8BB00628B88 /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3891E1FC8BB00628B88 /* MUKMediaPlaylistTests.m */; };
 		B5525B329B14A7D445DA5222 /* Pods_MpegUrlKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A4CAA35D1E1F83BF00628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = MpegUrlKitTests.xctest; path = "/Users/skyplace/Documents/MpegUrlKit/build/Debug-iphoneos/MpegUrlKitTests.xctest"; sourceTree = "<absolute>"; };
 		A4CAA35F1E1F83BF00628B88 /* MpegUrlKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MpegUrlKitTests.m; sourceTree = "<group>"; };
 		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
+		A4CAA3891E1FC8BB00628B88 /* MUKMediaPlaylistTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaPlaylistTests.m; sourceTree = "<group>"; };
 		CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MpegUrlKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -38,6 +41,7 @@
 				A4CAA35E1E1F83BF00628B88 /* MpegUrlKitTests */,
 				EEED816D747122B1A370167E /* Pods */,
 				D9A073BE41134559A222E35E /* Frameworks */,
+				A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -46,6 +50,8 @@
 			children = (
 				A4CAA35F1E1F83BF00628B88 /* MpegUrlKitTests.m */,
 				A4CAA3611E1F83BF00628B88 /* Info.plist */,
+				A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */,
+				A4CAA3891E1FC8BB00628B88 /* MUKMediaPlaylistTests.m */,
 			);
 			path = MpegUrlKitTests;
 			sourceTree = "<group>";
@@ -87,7 +93,7 @@
 			);
 			name = MpegUrlKitTests;
 			productName = MpegUrlKitTests;
-			productReference = A4CAA35D1E1F83BF00628B88 /* MpegUrlKitTests.xctest */;
+			productReference = A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -186,6 +192,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4CAA38A1E1FC8BB00628B88 /* MUKMediaPlaylistTests.m in Sources */,
 				A4CAA3601E1F83BF00628B88 /* MpegUrlKitTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +301,7 @@
 			baseConfigurationReference = CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = Q67BJ4H5A7;
+				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
 				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
@@ -306,6 +314,7 @@
 			baseConfigurationReference = EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = Q67BJ4H5A7;
+				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
 				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
