@@ -36,14 +36,18 @@
 + (NSString* _Nonnull)description:(MUKErrorCode)code
 {
     switch (code) {
-    MUKErrorInvalidM3UFormat:
-        return @"Invalid M3U format";
-    MUKErrorInvalidVersion:
-        return @"It has EXT-X-VERSION tag, but it is invalid";
-    MUKErrorInvalidMediaSegment:
-        return @"Invalid media segment or EXTINF";
-    MUKErrorInvalidByteRange:
-        return @"Invalid EXT-X-BYTERANGE";
+        case MUKErrorInvalidM3UFormat:
+            return @"Invalid M3U format";
+        case MUKErrorInvalidVersion:
+            return @"It has EXT-X-VERSION tag, but it is invalid";
+        case MUKErrorInvalidMediaSegment:
+            return @"Invalid media segment or EXTINF";
+        case MUKErrorInvalidByteRange:
+            return @"Invalid EXT-X-BYTERANGE";
+        case MUKErrorInvalidEncrypt:
+            return @"Invalid EXT-X-KEY";
+        case MUKErrorInvalidAttributeList:
+            return @"Invalid attribute list";
         default:
             return @"Unknown error";
     }

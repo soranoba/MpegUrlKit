@@ -26,3 +26,9 @@ extern NSString* const MUK_EXT_X_VERSION;
 extern NSString* const MUK_EXT_X_STREAM_INF;
 extern NSString* const MUK_EXTINF;
 extern NSString* const MUK_EXT_X_BYTERANGE;
+extern NSString* const MUK_EXT_X_DISCONTINUITY;
+extern NSString* const MUK_EXT_X_KEY;
+
+extern NSString* const MUK_EXT_X_KEY_METHOD_NONE;
+extern NSString* const MUK_EXT_X_KEY_METHOD_AES_128;
+extern NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES;

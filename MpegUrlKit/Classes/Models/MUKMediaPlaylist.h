@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKErrorCode.h"
 #import "MUKMediaSegment.h"
 #import "MUKSerializing.h"
 #import <Foundation/Foundation.h>
