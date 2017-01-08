@@ -7,90 +7,82 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A4CAA39E1E20FEA000628B88 /* MUKMediaEncryptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */; };
-		A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */; };
-		A4CAA3A11E21178600628B88 /* MUKAttributeListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A01E21178600628B88 /* MUKAttributeListTests.m */; };
-		A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */; };
-		B5525B329B14A7D445DA5222 /* Pods_MpegUrlKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */; };
+		8E1F93ACE83883AD5FCF9108 /* Pods_MpegUrlKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED180065F23846CC3A91C64A /* Pods_MpegUrlKitTests.framework */; };
+		A4A641AD1E22BF9000C7539F /* MUKAttributeListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A641AB1E22BF9000C7539F /* MUKAttributeListTests.m */; };
+		A4A641AE1E22BF9000C7539F /* NSString+MUKExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A641AC1E22BF9000C7539F /* NSString+MUKExtensionTests.m */; };
+		A4A641B21E22BF9D00C7539F /* MUKMediaEncryptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A641B01E22BF9D00C7539F /* MUKMediaEncryptTests.m */; };
+		A4A641B31E22BF9D00C7539F /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A641B11E22BF9D00C7539F /* MUKMediaPlaylistTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
-		A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaEncryptTests.m; sourceTree = "<group>"; };
-		A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaPlaylistTests.m; sourceTree = "<group>"; };
-		A4CAA3A01E21178600628B88 /* MUKAttributeListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKAttributeListTests.m; sourceTree = "<group>"; };
-		A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MUKExtensionTests.m"; sourceTree = "<group>"; };
-		CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MpegUrlKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.release.xcconfig"; sourceTree = "<group>"; };
+		4AE9402545CFBD8EB7AC48D2 /* Pods-MpegUrlKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6132FAB61BF5A1CB67998BFF /* Pods-MpegUrlKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.release.xcconfig"; sourceTree = "<group>"; };
+		A4A641A21E22BF5D00C7539F /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4A641A61E22BF5D00C7539F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4A641AA1E22BF9000C7539F /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
+		A4A641AB1E22BF9000C7539F /* MUKAttributeListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKAttributeListTests.m; sourceTree = "<group>"; };
+		A4A641AC1E22BF9000C7539F /* NSString+MUKExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MUKExtensionTests.m"; sourceTree = "<group>"; };
+		A4A641B01E22BF9D00C7539F /* MUKMediaEncryptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MUKMediaEncryptTests.m; path = Models/MUKMediaEncryptTests.m; sourceTree = "<group>"; };
+		A4A641B11E22BF9D00C7539F /* MUKMediaPlaylistTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MUKMediaPlaylistTests.m; path = Models/MUKMediaPlaylistTests.m; sourceTree = "<group>"; };
+		ED180065F23846CC3A91C64A /* Pods_MpegUrlKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MpegUrlKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A4CAA35A1E1F83BF00628B88 /* Frameworks */ = {
+		A4A6419F1E22BF5D00C7539F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5525B329B14A7D445DA5222 /* Pods_MpegUrlKitTests.framework in Frameworks */,
+				8E1F93ACE83883AD5FCF9108 /* Pods_MpegUrlKitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A410B49A1E22BC3400123BBF /* Products */ = {
+		5345906216E81F3A61F5E18B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */,
+				ED180065F23846CC3A91C64A /* Pods_MpegUrlKitTests.framework */,
 			);
-			name = Products;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A4A641A31E22BF5D00C7539F /* MpegUrlKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				A4A641AF1E22BF9200C7539F /* Models */,
+				A4A641AA1E22BF9000C7539F /* MpegUrlKitTests-Prefix.pch */,
+				A4A641AB1E22BF9000C7539F /* MUKAttributeListTests.m */,
+				A4A641AC1E22BF9000C7539F /* NSString+MUKExtensionTests.m */,
+				A4A641A61E22BF5D00C7539F /* Info.plist */,
+			);
+			path = MpegUrlKitTests;
+			sourceTree = "<group>";
+		};
+		A4A641AF1E22BF9200C7539F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A4A641B01E22BF9D00C7539F /* MUKMediaEncryptTests.m */,
+				A4A641B11E22BF9D00C7539F /* MUKMediaPlaylistTests.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		A4CAA3441E1F837300628B88 = {
 			isa = PBXGroup;
 			children = (
-				D9A073BE41134559A222E35E /* Frameworks */,
-				A4CAA35E1E1F83BF00628B88 /* MpegUrlKitTests */,
-				EEED816D747122B1A370167E /* Pods */,
-				A410B49A1E22BC3400123BBF /* Products */,
+				A4A641A21E22BF5D00C7539F /* MpegUrlKitTests.xctest */,
+				A4A641A31E22BF5D00C7539F /* MpegUrlKitTests */,
+				F2DFA32D63EB33426F040DE1 /* Pods */,
+				5345906216E81F3A61F5E18B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		A4CAA35E1E1F83BF00628B88 /* MpegUrlKitTests */ = {
+		F2DFA32D63EB33426F040DE1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A4CAA39B1E20FE3A00628B88 /* Models */,
-				A4CAA3611E1F83BF00628B88 /* Info.plist */,
-				A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */,
-				A4CAA3A01E21178600628B88 /* MUKAttributeListTests.m */,
-				A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */,
-			);
-			path = MpegUrlKitTests;
-			sourceTree = "<group>";
-		};
-		A4CAA39B1E20FE3A00628B88 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */,
-				A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		D9A073BE41134559A222E35E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		EEED816D747122B1A370167E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */,
-				EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */,
+				4AE9402545CFBD8EB7AC48D2 /* Pods-MpegUrlKitTests.debug.xcconfig */,
+				6132FAB61BF5A1CB67998BFF /* Pods-MpegUrlKitTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -98,16 +90,16 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A4CAA35C1E1F83BF00628B88 /* MpegUrlKitTests */ = {
+		A4A641A11E22BF5D00C7539F /* MpegUrlKitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A4CAA3641E1F83BF00628B88 /* Build configuration list for PBXNativeTarget "MpegUrlKitTests" */;
+			buildConfigurationList = A4A641A71E22BF5D00C7539F /* Build configuration list for PBXNativeTarget "MpegUrlKitTests" */;
 			buildPhases = (
-				D6190763EEF006658BA9F44E /* [CP] Check Pods Manifest.lock */,
-				A4CAA3591E1F83BF00628B88 /* Sources */,
-				A4CAA35A1E1F83BF00628B88 /* Frameworks */,
-				A4CAA35B1E1F83BF00628B88 /* Resources */,
-				A29054A1EB2568734C5483F5 /* [CP] Embed Pods Frameworks */,
-				A032AC76B6C0B80FAC8E3ADE /* [CP] Copy Pods Resources */,
+				DCF60D2DFDC6F0608FC749CC /* [CP] Check Pods Manifest.lock */,
+				A4A6419E1E22BF5D00C7539F /* Sources */,
+				A4A6419F1E22BF5D00C7539F /* Frameworks */,
+				A4A641A01E22BF5D00C7539F /* Resources */,
+				8CEEFEB2E8B97B6BD0D5C246 /* [CP] Embed Pods Frameworks */,
+				7836664CA2F0F64735EFFA8E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -115,7 +107,7 @@
 			);
 			name = MpegUrlKitTests;
 			productName = MpegUrlKitTests;
-			productReference = A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */;
+			productReference = A4A641A21E22BF5D00C7539F /* MpegUrlKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -127,7 +119,7 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Hinagiku Soranoba";
 				TargetAttributes = {
-					A4CAA35C1E1F83BF00628B88 = {
+					A4A641A11E22BF5D00C7539F = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = Q67BJ4H5A7;
 						ProvisioningStyle = Automatic;
@@ -146,13 +138,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A4CAA35C1E1F83BF00628B88 /* MpegUrlKitTests */,
+				A4A641A11E22BF5D00C7539F /* MpegUrlKitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A4CAA35B1E1F83BF00628B88 /* Resources */ = {
+		A4A641A01E22BF5D00C7539F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -162,7 +154,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A032AC76B6C0B80FAC8E3ADE /* [CP] Copy Pods Resources */ = {
+		7836664CA2F0F64735EFFA8E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -177,7 +169,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A29054A1EB2568734C5483F5 /* [CP] Embed Pods Frameworks */ = {
+		8CEEFEB2E8B97B6BD0D5C246 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,7 +184,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D6190763EEF006658BA9F44E /* [CP] Check Pods Manifest.lock */ = {
+		DCF60D2DFDC6F0608FC749CC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -210,20 +202,48 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A4CAA3591E1F83BF00628B88 /* Sources */ = {
+		A4A6419E1E22BF5D00C7539F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */,
-				A4CAA39E1E20FEA000628B88 /* MUKMediaEncryptTests.m in Sources */,
-				A4CAA3A11E21178600628B88 /* MUKAttributeListTests.m in Sources */,
-				A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */,
+				A4A641AE1E22BF9000C7539F /* NSString+MUKExtensionTests.m in Sources */,
+				A4A641AD1E22BF9000C7539F /* MUKAttributeListTests.m in Sources */,
+				A4A641B21E22BF9D00C7539F /* MUKMediaEncryptTests.m in Sources */,
+				A4A641B31E22BF9D00C7539F /* MUKMediaPlaylistTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		A4A641A81E22BF5D00C7539F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AE9402545CFBD8EB7AC48D2 /* Pods-MpegUrlKitTests.debug.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Q67BJ4H5A7;
+				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
+				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A4A641A91E22BF5D00C7539F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6132FAB61BF5A1CB67998BFF /* Pods-MpegUrlKitTests.release.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Q67BJ4H5A7;
+				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
+				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A4CAA3541E1F837300628B88 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -320,49 +340,22 @@
 			};
 			name = Release;
 		};
-		A4CAA3621E1F83BF00628B88 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */;
-			buildSettings = {
-				DEVELOPMENT_TEAM = Q67BJ4H5A7;
-				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
-				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		A4CAA3631E1F83BF00628B88 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */;
-			buildSettings = {
-				DEVELOPMENT_TEAM = Q67BJ4H5A7;
-				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
-				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A4A641A71E22BF5D00C7539F /* Build configuration list for PBXNativeTarget "MpegUrlKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4A641A81E22BF5D00C7539F /* Debug */,
+				A4A641A91E22BF5D00C7539F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A4CAA3481E1F837300628B88 /* Build configuration list for PBXProject "MpegUrlKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A4CAA3541E1F837300628B88 /* Debug */,
 				A4CAA3551E1F837300628B88 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A4CAA3641E1F83BF00628B88 /* Build configuration list for PBXNativeTarget "MpegUrlKitTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A4CAA3621E1F83BF00628B88 /* Debug */,
-				A4CAA3631E1F83BF00628B88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

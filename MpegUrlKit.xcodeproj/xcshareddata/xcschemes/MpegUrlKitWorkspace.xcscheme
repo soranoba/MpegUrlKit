@@ -28,7 +28,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A4CAA35C1E1F83BF00628B88"
+               BlueprintIdentifier = "A4A641A11E22BF5D00C7539F"
                BuildableName = "MpegUrlKitTests.xctest"
                BlueprintName = "MpegUrlKitTests"
                ReferencedContainer = "container:MpegUrlKit.xcodeproj">
@@ -46,7 +46,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A4CAA35C1E1F83BF00628B88"
+               BlueprintIdentifier = "A4A641A11E22BF5D00C7539F"
                BuildableName = "MpegUrlKitTests.xctest"
                BlueprintName = "MpegUrlKitTests"
                ReferencedContainer = "container:MpegUrlKit.xcodeproj">
