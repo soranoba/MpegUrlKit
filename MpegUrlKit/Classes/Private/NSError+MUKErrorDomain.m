@@ -48,6 +48,18 @@
             return @"Invalid EXT-X-KEY";
         case MUKErrorInvalidAttributeList:
             return @"Invalid attribute list";
+        case MUKErrorInvalidType:
+            return @"Invalid type format";
+        case MUKErrorInvalidMap:
+            return @"Invalid EXT-X-MAP";
+        case MUKErrorDuplicateTag:
+            return @"The tags duplicated that is not allowed";
+        case MUKErrorLocationIncorrect:
+            return @"There are tags with an incorrect location";
+        case MUKErrorMissingRequiredTag:
+            return @"Required tags are missing";
+        case MUKErrorInvalidDateRange:
+            return @"Invalid EXT-X-DATERANGE";
         default:
             return @"Unknown error";
     }

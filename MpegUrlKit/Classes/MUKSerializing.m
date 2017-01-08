@@ -28,7 +28,8 @@
 {
     NSDictionary<NSString*, MUKLineAction>* lineActions = self.lineActions;
     for (NSString* prefix in lineActions) {
-        if ([string hasPrefix:prefix]) {
+        if (([prefix hasSuffix:@":"] && [string hasPrefix:prefix])
+            || [string isEqualToString:prefix]) {
             return (lineActions[prefix])(string, error);
         }
     }

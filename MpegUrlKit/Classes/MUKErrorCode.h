@@ -16,6 +16,11 @@ typedef NS_ENUM(NSUInteger, MUKErrorCode) {
     MUKErrorInvalidEncrypt,
     MUKErrorInvalidAttributeList,
     MUKErrorInvalidType,
+    MUKErrorInvalidMap,
+    MUKErrorDuplicateTag,
+    MUKErrorLocationIncorrect,
+    MUKErrorMissingRequiredTag,
+    MUKErrorInvalidDateRange,
 };
 
 extern NSString* const MUKErrorDomain;

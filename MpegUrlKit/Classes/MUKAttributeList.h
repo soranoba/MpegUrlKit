@@ -32,46 +32,6 @@
 #pragma mark - Public Methods
 
 /**
- * Read a string of value as a decimal integer (decimal-integer)
- *
- * @param pInteger Pointer to receive results
- * @param error    If it return nil, detailed error information is saved here.
- * @return If it scan succeeded, it return YES. Otherwise, it return NO.
- */
-- (BOOL)scanDecimalInteger:(NSUInteger* _Nonnull)pInteger
-                     error:(NSError* _Nullable* _Nullable)error;
-
-/**
- * Read a string of value as a hexadecimal (hexadecimal-sequence)
- *
- * @param pData    Pointer to receive results
- * @param error    If it return nil, detailed error information is saved here.
- * @return If it scan succeeded, it return YES. Otherwise, it return NO.
- */
-- (BOOL)scanHexadecimal:(NSData* _Nullable* _Nonnull)pData
-                  error:(NSError* _Nullable* _Nullable)error;
-
-/**
- * Read a string of value as a double (decimal-floating-point and signed-decimal-floating-point)
- *
- * @param pDouble   Pointer to receive results
- * @param error    If it return nil, detailed error information is saved here.
- * @return If it scan succeeded, it return YES. Otherwise, it return NO.
- */
-- (BOOL)scanDouble:(double* _Nonnull)pDouble
-             error:(NSError* _Nullable* _Nullable)error;
-
-/**
- * Read a string of value as a decimal resolution (decimal-resolution)
- *
- * @param pSize    Pointer to receive results
- * @param error    If it return nil, detailed error information is saved here.
- * @return If it scan succeeded, it return YES. Otherwise, it return NO.
- */
-- (BOOL)scanDecimalResolution:(CGSize* _Nonnull)pSize
-                        error:(NSError* _Nullable* _Nullable)error;
-
-/**
  * Validate and return YES if it is correct.
  *
  * @param error  If it return NO, detailed error information is saved here.

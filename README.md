@@ -25,6 +25,7 @@ I avoided the name of M3U in order to avoid conflict with other libraries.
 ### Reference link
 
 - [HTTP Live Streaming draft-pantos-http-live-streaming](https://tools.ietf.org/html/draft-pantos-http-live-streaming-20)
+- [ISO-8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874)
 
 ## Installation
 

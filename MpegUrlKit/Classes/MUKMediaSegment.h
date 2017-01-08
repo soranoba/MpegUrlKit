@@ -7,6 +7,7 @@
 //
 
 #import "MUKMediaEncrypt.h"
+#import "MUKMediaInitializationMap.h"
 #import <Foundation/Foundation.h>
 
 @class MUKMediaSegment;
@@ -19,4 +20,6 @@ typedef BOOL (^MUKSegmentValidator)(MUKMediaSegment* _Nonnull, NSError* _Nullabl
 @property (nonatomic, assign) NSRange byteRange;
 @property (nonatomic, assign) BOOL discontinuity;
 @property (nonatomic, nullable, strong) MUKMediaEncrypt* encrypt;
+@property (nonatomic, nullable, strong) MUKMediaInitializationMap* initializationMap;
+@property (nonatomic, nullable, strong) NSDate* programDate;
 @end
