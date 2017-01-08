@@ -15,8 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
 		A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaEncryptTests.m; sourceTree = "<group>"; };
 		A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaPlaylistTests.m; sourceTree = "<group>"; };
@@ -39,13 +39,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A410B49A1E22BC3400123BBF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A4CAA3441E1F837300628B88 = {
 			isa = PBXGroup;
 			children = (
 				D9A073BE41134559A222E35E /* Frameworks */,
 				A4CAA35E1E1F83BF00628B88 /* MpegUrlKitTests */,
 				EEED816D747122B1A370167E /* Pods */,
-				A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */,
+				A410B49A1E22BC3400123BBF /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,7 +115,7 @@
 			);
 			name = MpegUrlKitTests;
 			productName = MpegUrlKitTests;
-			productReference = A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */;
+			productReference = A410B4991E22BB0D00123BBF /* MpegUrlKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -257,11 +265,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -302,10 +310,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
