@@ -32,10 +32,12 @@
 {
     NSParameterAssert(serializableClasses != nil);
 
+#if !defined(NS_BLOCK_ASSERTIONS)
     for (Class class in serializableClasses) {
         NSAssert([class conformsToProtocol:@protocol(MUKSerializing)],
                  @"%@ is NOT MUKSerializing class", class);
     }
+#endif
     _serializableClasses = [serializableClasses copy];
 }
 

@@ -51,7 +51,7 @@ static NSString* const MUKIso8601DateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ";
 
 + (instancetype _Nullable)muk_stringWithSize:(CGSize)size
 {
-    return [NSString stringWithFormat:@"%lux%lu", (NSUInteger)size.width, (NSUInteger)size.height];
+    return [NSString stringWithFormat:@"%tux%tu", (NSUInteger)size.width, (NSUInteger)size.height];
 }
 
 + (instancetype _Nullable)muk_stringWithDate:(NSDate* _Nonnull)date
@@ -72,11 +72,11 @@ static NSString* const MUKIso8601DateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ";
 
     NSScanner* scanner = [NSScanner scannerWithString:self];
     unsigned long long ull;
-    if (![scanner scanUnsignedLongLong:&ull] || ![[self.class muk_stringWithDecimal:ull] isEqual:self]) {
+    if (![scanner scanUnsignedLongLong:&ull] || ![[self.class muk_stringWithDecimal:(NSUInteger)ull] isEqual:self]) {
         SET_ERROR(error, MUKErrorInvalidType, @"Invalid decimal integer");
         return NO;
     }
-    *pInteger = ull;
+    *pInteger = (NSUInteger)ull;
     return YES;
 }
 
