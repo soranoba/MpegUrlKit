@@ -7,6 +7,7 @@
 //
 
 #import "MUKAttributeList.h"
+#import <Foundation/Foundation.h>
 
 QuickSpecBegin(MUKAttributeListTests)
 {
