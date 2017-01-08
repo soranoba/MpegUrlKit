@@ -9,20 +9,6 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A4CAA35C1E1F83BF00628B88"
-               BuildableName = "MpegUrlKitTests.xctest"
-               BlueprintName = "MpegUrlKitTests"
-               ReferencedContainer = "container:MpegUrlKit.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
@@ -32,6 +18,20 @@
                BuildableName = "MpegUrlKit.framework"
                BlueprintName = "MpegUrlKit"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A4CAA35C1E1F83BF00628B88"
+               BuildableName = "MpegUrlKitTests.xctest"
+               BlueprintName = "MpegUrlKitTests"
+               ReferencedContainer = "container:MpegUrlKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
