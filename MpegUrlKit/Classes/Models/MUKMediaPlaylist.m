@@ -190,7 +190,7 @@
 
     if (self.version < 3 && [strs[0] rangeOfString:@"."].location != NSNotFound) {
         SET_ERROR(error, MUKErrorInvalidMediaSegment,
-                  ([NSString stringWithFormat:@"Version %lu does NOT supoort float duration", self.version]));
+                  ([NSString stringWithFormat:@"Version %tu does NOT supoort float duration", self.version]));
         return MUKLineActionResultErrored;
     }
 
