@@ -16,7 +16,7 @@ test:
 		-destination 'platform=iOS Simulator,name=iPhone 6,OS=8.1' \
 		-destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' \
 		-destination 'platform=iOS Simulator,name=iPhone 6,OS=10.0' \
-		-destination 'platform=iOS Simulator,name=iPhone 7,OS=10.1' \
+		-destination 'platform=iOS Simulator,name=iPhone 7,OS=10.2' \
 		clean test
 
 podlint:

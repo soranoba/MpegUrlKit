@@ -10,8 +10,6 @@
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
 
-static NSString* const MUKIso8601DateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ";
-
 @implementation NSString (MUKExtension)
 
 #pragma mark - Lifecycle
@@ -58,9 +56,14 @@ static NSString* const MUKIso8601DateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ";
 {
     NSParameterAssert(date != nil);
 
+    /**
+     * NOTE: NSDateFormatter doesn't support 'S' with iOS8.
+     */
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = MUKIso8601DateFormat;
-    return [dateFormatter stringFromDate:date];
+    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.'@'ZZZZZ";
+    NSTimeInterval time = [date timeIntervalSince1970];
+    NSString* ms = [NSString stringWithFormat:@"%03d", (int)((time - (NSInteger)time) * 1000)];
+    return [[dateFormatter stringFromDate:date] stringByReplacingOccurrencesOfString:@"@" withString:ms];
 }
 
 #pragma mark - Public Methods
@@ -174,10 +177,66 @@ failed:
 {
     NSParameterAssert(pDate != nil);
 
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = MUKIso8601DateFormat;
+    /**
+     * NOTE: NSDateFormatter is broken with iOS8.
+     *       For this reason, it is doing minimal implementation independently.
+     */
+    if (!(self.length >= 19 // yyyy-MM-ddTHH:mm:ss
+          && [self characterAtIndex:4] == '-'
+          && [self characterAtIndex:7] == '-'
+          && [self characterAtIndex:10] == 'T'
+          && [self characterAtIndex:13] == ':'
+          && [self characterAtIndex:16] == ':')) {
+        SET_ERROR(error, MUKErrorInvalidType, @"invalid iso-8601 date format");
+        return NO;
+    }
 
-    NSDate* date = [dateFormatter dateFromString:self];
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [NSDateComponents new];
+
+    components.year = [[self substringWithRange:NSMakeRange(0, 4)] integerValue];
+    components.month = [[self substringWithRange:NSMakeRange(5, 2)] integerValue];
+    components.day = [[self substringWithRange:NSMakeRange(8, 2)] integerValue];
+    components.hour = [[self substringWithRange:NSMakeRange(11, 2)] integerValue];
+    components.minute = [[self substringWithRange:NSMakeRange(14, 2)] integerValue];
+    components.second = [[self substringWithRange:NSMakeRange(17, 2)] integerValue];
+
+    if (self.length > 19 && ([self characterAtIndex:19] == '.' || [self characterAtIndex:19] == ',')) {
+        NSUInteger i, j;
+        for (i = j = 20; j < self.length && j < i + 9; j++) {
+            if (!([self characterAtIndex:j] >= '0' && [self characterAtIndex:j] <= '9')) {
+                break;
+            }
+        }
+        if (i != j) {
+            components.nanosecond = [[self substringWithRange:NSMakeRange(i, j - i)] integerValue] * pow(10, 9 - (j - i));
+        }
+        for (; j < self.length; j++) {
+            if (!([self characterAtIndex:j] >= '0' && [self characterAtIndex:j] <= '9')) {
+                break;
+            }
+        }
+
+        if (self.length >= j) {
+            switch ([self characterAtIndex:j]) {
+                case 'Z':
+                    components.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+                    break;
+                case '-':
+                case '+': {
+                    NSArray<NSString*>* strs = [[self substringWithRange:NSMakeRange(j, self.length - j)] componentsSeparatedByString:@":"];
+                    NSInteger delta = [strs[0] integerValue] * 60 * 60 + (strs.count == 2 ? [strs[1] integerValue] * 60 : 0);
+                    components.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:delta];
+                    break;
+                }
+                default:
+                    SET_ERROR(error, MUKErrorInvalidType, @"invalid iso-8601 date format");
+                    return NO;
+            }
+        }
+    }
+
+    NSDate* date = [calendar dateFromComponents:components];
     if (date) {
         *pDate = date;
         return YES;

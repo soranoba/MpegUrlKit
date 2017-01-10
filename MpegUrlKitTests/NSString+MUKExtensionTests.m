@@ -122,11 +122,17 @@ QuickSpecBegin(NSString_MUKExtensionTests)
         it(@"iso-8601 date format", ^{
             __block NSDate *date1, *date2;
             __block NSError* error;
-            expect([@"2010-02-19T14:54:23.031+08:00" muk_scanDate:&date1 error:&error]).to(equal(YES));
+            expect([@"2010-02-19T05:54:23.031-01" muk_scanDate:&date1 error:&error]).to(equal(YES));
             expect([@"2010-02-19T15:54:23.031+09:00" muk_scanDate:&date2 error:&error]).to(equal(YES));
             expect(date1).to(equal(date2));
 
             expect([@"2010-02-19T06:54:23.031Z" muk_scanDate:&date2 error:&error]).to(equal(YES));
+            expect(date1).to(equal(date2));
+
+            expect([@"2010-02-19T06:54:23,0310Z" muk_scanDate:&date2 error:&error]).to(equal(YES));
+            expect(date1).to(equal(date2));
+
+            expect([@"2010-02-19T06:54:23,0310000Z" muk_scanDate:&date2 error:&error]).to(equal(YES));
             expect(date1).to(equal(date2));
 
             expect([@"2010-02-19 14:54:23.031+08:00" muk_scanDate:&date1 error:&error]).to(equal(NO));

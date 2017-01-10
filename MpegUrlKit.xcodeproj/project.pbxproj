@@ -319,6 +319,7 @@
 				DEVELOPMENT_TEAM = Q67BJ4H5A7;
 				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
 				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -332,6 +333,7 @@
 				DEVELOPMENT_TEAM = Q67BJ4H5A7;
 				GCC_PREFIX_HEADER = "MpegUrlKitTests/MpegUrlKitTests-Prefix.pch";
 				INFOPLIST_FILE = MpegUrlKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.soranoba.MpegUrlKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
