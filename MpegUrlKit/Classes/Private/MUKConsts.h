@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#define ACTION(__X) ^(NSString * line, NSError * *error) { \
-    return __X;                                            \
+#define ACTION(__X) ^(NSString * tagValue, NSError * *error) { \
+    return __X;                                                \
 }
-
-#define TAG_VALUE(__TAG, __LINE) [(__LINE) substringWithRange:NSMakeRange((__TAG).length, (__LINE).length - (__TAG).length)]
 
 extern NSString* const MUK_EXTM3U;
 extern NSString* const MUK_EXT_X_VERSION;

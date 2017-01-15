@@ -58,7 +58,7 @@
 
     [string enumerateLinesUsingBlock:^(NSString* _Nonnull line, BOOL* _Nonnull stop) {
         for (id<MUKSerializing> obj in objs) {
-            if ([obj appendLine:line error:&tmpError] == MUKLineActionResultErrored) {
+            if ([obj appendLine:line error:&tmpError] == MUKTagActionResultErrored) {
                 [objs removeObject:obj];
                 if (objs.count == 0) {
                     *stop = YES;

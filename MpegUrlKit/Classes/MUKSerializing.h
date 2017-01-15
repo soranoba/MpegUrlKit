@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, MUKLineActionResult) {
-    /// The line was supported, but it was considered abnormal data for reasons such as invalid.
-    MUKLineActionResultErrored = -1,
-    /// The line was ignored, because it is an unsupported.
-    MUKLineActionResultIgnored = 0,
-    /// The line was supported and processed.
-    MUKLineActionResultProcessed = 1
+typedef NS_ENUM(NSInteger, MUKTagActionResult) {
+    /// The tag was supported, but it was considered abnormal data for reasons such as invalid.
+    MUKTagActionResultErrored = -1,
+    /// The tag was ignored, because it is an unsupported.
+    MUKTagActionResultIgnored = 0,
+    /// The tag was supported and processed.
+    MUKTagActionResultProcessed = 1
 };
 
-typedef MUKLineActionResult (^MUKLineAction)(NSString* _Nonnull line, NSError* _Nullable* _Nullable error);
+typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError* _Nullable* _Nullable error);
 
 @protocol MUKSerializing <NSObject>
 
@@ -40,12 +40,12 @@ typedef MUKLineActionResult (^MUKLineAction)(NSString* _Nonnull line, NSError* _
  * Processing on a line.
  *
  * @param line   A string of a line.
- * @param error  When returning MUKLineActionResultErrored, more detailed error information needs to be stored here.
+ * @param error  When returning MUKTagActionResultErrored, more detailed error information needs to be stored here.
  * @return Processing result of the line.
- *         If it return MUKLineActionResultErrored, the serialize process is terminated halfway.
+ *         If it return MUKTagActionResultErrored, the serialize process is terminated halfway.
  */
 @required
-- (MUKLineActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error;
+- (MUKTagActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error;
 
 /**
  * If you want to do specific processing when ending serialize, processing here.
@@ -71,11 +71,14 @@ typedef MUKLineActionResult (^MUKLineAction)(NSString* _Nonnull line, NSError* _
 @interface MUKSerializing : NSObject <MUKSerializing>
 
 /**
- * Returns processing action by lines.
+ * Returns processing action by tags.
  *
- * @return Key is prefix string. Value is callback block, if line has prefix the key.
- *         Subclass needs to override this return value according to your implementation.
+ * Subclass needs to override this return value according to your implementation.
+ *
+ * @return Key is tag string. Value is callback block, if line has prefix the key.
+ *         For tags with value you need to include `:`.
+ *         The key of the empty string has a special meaning of action when it does not match any other.
  */
-- (NSDictionary<NSString*, MUKLineAction>* _Nonnull)lineActions;
+- (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions;
 
 @end

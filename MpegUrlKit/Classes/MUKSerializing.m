@@ -12,7 +12,7 @@
 
 #pragma mark - Public Methods
 
-- (NSDictionary<NSString*, MUKLineAction>* _Nonnull)lineActions
+- (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions
 {
     return @{};
 }
@@ -24,19 +24,21 @@
     // NOP
 }
 
-- (MUKLineActionResult)appendLine:(NSString* _Nonnull)string error:(NSError* _Nullable* _Nullable)error
+- (MUKTagActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
-    NSDictionary<NSString*, MUKLineAction>* lineActions = self.lineActions;
-    for (NSString* prefix in lineActions) {
-        if (([prefix hasSuffix:@":"] && [string hasPrefix:prefix])
-            || [string isEqualToString:prefix]) {
-            return (lineActions[prefix])(string, error);
+    NSDictionary<NSString*, MUKTagAction>* tagActions = self.tagActions;
+    for (NSString* prefix in tagActions) {
+        if (([prefix hasSuffix:@":"] && [line hasPrefix:prefix])
+            || [line isEqualToString:prefix]) {
+
+            NSString* value = [line substringWithRange:NSMakeRange(prefix.length, line.length - prefix.length)];
+            return (tagActions[prefix])(value, error);
         }
     }
-    if (lineActions[@""]) {
-        return (lineActions[@""])(string, error);
+    if (tagActions[@""]) {
+        return (tagActions[@""])(line, error);
     }
-    return MUKLineActionResultIgnored;
+    return MUKTagActionResultIgnored;
 }
 
 - (void)endSerialization
