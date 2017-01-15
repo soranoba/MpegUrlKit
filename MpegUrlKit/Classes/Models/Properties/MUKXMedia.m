@@ -97,7 +97,7 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
             return NO;
         }
     }
-    
+
     return YES;
 }
 
@@ -142,7 +142,7 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
  * @param error  If it return NO, detailed error information is saved here.
  * @return If it is correct, it return YES. Otherwise, return NO.
  */
-- (BOOL)validateInStreamId:(NSError* _Nullable * _Nullable)error
+- (BOOL)validateInStreamId:(NSError* _Nullable* _Nullable)error
 {
     if (self.mediaType == MUKXMediaTypeClosedCaptions) {
         if (!self.instreamId) {
@@ -160,7 +160,8 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
     }
 
     NSUInteger suffixNum;
-    NSDictionary<NSString*,NSNumber*>* supportMaxNums = @{@"CC":@(4), @"SERVICE":@(63)};
+    NSDictionary<NSString*, NSNumber*>* supportMaxNums = @{ @"CC" : @(4),
+                                                            @"SERVICE" : @(63) };
     for (NSString* prefix in supportMaxNums) {
         if ([self.instreamId hasPrefix:prefix]) {
             NSString* suffix = [self.instreamId substringWithRange:NSMakeRange(prefix.length, self.instreamId.length - prefix.length)];

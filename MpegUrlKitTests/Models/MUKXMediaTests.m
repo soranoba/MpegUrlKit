@@ -10,6 +10,5 @@
 
 QuickSpecBegin(MUKXMediaTests)
 {
-
 }
 QuickSpecEnd

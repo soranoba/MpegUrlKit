@@ -72,7 +72,7 @@ typedef NS_ENUM(NSUInteger, MUKAttributeValidateOption) {
  * @return Return nil, if it parse failed. Otherwise, return attribute key-value pairs.
  */
 + (NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)parseFromString:(NSString* _Nonnull)string
-                                                           validateOption:(NSDictionary<NSString*,NSNumber*>* _Nullable)validateOption
+                                                           validateOption:(NSDictionary<NSString*, NSNumber*>* _Nullable)validateOption
                                                                     error:(NSError* _Nullable* _Nullable)error;
 
 /**

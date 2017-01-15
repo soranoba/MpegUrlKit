@@ -9,14 +9,15 @@
 #import "MUKMasterPlaylist.h"
 #import "MUKAttributeList.h"
 #import "MUKConsts.h"
-#import "NSString+MUKExtension.h"
-#import "NSError+MUKErrorDomain.h"
 #import "MUKXStreamInf+Private.h"
+#import "NSError+MUKErrorDomain.h"
+#import "NSString+MUKExtension.h"
 
 @interface MUKMasterPlaylist ()
-@property(nonatomic, nonnull, strong) NSMutableArray<MUKXMedia*>* processingMedias;
-@property(nonatomic, assign) BOOL isWaitingStreamUri;
-@property(nonatomic, nonnull, strong) NSMutableArray<MUKXStreamInf*>* processingStreamInfs;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXMedia*>* processingMedias;
+@property (nonatomic, assign) BOOL isWaitingStreamUri;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXStreamInf*>* processingStreamInfs;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXSessionData*>* processingSessionData;
 @end
 
 @implementation MUKMasterPlaylist
@@ -27,6 +28,8 @@
 {
     if (self = [super init]) {
         self.processingMedias = [NSMutableArray array];
+        self.processingStreamInfs = [NSMutableArray array];
+        self.processingSessionData = [NSMutableArray array];
         self.isWaitingStreamUri = NO;
     }
     return self;
@@ -43,18 +46,18 @@
 {
     NSDictionary<NSString*, MUKAttributeValue*>* attributes
         = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_MEDIA, line)
-                             validateOption:@{@"TYPE" : @(MUKAttributeRequired | MUKAttributeQuotedString),
-                                              @"URI" : @(MUKAttributeQuotedString),
-                                              @"GROUP-ID" : @(MUKAttributeRequired | MUKAttributeQuotedString),
-                                              @"LANGUAGE" : @(MUKAttributeQuotedString),
-                                              @"ASSOC-LANGUAGE": @(MUKAttributeQuotedString),
-                                              @"NAME" : @(MUKAttributeRequired | MUKAttributeQuotedString),
-                                              @"DEFAULT" : @(MUKAttributeBoolean),
-                                              @"AUTOSELECT" : @(MUKAttributeBoolean),
-                                              @"FORCED" : @(MUKAttributeBoolean),
-                                              @"INSTREAM-ID" : @(MUKAttributeQuotedString),
-                                              @"CHARACTERISTICS" : @(MUKAttributeQuotedString),
-                                              @"CHANNELS" : @(MUKAttributeQuotedString)}
+                             validateOption:@{ @"TYPE" : @(MUKAttributeRequired | MUKAttributeQuotedString),
+                                               @"URI" : @(MUKAttributeQuotedString),
+                                               @"GROUP-ID" : @(MUKAttributeRequired | MUKAttributeQuotedString),
+                                               @"LANGUAGE" : @(MUKAttributeQuotedString),
+                                               @"ASSOC-LANGUAGE" : @(MUKAttributeQuotedString),
+                                               @"NAME" : @(MUKAttributeRequired | MUKAttributeQuotedString),
+                                               @"DEFAULT" : @(MUKAttributeBoolean),
+                                               @"AUTOSELECT" : @(MUKAttributeBoolean),
+                                               @"FORCED" : @(MUKAttributeBoolean),
+                                               @"INSTREAM-ID" : @(MUKAttributeQuotedString),
+                                               @"CHARACTERISTICS" : @(MUKAttributeQuotedString),
+                                               @"CHANNELS" : @(MUKAttributeQuotedString) }
                                       error:error];
     if (!attributes) {
         return MUKLineActionResultErrored;
@@ -98,21 +101,21 @@
 /**
  * 4.3.4.2. EXT-X-STREAM-INF
  */
-- (MUKLineActionResult)onStreamInf:(NSString* _Nonnull)line error:(NSError* _Nullable *_Nullable)error
+- (MUKLineActionResult)onStreamInf:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
-    NSDictionary<NSString*,MUKAttributeValue*>* attributes
-    = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_STREAM_INF, line)
-                         validateOption:@{@"BANDWIDTH" : @(MUKAttributeNotQuotedString | MUKAttributeRequired),
-                                          @"AVERAGE-BANDWIDTH" : @(MUKAttributeNotQuotedString),
-                                          @"CODECS" : @(MUKAttributeQuotedString),
-                                          @"RESOLUTION": @(MUKAttributeNotQuotedString),
-                                          @"FRAME-RATE":@(MUKAttributeNotQuotedString),
-                                          @"HDCP-LEVEL":@(MUKAttributeNotQuotedString),
-                                          @"AUDIO" : @(MUKAttributeQuotedString),
-                                          @"VIDEO" : @(MUKAttributeQuotedString),
-                                          @"SUBTITLES":@(MUKAttributeQuotedString),
-                                          @"CLOSED-CAPTIONS" : @(0)}
-                                  error:error];
+    NSDictionary<NSString*, MUKAttributeValue*>* attributes
+        = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_STREAM_INF, line)
+                             validateOption:@{ @"BANDWIDTH" : @(MUKAttributeNotQuotedString | MUKAttributeRequired),
+                                               @"AVERAGE-BANDWIDTH" : @(MUKAttributeNotQuotedString),
+                                               @"CODECS" : @(MUKAttributeQuotedString),
+                                               @"RESOLUTION" : @(MUKAttributeNotQuotedString),
+                                               @"FRAME-RATE" : @(MUKAttributeNotQuotedString),
+                                               @"HDCP-LEVEL" : @(MUKAttributeNotQuotedString),
+                                               @"AUDIO" : @(MUKAttributeQuotedString),
+                                               @"VIDEO" : @(MUKAttributeQuotedString),
+                                               @"SUBTITLES" : @(MUKAttributeQuotedString),
+                                               @"CLOSED-CAPTIONS" : @(0) }
+                                      error:error];
 
     if (!attributes) {
         return MUKLineActionResultErrored;
@@ -161,46 +164,52 @@
     }
 
     MUKXStreamInf* streamInf
-    = [[MUKXStreamInf alloc] initWithMaxBitrate:maxBitrate
-                                 averageBitrate:avgBitrate
-                                         codecs:codecs
-                                     resolution:resolution
-                                   maxFrameRate:frameRate
-                                      hdcpLevel:level
-                                   audioGroupId:attributes[@"AUDIO"].value
-                                   videoGroupId:attributes[@"VIDEO"].value
-                               subtitlesGroupId:attributes[@"SUBTITLES"].value
-                          closedCaptionsGroupId:closedCaptions
-                                            uri:@""]; // dummy
+        = [[MUKXStreamInf alloc] initWithMaxBitrate:maxBitrate
+                                     averageBitrate:avgBitrate
+                                             codecs:codecs
+                                         resolution:resolution
+                                       maxFrameRate:frameRate
+                                          hdcpLevel:level
+                                       audioGroupId:attributes[@"AUDIO"].value
+                                       videoGroupId:attributes[@"VIDEO"].value
+                                   subtitlesGroupId:attributes[@"SUBTITLES"].value
+                              closedCaptionsGroupId:closedCaptions
+                                                uri:@""]; // dummy
     self.isWaitingStreamUri = YES;
     [self.processingStreamInfs addObject:streamInf];
     return MUKLineActionResultProcessed;
 }
 
-- (MUKLineActionResult)onStreamInfUri:(NSString* _Nonnull)line error:(NSError* _Nullable * _Nullable)error
+- (MUKLineActionResult)onStreamInfUri:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
     NSAssert(self.processingStreamInfs.count > 0, @"processingStreamInfs.count MUST be greater than 0");
 
-    ((MUKXStreamInf*)(self.processingStreamInfs.lastObject)).uri = line;
+    MUKXStreamInf* streamInf = (MUKXStreamInf*)(self.processingStreamInfs.lastObject);
+    streamInf.uri = line;
     self.isWaitingStreamUri = NO;
-    
+
+    if (![streamInf validate:error]) {
+        return MUKLineActionResultErrored;
+    }
+
     return MUKLineActionResultProcessed;
 }
 
 /**
  * 4.3.4.3. EXT-X-I-FRAME-STREAM-INF
  */
-- (MUKLineActionResult)onIframeStreamInf:(NSString* _Nonnull)line error:(NSError* _Nullable * _Nullable)error
+- (MUKLineActionResult)onIframeStreamInf:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
-    NSDictionary<NSString*,MUKAttributeValue*>* attributes
-    = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_I_FRAME_STREAM_INF, line)
-                         validateOption:@{@"BANDWIDTH" : @(MUKAttributeNotQuotedString | MUKAttributeRequired),
-                                          @"AVERAGE-BANDWIDTH" : @(MUKAttributeNotQuotedString),
-                                          @"CODECS" : @(MUKAttributeQuotedString),
-                                          @"RESOLUTION": @(MUKAttributeNotQuotedString),
-                                          @"HDCP-LEVEL":@(MUKAttributeNotQuotedString),
-                                          @"VIDEO" : @(MUKAttributeQuotedString)}
-                                  error:error];
+    NSDictionary<NSString*, MUKAttributeValue*>* attributes
+        = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_I_FRAME_STREAM_INF, line)
+                             validateOption:@{ @"BANDWIDTH" : @(MUKAttributeNotQuotedString | MUKAttributeRequired),
+                                               @"AVERAGE-BANDWIDTH" : @(MUKAttributeNotQuotedString),
+                                               @"CODECS" : @(MUKAttributeQuotedString),
+                                               @"RESOLUTION" : @(MUKAttributeNotQuotedString),
+                                               @"HDCP-LEVEL" : @(MUKAttributeNotQuotedString),
+                                               @"VIDEO" : @(MUKAttributeQuotedString),
+                                               @"URI" : @(MUKAttributeQuotedString | MUKAttributeRequired) }
+                                      error:error];
 
     if (!attributes) {
         return MUKLineActionResultErrored;
@@ -234,15 +243,47 @@
     }
 
     MUKXStreamInf* streamInf
-    = [[MUKXIframeStreamInf alloc] initWithMaxBitrate:maxBitrate
-                                 averageBitrate:avgBitrate
-                                         codecs:codecs
-                                     resolution:resolution
-                                       hdcpLevel:level
-                                   videoGroupId:attributes[@"VIDEO"].value
-                                            uri:@""]; // dummy
-    self.isWaitingStreamUri = YES;
+        = [[MUKXIframeStreamInf alloc] initWithMaxBitrate:maxBitrate
+                                           averageBitrate:avgBitrate
+                                                   codecs:codecs
+                                               resolution:resolution
+                                                hdcpLevel:level
+                                             videoGroupId:attributes[@"VIDEO"].value
+                                                      uri:attributes[@"URI"].value];
+    if (![streamInf validate:error]) {
+        return MUKLineActionResultErrored;
+    }
+
     [self.processingStreamInfs addObject:streamInf];
+    return MUKLineActionResultProcessed;
+}
+
+/**
+ * 4.3.4.4. EXT-X-SESSION-DATA
+ */
+- (MUKLineActionResult)onSessionData:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
+{
+    NSDictionary<NSString*, MUKAttributeValue*>* attributes
+        = [MUKAttributeList parseFromString:TAG_VALUE(MUK_EXT_X_SESSION_DATA, line)
+                             validateOption:@{ @"DATA-ID" : @(MUKAttributeRequired | MUKAttributeQuotedString),
+                                               @"VALUE" : @(MUKAttributeQuotedString),
+                                               @"URI" : @(MUKAttributeQuotedString),
+                                               @"LANGUAGE" : @(MUKAttributeQuotedString) }
+                                      error:error];
+
+    if (!attributes) {
+        return MUKLineActionResultErrored;
+    }
+
+    MUKXSessionData* sessionData = [[MUKXSessionData alloc] initWithDataId:attributes[@"DATA-ID"].value
+                                                                     value:attributes[@"VALUE"].value
+                                                                       uri:attributes[@"URI"].value
+                                                                  language:attributes[@"LANGUAGE"].value];
+    if (![sessionData validate:error]) {
+        return MUKLineActionResultErrored;
+    }
+
+    [self.processingSessionData addObject:sessionData];
     return MUKLineActionResultProcessed;
 }
 
@@ -255,7 +296,8 @@
     } else {
         return @{ MUK_EXT_X_MEDIA : ACTION([self onMedia:line error:error]),
                   MUK_EXT_X_STREAM_INF : ACTION([self onStreamInf:line error:error]),
-                  MUK_EXT_X_I_FRAME_STREAM_INF : ACTION([self onIframeStreamInf:line error:error])};
+                  MUK_EXT_X_I_FRAME_STREAM_INF : ACTION([self onIframeStreamInf:line error:error]),
+                  MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:line error:error]) };
     }
 }
 

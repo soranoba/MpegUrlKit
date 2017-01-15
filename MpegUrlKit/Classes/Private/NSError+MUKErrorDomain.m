@@ -64,6 +64,8 @@
             return @"Invalid EXT-X-MEDIA";
         case MUKErrorInvalidStreamInf:
             return @"Invalid EXT-X-STREAM-INF (or EXT-X-I-FRAME-STREAM-INF)";
+        case MUKErrorInvalidSesseionData:
+            return @"Invalid EXT-X-SESSION-DATA";
         default:
             return @"Unknown error";
     }

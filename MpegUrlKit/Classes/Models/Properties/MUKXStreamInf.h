@@ -30,40 +30,40 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
 
 /// An array of codec.
 /// Please refert to RFC6381.
-@property(nonatomic, nullable, copy, readonly) NSArray<NSString*>* codecs;
+@property (nonatomic, nullable, copy, readonly) NSArray<NSString*>* codecs;
 
 /// If it is CGSizeZero, it means no designation.
 /// Otherwise, it represents the optimal pixel resolution at which to display all the video in the Variant Stream.
 /// Width and height MUST be specified as integers.
-@property(nonatomic, assign, readonly) CGSize resolution;
+@property (nonatomic, assign, readonly) CGSize resolution;
 
 /// If it is 0, it means no designation. Otherwise, it represents the max frame rate for all the video in the Variant Stream.
-@property(nonatomic, assign, readonly) double maxFrameRate;
+@property (nonatomic, assign, readonly) double maxFrameRate;
 
 /// High-bandwidth Digital Content Protection system (HDCP)
 /// It puts a reference value as to whether it is protected by HDCP.
 ///
 /// If it is MUKXStreamInfHdcpLevelUnknwon, it means no designation.
-@property(nonatomic, assign, readonly) MUKXStreamInfHdcpLevel hdcpLevel;
+@property (nonatomic, assign, readonly) MUKXStreamInfHdcpLevel hdcpLevel;
 
 /// Please refer to MUKXMedia class.
 /// It value MUST match a MUKXMedia object that have mediaType is MUKXMediaTypeAudio and groupId is the value.
-@property(nonatomic, nullable, copy, readonly) NSString* audioGroupId;
+@property (nonatomic, nullable, copy, readonly) NSString* audioGroupId;
 
 /// Please refer to MUKXMedia class.
 /// It value MUST match a MUKXMedia object that have mediaType is MUKXMediaTypeVideo and groupId is the value.
-@property(nonatomic, nullable, copy, readonly) NSString* videoGroupId;
+@property (nonatomic, nullable, copy, readonly) NSString* videoGroupId;
 
 /// Please refer to MUKXMedia class.
 /// It value MUST match a MUKXMedia object that have mediaType is MUKXMediaTypeSubtitles and groupId is the value.
-@property(nonatomic, nullable, copy, readonly) NSString* subtitlesGroupId;
+@property (nonatomic, nullable, copy, readonly) NSString* subtitlesGroupId;
 
 /// Please refer to MUKXMedia class.
 /// It value MUST match a MUKXMedia object that have mediaType is MUKXMediaTypeClosedCaptions and groupId is the value.
-@property(nonatomic, nullable, copy, readonly) NSString* closedCaptionsGroupId;
+@property (nonatomic, nullable, copy, readonly) NSString* closedCaptionsGroupId;
 
 /// It specifies a Media Playlist that carries a Rendition of the Variant Stream.
-@property(nonatomic, nonnull, copy, readonly) NSString* uri;
+@property (nonatomic, nonnull, copy, readonly) NSString* uri;
 
 #pragma mark - Lifecycle
 
@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
  * @param error  If it return NO, detailed error information is saved here.
  * @return If it is correct, it return YES. Otherwise, return NO.
  */
-- (BOOL)validate:(NSError* _Nullable * _Nullable)error;
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 /**
  * Convert to MUKXStreamInfHdcpLevel from NSString.

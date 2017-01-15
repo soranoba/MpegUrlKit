@@ -8,9 +8,10 @@
 
 #import "MUKErrorCode.h"
 #import "MUKSerializing.h"
-#import "MUKXMedia.h"
-#import "MUKXStreamInf.h"
 #import "MUKXIframeStreamInf.h"
+#import "MUKXMedia.h"
+#import "MUKXSessionData.h"
+#import "MUKXStreamInf.h"
 #import <Foundation/Foundation.h>
 
 @interface MUKMasterPlaylist : MUKSerializing

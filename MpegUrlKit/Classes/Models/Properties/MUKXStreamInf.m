@@ -15,15 +15,15 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
 @interface MUKXStreamInf ()
 @property (nonatomic, assign, readwrite) NSUInteger maxBitrate;
 @property (nonatomic, assign, readwrite) NSUInteger averageBitrate;
-@property(nonatomic, nullable, copy, readwrite) NSArray<NSString*>* codecs;
-@property(nonatomic, assign, readwrite) CGSize resolution;
-@property(nonatomic, assign, readwrite) double maxFrameRate;
-@property(nonatomic, assign, readwrite) MUKXStreamInfHdcpLevel hdcpLevel;
-@property(nonatomic, nullable, copy, readwrite) NSString* audioGroupId;
-@property(nonatomic, nullable, copy, readwrite) NSString* videoGroupId;
-@property(nonatomic, nullable, copy, readwrite) NSString* subtitlesGroupId;
-@property(nonatomic, nullable, copy, readwrite) NSString* closedCaptionsGroupId;
-@property(nonatomic, nonnull, copy, readwrite) NSString* uri;
+@property (nonatomic, nullable, copy, readwrite) NSArray<NSString*>* codecs;
+@property (nonatomic, assign, readwrite) CGSize resolution;
+@property (nonatomic, assign, readwrite) double maxFrameRate;
+@property (nonatomic, assign, readwrite) MUKXStreamInfHdcpLevel hdcpLevel;
+@property (nonatomic, nullable, copy, readwrite) NSString* audioGroupId;
+@property (nonatomic, nullable, copy, readwrite) NSString* videoGroupId;
+@property (nonatomic, nullable, copy, readwrite) NSString* subtitlesGroupId;
+@property (nonatomic, nullable, copy, readwrite) NSString* closedCaptionsGroupId;
+@property (nonatomic, nonnull, copy, readwrite) NSString* uri;
 @end
 
 @implementation MUKXStreamInf
@@ -62,7 +62,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
 
 #pragma mark - Public Methods
 
-- (BOOL)validate:(NSError* _Nullable * _Nullable)error
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
     if (self.maxBitrate < self.averageBitrate) {
         SET_ERROR(error, MUKErrorInvalidStreamInf, @"AVERAGE-BIRATE MUST be less than or equal to BITRATE");

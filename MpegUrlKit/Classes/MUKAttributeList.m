@@ -142,7 +142,7 @@
 }
 
 + (NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)parseFromString:(NSString* _Nonnull)string
-                                                           validateOption:(NSDictionary<NSString *,NSNumber *> * _Nullable)validateOption
+                                                           validateOption:(NSDictionary<NSString*, NSNumber*>* _Nullable)validateOption
                                                                     error:(NSError* _Nullable* _Nullable)error
 {
     NSDictionary<NSString*, MUKAttributeValue*>* attributes = [self parseFromString:string error:error];
