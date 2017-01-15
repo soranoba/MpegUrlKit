@@ -6,6 +6,8 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeModel.h"
+#import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
 /**
@@ -13,7 +15,7 @@
  * It have information that how to obtain the Media Initialization Section required to parse the applicable Media Segments.
  * See also 3. Media Segments.
  */
-@interface MUKXMap : NSObject
+@interface MUKXMap : MUKAttributeModel <MUKAttributeSerializing>
 
 @property (nonatomic, nonnull, copy, readonly) NSString* uri;
 /// If BYTERANGE is not found, byteRange.location returns NSNotFound.

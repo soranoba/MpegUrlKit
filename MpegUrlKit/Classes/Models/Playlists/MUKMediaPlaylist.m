@@ -7,8 +7,9 @@
 //
 
 #import "MUKMediaPlaylist.h"
-#import "MUKAttributeList.h"
+#import "MUKAttributeSerializer.h"
 #import "MUKConsts.h"
+#import "MUKXMap+Private.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
 
@@ -21,6 +22,8 @@
 @property (nonatomic, nullable, copy) MUKSegmentValidator segmentValidator;
 @property (nonatomic, nullable, strong) MUKXKey* encrypt;
 @property (nonatomic, nullable, strong) NSDate* programDate;
+
+@property (nonatomic, nullable, strong) MUKAttributeSerializer* serializer;
 @end
 
 @implementation MUKMediaPlaylist
@@ -36,6 +39,20 @@
         self.dateRanges = [NSArray array];
     }
     return self;
+}
+
+#pragma mark - Custom Accessor
+
+- (MUKAttributeSerializer* _Nullable)serializer
+{
+    if (_serializer) {
+        return _serializer;
+    } else if (self.version > 0) {
+        _serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(self.version) baseUri:nil];
+        return _serializer;
+    } else {
+        return [MUKAttributeSerializer sharedSerializer];
+    }
 }
 
 #pragma mark - Public Methods
@@ -281,59 +298,13 @@
  */
 - (MUKTagActionResult)onKey:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    NSDictionary<NSString*, MUKAttributeValue*>* attributes = [MUKAttributeList parseFromString:tagValue
-                                                                                          error:error];
-    if (!attributes) {
+    MUKXKey* encrypt = [self.serializer modelOfClass:MUKXKey.class fromString:tagValue error:error];
+    if (!encrypt) {
         return MUKTagActionResultErrored;
     }
 
-    NSMutableArray<NSNumber*>* keyFormatVersions = nil;
-    if (attributes[@"KEYFORMATVERSIONS"]) {
-        if (!(attributes[@"KEYFORMATVERSIONS"].isQuotedString)) {
-            SET_ERROR(error, MUKErrorInvalidEncrypt, @"KEYFORMATVERSIONS MUST be quoted-string");
-            return MUKTagActionResultErrored;
-        }
-        NSArray<NSString*>* formats = [attributes[@"KEYFORMATVERSIONS"].value componentsSeparatedByString:@"/"];
-        keyFormatVersions = [NSMutableArray arrayWithCapacity:formats.count];
-        NSInteger num;
-
-        for (NSString* format in formats) {
-            if ((num = [format integerValue])) {
-                [keyFormatVersions addObject:[NSNumber numberWithInteger:num]];
-            } else {
-                SET_ERROR(error, MUKErrorInvalidEncrypt,
-                          ([NSString stringWithFormat:@"KEYFORMATVERSIONS MUST be positive integers. Got %@",
-                                                      attributes[@"KEYFORMATVERSIONS"]]));
-                return MUKTagActionResultErrored;
-            }
-        }
-    }
-
-    if (attributes[@"URI"] && !(attributes[@"URI"].isQuotedString)) {
-        SET_ERROR(error, MUKErrorInvalidEncrypt, @"URI MUST be quoted-string");
-        return MUKTagActionResultErrored;
-    }
-
-    if (attributes[@"KEYFORMAT"] && !(attributes[@"KEYFORMAT"].isQuotedString)) {
-        SET_ERROR(error, MUKErrorInvalidEncrypt, @"KEYFORMAT MUST be quoted-string");
-        return MUKTagActionResultErrored;
-    }
-
-    NSData* iv = nil;
-    if (attributes[@"IV"] && !([attributes[@"IV"].value muk_scanHexadecimal:&iv error:error])) {
-        return MUKTagActionResultErrored;
-    }
-
-    self.encrypt = [[MUKXKey alloc] initWithMethod:[MUKXKey keyMethodFromString:attributes[@"METHOD"].value]
-                                               uri:attributes[@"URI"].value
-                                                iv:(self.version >= 2 ? iv : nil)
-                                         keyFormat:(self.version >= 5 ? attributes[@"KEYFORMAT"].value : nil)
-                                 keyFormatVersions:(self.version >= 5 ? keyFormatVersions : nil)];
-    if ([self.encrypt validate:error]) {
-        return MUKTagActionResultProcessed;
-    } else {
-        return MUKTagActionResultErrored;
-    }
+    self.encrypt = encrypt;
+    return MUKTagActionResultProcessed;
 }
 
 /**
@@ -341,7 +312,7 @@
  */
 - (MUKTagActionResult)onMap:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    if (self.version < 5) {
+    if (self.version < [MUKXMap minimumModelSupportedVersion]) {
         return MUKTagActionResultIgnored;
     }
 
@@ -350,35 +321,19 @@
         return MUKTagActionResultErrored;
     }
 
-    NSDictionary<NSString*, MUKAttributeValue*>* attributes = [MUKAttributeList parseFromString:tagValue
-                                                                                          error:error];
-    if (!attributes) {
-        return MUKTagActionResultErrored;
-    }
-
-    if (!(attributes[@"URI"].isQuotedString)) {
-        SET_ERROR(error, MUKErrorInvalidMap, @"a URI attribute is REQUIRED and MUST be quoted-string");
+    MUKXMap* map = [self.serializer modelOfClass:MUKXMap.class fromString:tagValue error:error];
+    if (!map) {
         return MUKTagActionResultErrored;
     }
 
     MUKMediaSegment* mediaSegment = [self currentMediaSegment];
-    if (attributes[@"BYTERANGE"]) {
-        if (!attributes[@"BYTERANGE"].isQuotedString) {
-            SET_ERROR(error, MUKErrorInvalidMap, @"BYTERANGE MUST be quoted-string");
-            return MUKTagActionResultErrored;
+    if (!map.byteRange.location) {
+        MUKMediaSegment* previousSegment = [self previousMediaSegment:mediaSegment];
+        if (previousSegment) {
+            map.byteRange = NSMakeRange(NSMaxRange(previousSegment.byteRange), map.byteRange.length);
         }
-        NSArray<NSString*>* strs = [attributes[@"BYTERANGE"].value componentsSeparatedByString:@"@"];
-        if (!(strs.count == 1 || strs.count == 2)) {
-            SET_ERROR(error, MUKErrorInvalidMap,
-                      ([NSString stringWithFormat:@"%@ is invalid byte range format", attributes[@"BYTERANGE"].value]));
-            return MUKTagActionResultErrored;
-        }
-
-        NSRange range = NSMakeRange((strs.count == 2 ? [strs[1] integerValue] : 0), [strs[0] integerValue]);
-        mediaSegment.initializationMap = [[MUKXMap alloc] initWithUri:attributes[@"URI"].value range:range];
-    } else {
-        mediaSegment.initializationMap = [[MUKXMap alloc] initWithUri:attributes[@"URI"].value];
     }
+    mediaSegment.initializationMap = map;
     return MUKTagActionResultProcessed;
 }
 
@@ -402,102 +357,8 @@
  */
 - (MUKTagActionResult)onDateRange:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    NSDictionary<NSString*, MUKAttributeValue*>* attributes = [MUKAttributeList parseFromString:tagValue
-                                                                                          error:nil];
-    if (!attributes) {
-        return MUKTagActionResultIgnored;
-    }
-
-    MUKAttributeValue* v = nil;
-    NSString* identify = attributes[@"ID"].value;
-    if (!attributes[@"ID"].isQuotedString) {
-        return MUKTagActionResultIgnored;
-    }
-
-    NSString* class = nil;
-    if ((v = attributes[@"CLASS"]) && !v.isQuotedString) {
-        return MUKTagActionResultIgnored;
-    }
-    class = v.value;
-
-    NSDate* startDate;
-    if (![attributes[@"START-DATE"].value muk_scanDate:&startDate error:nil]) {
-        return MUKTagActionResultIgnored;
-    }
-
-    NSDate* endDate = nil;
-    if ((v = attributes[@"END-DATE"])) {
-        if (![v.value muk_scanDate:&endDate error:nil]) {
-            return MUKTagActionResultIgnored;
-        }
-        if ([startDate compare:endDate] == NSOrderedDescending) {
-            SET_ERROR(error, MUKErrorInvalidDateRange, @"");
-            return MUKTagActionResultErrored;
-        }
-    }
-
-    double duration = -1;
-    if ((v = attributes[@"DURATION"])) {
-        if (![v.value muk_scanDouble:&duration error:nil]) {
-            return MUKTagActionResultIgnored;
-        }
-        if (duration < 0) {
-            return MUKTagActionResultIgnored;
-        }
-    }
-
-    double plannedDuration = -1;
-    if ((v = attributes[@"PLANNED-DURATION"])) {
-        if (![v.value muk_scanDouble:&plannedDuration error:nil]) {
-            return MUKTagActionResultIgnored;
-        }
-        if (plannedDuration < 0) {
-            return MUKTagActionResultIgnored;
-        }
-    }
-
-    BOOL endOnNext = NO;
-    if ((v = attributes[@"END-ON-NEXT"])) {
-        if (!v.isQuotedString && [v.value isEqualToString:@"YES"]) {
-            endOnNext = YES;
-        } else {
-            return MUKTagActionResultIgnored;
-        }
-    }
-
-    NSData* scte35Cmd = nil;
-    if ((v = attributes[@"SCTE35-CMD"]) && ![v.value muk_scanHexadecimal:&scte35Cmd error:nil]) {
-        return MUKTagActionResultIgnored;
-    }
-
-    NSData* scte35Out = nil;
-    if ((v = attributes[@"SCTE35-OUT"]) && ![v.value muk_scanHexadecimal:&scte35Out error:nil]) {
-        return MUKTagActionResultIgnored;
-    }
-
-    NSData* scte35In = nil;
-    if ((v = attributes[@"SCTE35-IN"]) && ![v.value muk_scanHexadecimal:&scte35In error:nil]) {
-        return MUKTagActionResultIgnored;
-    }
-
-    NSMutableDictionary<NSString*, MUKAttributeValue*>* clientDefineds = [NSMutableDictionary dictionary];
-    for (NSString* key in attributes) {
-        if ([key hasPrefix:@"X-"]) {
-            clientDefineds[key] = attributes[key];
-        }
-    }
-    MUKXDateRange* dateRange = [[MUKXDateRange alloc] initWithId:identify
-                                                           klass:class
-                                                           start:startDate
-                                                             end:endDate
-                                                        duration:duration
-                                                 plannedDuration:plannedDuration
-                                                     isEndOnNext:endOnNext
-                                                       scte35Cmd:scte35Cmd
-                                                       scte35Out:scte35Out
-                                                        scte35In:scte35In
-                                           userDefinedAttributes:clientDefineds];
-    if (![dateRange validate:nil]) {
+    MUKXDateRange* dateRange = [self.serializer modelOfClass:MUKXDateRange.class fromString:tagValue error:nil];
+    if (!dateRange) {
         return MUKTagActionResultIgnored;
     }
     [self.processingDateRanges addObject:dateRange];

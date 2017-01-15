@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeModel.h"
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
@@ -20,7 +21,7 @@ typedef NS_ENUM(NSUInteger, MUKXKeyMethod) {
  * 4.3.2.4 EXT-X-KEY
  * It have information that how to decrypt media segments.
  */
-@interface MUKXKey : NSObject
+@interface MUKXKey : MUKAttributeModel <MUKAttributeSerializing>
 
 @property (nonatomic, assign, readonly) MUKXKeyMethod method;
 @property (nonatomic, nullable, copy, readonly) NSString* uri;
@@ -51,14 +52,6 @@ typedef NS_ENUM(NSUInteger, MUKXKeyMethod) {
                       keyFormatVersions:(NSArray<NSNumber*>* _Nullable)keyFormatVersions;
 
 #pragma mark - Public Methods
-
-/**
- * Validate and return YES if it is correct.
- *
- * @param error  If it return NO, detailed error information is saved here.
- * @return If it is correct, it return YES. Otherwise, return NO.
- */
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 /**
  * Convert to MUKXKeyMethod from NSString.

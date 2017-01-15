@@ -7,8 +7,11 @@
 //
 
 #import "MUKXIframeStreamInf.h"
+#import "NSError+MUKErrorDomain.h"
 
 @implementation MUKXIframeStreamInf
+
+#pragma mark - Lifecycle
 
 - (instancetype _Nonnull)initWithMaxBitrate:(NSUInteger)maxBitrate
                              averageBitrate:(NSUInteger)averageBitrate
@@ -29,6 +32,35 @@
                     subtitlesGroupId:nil
                closedCaptionsGroupId:nil
                                  uri:uri];
+}
+
+#pragma mark - MUKXStreamInf (Override)
+
++ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
+{
+    NSMutableDictionary<NSString*, NSString*>* dict = [[super keyByPropertyKey] mutableCopy];
+    [dict addEntriesFromDictionary:@{ @"URI" : @"uri" }];
+    return dict;
+}
+
++ (NSArray<NSString*>* _Nonnull)attributeOrder
+{
+    NSMutableArray<NSString*>* arr = [[super attributeOrder] mutableCopy];
+    [arr addObject:@"URI"];
+    return arr;
+}
+
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error
+{
+    if (![super validate:error]) {
+        return NO;
+    }
+
+    if (!self.uri) {
+        SET_ERROR(error, MUKErrorInvalidStreamInf, @"URI is REQUIRED");
+        return NO;
+    }
+    return YES;
 }
 
 @end

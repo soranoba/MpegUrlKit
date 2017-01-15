@@ -30,6 +30,15 @@
 
 #pragma mark - Lifecycle
 
+- (instancetype _Nonnull)init
+{
+    if (self = [super init]) {
+        self.duration = -1;
+        self.plannedDuration = -1;
+    }
+    return self;
+}
+
 - (instancetype _Nonnull)initWithId:(NSString* _Nonnull)identify
                               klass:(NSString* _Nullable)klass
                               start:(NSDate* _Nonnull)startDate
@@ -60,10 +69,57 @@
     return self;
 }
 
-#pragma mark - Public Methods
+#pragma mark - MUKAttributeSerializing
+
++ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
+{
+    return @{ @"ID" : @"identify",
+              @"CLASS" : @"klass",
+              @"START-DATE" : @"startDate",
+              @"END-DATE" : @"endDate",
+              @"DURATION" : @"duration",
+              @"PLANNED-DURATION" : @"plannedDuration",
+              @"END-ON-NEXT" : @"isEndOnNext",
+              @"SCTE35-CMD" : @"scte35cmd",
+              @"SCTE35-OUT" : @"scte35Out",
+              @"SCTE35-IN" : @"scte35In" };
+}
+
++ (MUKTransformer* _Nonnull)isEndOnNextTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return nil;
+        } else {
+            if ([value.value isEqualToString:@"YES"]) {
+                return @(YES);
+            } else {
+                return nil;
+            }
+        }
+    }
+                                   reverseBlock:nil];
+}
+
+#pragma mark - MUKAttributeModel (Override)
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
+    if (!self.identify) {
+        SET_ERROR(error, MUKErrorInvalidDateRange, @"ID is REQUIRED");
+        return NO;
+    }
+
+    if (!self.startDate) {
+        SET_ERROR(error, MUKErrorInvalidDateRange, @"START-DATE is REQUIRED");
+        return NO;
+    }
+
+    if ([self.startDate compare:self.endDate] == NSOrderedDescending) {
+        SET_ERROR(error, MUKErrorInvalidDateRange, @"END-DATE MUST be later than START-DATE");
+        return NO;
+    }
+
     if (self.isEndOnNext && !self.klass) {
         SET_ERROR(error, MUKErrorInvalidDateRange, @"If it has END-ON-NEXT, CLASS MUST NOT be contained");
         return NO;

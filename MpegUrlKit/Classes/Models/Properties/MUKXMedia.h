@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeModel.h"
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
@@ -21,7 +22,7 @@ typedef NS_ENUM(NSUInteger, MUKXMediaType) {
  * 4.3.4.1. EXT-X-MEDIA
  * It is an information of rendition.
  */
-@interface MUKXMedia : NSObject
+@interface MUKXMedia : MUKAttributeModel <MUKAttributeSerializing>
 
 /// Type of the Rendition.
 ///
@@ -114,14 +115,6 @@ typedef NS_ENUM(NSUInteger, MUKXMediaType) {
                               channels:(NSArray<NSNumber*>* _Nullable)channels;
 
 #pragma mark - Public Methods
-
-/**
- * Validate and return YES if it is correct.
- *
- * @param error  If it return NO, detailed error information is saved here.
- * @return If it is correct, it return YES. Otherwise, return NO.
- */
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 /**
  * Convert to MUKXMediaType from NSString.

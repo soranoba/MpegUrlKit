@@ -66,6 +66,8 @@
             return @"Invalid EXT-X-STREAM-INF (or EXT-X-I-FRAME-STREAM-INF)";
         case MUKErrorInvalidSesseionData:
             return @"Invalid EXT-X-SESSION-DATA";
+        case MUKErrorUnsupportedVersion:
+            return @"Unsupported version";
         default:
             return @"Unknown error";
     }

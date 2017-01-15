@@ -49,7 +49,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
         self.averageBitrate = averageBitrate;
         self.codecs = codecs;
         self.resolution = resolution;
-        self.maxBitrate = maxFrameRate;
+        self.maxFrameRate = maxFrameRate;
         self.hdcpLevel = hdcpLevel;
         self.audioGroupId = audioGroupId;
         self.videoGroupId = videoGroupId;
@@ -61,22 +61,6 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
 }
 
 #pragma mark - Public Methods
-
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error
-{
-    if (self.maxBitrate < self.averageBitrate) {
-        SET_ERROR(error, MUKErrorInvalidStreamInf, @"AVERAGE-BIRATE MUST be less than or equal to BITRATE");
-        return NO;
-    }
-
-    for (NSString* codec in self.codecs) {
-        if ([codec rangeOfString:@","].location != NSNotFound) {
-            SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CODECS MUST NOT contain a comma");
-            return NO;
-        }
-    }
-    return YES;
-}
 
 + (MUKXStreamInfHdcpLevel)hdcpLevelFromString:(NSString* _Nonnull)string
 {
@@ -101,6 +85,106 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
         default:
             return nil;
     }
+}
+
+#pragma mark - MUKAttributeSerializing
+
++ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
+{
+    return @{ @"BANDWIDTH" : @"maxBitrate",
+              @"AVERAGE-BANDWIDTH" : @"averageBitrate",
+              @"CODECS" : @"codecs",
+              @"RESOLUTION" : @"resolution",
+              @"FRAME-RATE" : @"maxFrameRate",
+              @"HDCP-LEVEL" : @"hdcpLevel",
+              @"AUDIO" : @"audioGroupId",
+              @"VIDEO" : @"videoGroupId",
+              @"SUBTITLES" : @"subtitlesGroupId",
+              @"CLOSED-CAPTIONS" : @"closedCaptionGroupId" };
+}
+
++ (NSArray<NSString*>* _Nonnull)attributeOrder
+{
+    return @[ @"BANDWIDTH", @"AVERAGE-BANDWIDTH", @"CODECS", @"RESOLUTION", @"FRAME-RATE", @"HDCP-LEVEL",
+              @"AUDIO", @"VIDEO", @"SUBTITLES", @"CLOSED-CAPTIONS" ];
+}
+
++ (MUKTransformer* _Nonnull)codecsTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return [value.value componentsSeparatedByString:@","];
+        } else {
+            return nil;
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSParameterAssert([value isKindOfClass:NSArray.class]);
+            return [[MUKAttributeValue alloc] initWithValue:[value componentsJoinedByString:@","] isQuotedString:YES];
+        }];
+}
+
++ (MUKTransformer* _Nonnull)hdcpLevelTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return nil;
+        } else {
+            MUKXStreamInfHdcpLevel level = [self.class hdcpLevelFromString:value.value];
+            if (level == MUKXStreamInfHdcpLevelUnknown) {
+                return nil;
+            } else {
+                return @(level);
+            }
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSString* str = [self.class hdcpLevelToString:(MUKXStreamInfHdcpLevel)[value unsignedIntegerValue]];
+            if (str) {
+                return [[MUKAttributeValue alloc] initWithValue:str isQuotedString:NO];
+            } else {
+                return nil;
+            }
+        }];
+}
+
++ (MUKTransformer* _Nonnull)closedCaptionGroupIdTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return value.value;
+        } else {
+            if ([value.value isEqualToString:@"NONE"]) {
+                return [NSNull new];
+            } else {
+                return nil;
+            }
+        }
+    }
+                                   reverseBlock:nil];
+}
+
+#pragma mark - MUKAttributeModel (Override)
+
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error
+{
+    if (self.maxBitrate == 0) {
+        SET_ERROR(error, MUKErrorInvalidStreamInf, @"BITRATE is REQUIRED");
+        return NO;
+    }
+
+    if (self.maxBitrate < self.averageBitrate) {
+        SET_ERROR(error, MUKErrorInvalidStreamInf, @"AVERAGE-BIRATE MUST be less than or equal to BITRATE");
+        return NO;
+    }
+
+    for (NSString* codec in self.codecs) {
+        if ([codec rangeOfString:@","].location != NSNotFound) {
+            SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CODECS MUST NOT contain a comma");
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end

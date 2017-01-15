@@ -68,39 +68,6 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 
 #pragma mark - Public Methods
 
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error
-{
-    if (self.mediaType == MUKXMediaTypeClosedCaptions && self.uri != nil) {
-        SET_ERROR(error, MUKErrorInvalidMedia,
-                  ([NSString stringWithFormat:@"if the TYPE is %@, URI MUST NOT be present", MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS]));
-        return NO;
-    }
-
-    if (self.canAutoSelect && !self.isDefaultRendition) {
-        SET_ERROR(error, MUKErrorInvalidMedia, @"if the AUTOSELECT is YES, the DEFAULT MUST be YES");
-        return NO;
-    }
-
-    if (self.mediaType == MUKXMediaTypeSubtitles && self.forced) {
-        SET_ERROR(error, MUKErrorInvalidMedia,
-                  ([NSString stringWithFormat:@"if the TYPE is %@, FORCED MUST NOT be present", MUK_EXT_X_MEDIA_TYPE_SUBTITLES]));
-        return NO;
-    }
-
-    if (![self validateInStreamId:error]) {
-        return NO;
-    }
-
-    for (NSString* uti in self.characteristics) {
-        if ([uti rangeOfString:@","].location != NSNotFound) {
-            SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CHARACTERISTICS MUST NOT contain a comma");
-            return NO;
-        }
-    }
-
-    return YES;
-}
-
 + (MUKXMediaType)mediaTypeFromString:(NSString* _Nonnull)string
 {
     NSParameterAssert(string != nil);
@@ -174,6 +141,153 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 
     SET_ERROR(error, MUKErrorInvalidMedia, @"INSTREAM-ID is only support CC1 ~ CC4 and SERVICE1 ~ SERVICE63");
     return NO;
+}
+
+#pragma mark - MUKAttributeSerializing
+
++ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
+{
+    return @{ @"TYPE" : @"mediaType",
+              @"URI" : @"uri",
+              @"GROUP-ID" : @"groupId",
+              @"LANGUAGE" : @"language",
+              @"ASSOC-LANGUAGE" : @"associatedLanguage",
+              @"NAME" : @"name",
+              @"DEFAULT" : @"isDefaultRendition",
+              @"AUTOSELECT" : @"canAutoSelect",
+              @"FORCED" : @"forced",
+              @"INSTREAM-ID" : @"instreamId",
+              @"CHARACTERISTICS" : @"characteristics",
+              @"CHANNELS" : @"channels" };
+}
+
++ (NSArray<NSString*>* _Nonnull)attributeOrder
+{
+    return @[ @"TYPE", @"URI", @"GROUP-ID", @"LANGUAGE", @"ASSOC-LANGUAGE",
+              @"NAME", @"DEFAULT", @"AUTOSELECT", @"FORCED", @"INSTREAM-ID", @"CHARACTERISTICS", @"CHANNELS" ];
+}
+
++ (MUKTransformer* _Nonnull)mediaTypeTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return nil;
+        } else {
+            MUKXMediaType type = [self.class mediaTypeFromString:value.value];
+            if (type == MUKXMediaTypeUnknown) {
+                return nil;
+            } else {
+                return @(type);
+            }
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSString* str = [self.class mediaTypeToString:(MUKXMediaType)[value unsignedIntegerValue]];
+            if (str) {
+                return [[MUKAttributeValue alloc] initWithValue:str isQuotedString:NO];
+            } else {
+                return nil;
+            }
+        }];
+}
+
++ (MUKTransformer* _Nonnull)characteristicsTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            return [value.value componentsSeparatedByString:@","];
+        } else {
+            return nil;
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSParameterAssert([value isKindOfClass:NSArray.class]);
+
+            return [[MUKAttributeValue alloc] initWithValue:[value componentsJoinedByString:@","]
+                                             isQuotedString:YES];
+        }];
+}
+
++ (MUKTransformer* _Nonnull)channelsTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        if (value.isQuotedString) {
+            NSMutableArray<NSNumber*>* channels = [NSMutableArray array];
+            NSUInteger num;
+
+            for (NSString* channelStr in [value.value componentsSeparatedByString:@"/"]) {
+                if (![channelStr muk_scanDecimalInteger:&num error:nil]) {
+                    return nil;
+                }
+                [channels addObject:[NSNumber numberWithUnsignedInteger:num]];
+            }
+            return channels;
+        } else {
+            return nil;
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSParameterAssert([value isKindOfClass:NSArray.class]);
+
+            NSMutableString* str = [NSMutableString string];
+            for (NSNumber* num in value) {
+                if (str.length > 0) {
+                    [str appendString:@"/"];
+                }
+                [str appendString:[num stringValue]];
+            }
+            return [[MUKAttributeValue alloc] initWithValue:str isQuotedString:YES];
+        }];
+}
+
+#pragma mark - MUKAttributeModel (Override)
+
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error
+{
+    if (self.mediaType == MUKXMediaTypeUnknown) {
+        SET_ERROR(error, MUKErrorInvalidMedia, @"TYPE is REQUIRED, but it is not exist.");
+        return NO;
+    }
+
+    if (self.groupId == nil) {
+        SET_ERROR(error, MUKErrorInvalidMedia, @"GROUP-ID is REQUIRED, but it is not exist.");
+        return NO;
+    }
+
+    if (self.name == nil) {
+        SET_ERROR(error, MUKErrorInvalidMedia, @"NAME is REQUIRED, but it is not exist.");
+        return NO;
+    }
+
+    if (self.mediaType == MUKXMediaTypeClosedCaptions && self.uri != nil) {
+        SET_ERROR(error, MUKErrorInvalidMedia,
+                  ([NSString stringWithFormat:@"if the TYPE is %@, URI MUST NOT be present", MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS]));
+        return NO;
+    }
+
+    if (self.canAutoSelect && !self.isDefaultRendition) {
+        SET_ERROR(error, MUKErrorInvalidMedia, @"if the AUTOSELECT is YES, the DEFAULT MUST be YES");
+        return NO;
+    }
+
+    if (self.mediaType == MUKXMediaTypeSubtitles && self.forced) {
+        SET_ERROR(error, MUKErrorInvalidMedia,
+                  ([NSString stringWithFormat:@"if the TYPE is %@, FORCED MUST NOT be present", MUK_EXT_X_MEDIA_TYPE_SUBTITLES]));
+        return NO;
+    }
+
+    if (![self validateInStreamId:error]) {
+        return NO;
+    }
+
+    for (NSString* uti in self.characteristics) {
+        if ([uti rangeOfString:@","].location != NSNotFound) {
+            SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CHARACTERISTICS MUST NOT contain a comma");
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 @end

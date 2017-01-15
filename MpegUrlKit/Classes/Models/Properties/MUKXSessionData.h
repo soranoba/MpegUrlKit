@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeModel.h"
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
@@ -13,7 +14,7 @@
  * 4.3.4.4. EXT-X-SESSION-DATA
  * It carries session data.
  */
-@interface MUKXSessionData : NSObject
+@interface MUKXSessionData : MUKAttributeModel <MUKAttributeSerializing>
 
 /// It is identifies.
 /// It SHOULD conform to a reverse DNS naming convention, such as "com.example.movie.title"
@@ -43,15 +44,5 @@
                                    value:(NSString* _Nullable)value
                                      uri:(NSString* _Nullable)uri
                                 language:(NSString* _Nullable)language;
-
-#pragma mark - Public Methods
-
-/**
- * Validate and return YES if it is correct.
- *
- * @param error  If it return NO, detailed error information is saved here.
- * @return If it is correct, it return YES. Otherwise, return NO.
- */
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 @end

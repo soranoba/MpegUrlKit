@@ -6,14 +6,14 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import "MUKAttributeList.h"
+#import "MUKAttributeModel.h"
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
 /**
  * 4.3.2.7. EXT-X-DATERANGE
  */
-@interface MUKXDateRange : NSObject
+@interface MUKXDateRange : MUKAttributeModel <MUKAttributeSerializing>
 
 @property (nonatomic, nonnull, copy, readonly) NSString* identify;
 @property (nonatomic, nullable, copy, readonly) NSString* klass;
@@ -58,15 +58,5 @@
                           scte35Out:(NSData* _Nullable)scte35Out
                            scte35In:(NSData* _Nullable)scte35In
               userDefinedAttributes:(NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)userDefinedAttributes;
-
-#pragma mark - Public Methods
-
-/**
- * Validate and return YES if it is correct.
- *
- * @param error  If it return NO, detailed error information is saved here.
- * @return If it is correct, it return YES. Otherwise, return NO.
- */
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 @end

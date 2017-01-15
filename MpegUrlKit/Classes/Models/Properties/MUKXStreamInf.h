@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeModel.h"
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
@@ -18,7 +19,7 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
  * 4.3.4.2. EXT-X-STREAM-INF
  * It specifies a Variant Stream, which have multiple Renditions that can be combined to play.
  */
-@interface MUKXStreamInf : NSObject
+@interface MUKXStreamInf : MUKAttributeModel <MUKAttributeSerializing>
 
 /// It represents the peak segment bitrate of the Variant Stream.
 /// It MUST be greater than 0.
@@ -97,14 +98,6 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
                                         uri:(NSString* _Nonnull)uri;
 
 #pragma mark - Public Methods
-
-/**
- * Validate and return YES if it is correct.
- *
- * @param error  If it return NO, detailed error information is saved here.
- * @return If it is correct, it return YES. Otherwise, return NO.
- */
-- (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 /**
  * Convert to MUKXStreamInfHdcpLevel from NSString.
