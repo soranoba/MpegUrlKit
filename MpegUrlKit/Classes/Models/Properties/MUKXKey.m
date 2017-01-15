@@ -1,28 +1,32 @@
 //
-//  MUKMediaEncrypt.m
+//  MUKXKey.m
 //  MpegUrlKit
 //
 //  Created by Hinagiku Soranoba on 2017/01/07.
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import "MUKMediaEncrypt.h"
+#import "MUKXKey.h"
 #import "MUKConsts.h"
 #import "NSError+MUKErrorDomain.h"
 
-@interface MUKMediaEncrypt ()
-@property (nonatomic, assign, readwrite) MUKEncryptMethod method;
+static NSString* const MUK_EXT_X_KEY_METHOD_NONE = @"NONE";
+static NSString* const MUK_EXT_X_KEY_METHOD_AES_128 = @"AES-128";
+static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
+
+@interface MUKXKey ()
+@property (nonatomic, assign, readwrite) MUKXKeyMethod method;
 @property (nonatomic, nullable, copy, readwrite) NSString* uri;
 @property (nonatomic, nullable, copy, readwrite) NSData* aesInitializeVector;
 @property (nonatomic, nonnull, copy, readwrite) NSString* keyFormat;
 @property (nonatomic, nonnull, copy, readwrite) NSArray<NSNumber*>* keyFormatVersions;
 @end
 
-@implementation MUKMediaEncrypt
+@implementation MUKXKey
 
 #pragma mark - Lifecycle
 
-- (instancetype _Nonnull)initWithMethod:(MUKEncryptMethod)method
+- (instancetype _Nonnull)initWithMethod:(MUKXKeyMethod)method
                                     uri:(NSString* _Nullable)uri
                                      iv:(NSData* _Nullable)iv
                               keyFormat:(NSString* _Nullable)keyFormat
@@ -42,10 +46,10 @@
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
-    if (self.method != MUKEncryptNone && self.uri.length == 0) {
+    if (self.method != MUKXKeyMethodNone && self.uri.length == 0) {
         SET_ERROR(error, MUKErrorInvalidEncrypt,
                   ([NSString stringWithFormat:@"Uri is REQUIRED unless the method is NONE. method is %@",
-                                              [self.class encryptMethodToString:self.method]]));
+                                              [self.class keyMethodToString:self.method]]));
         return NO;
     }
 
@@ -58,26 +62,26 @@
     return YES;
 }
 
-+ (MUKEncryptMethod)encryptMethodFromString:(NSString* _Nonnull)string
++ (MUKXKeyMethod)keyMethodFromString:(NSString* _Nonnull)string
 {
     if ([string isEqualToString:MUK_EXT_X_KEY_METHOD_NONE]) {
-        return MUKEncryptNone;
+        return MUKXKeyMethodNone;
     } else if ([string isEqualToString:MUK_EXT_X_KEY_METHOD_AES_128]) {
-        return MUKEncryptAes128;
+        return MUKXKeyMethodAes128;
     } else if ([string isEqualToString:MUK_EXT_X_KEY_METHOD_SAMPLE_AES]) {
-        return MUKEncryptSampleAes;
+        return MUKXKeyMethodSampleAes;
     }
-    return MUKEncryptUnknown;
+    return MUKXKeyMethodUnknown;
 }
 
-+ (NSString* _Nullable)encryptMethodToString:(MUKEncryptMethod)method
++ (NSString* _Nullable)keyMethodToString:(MUKXKeyMethod)method
 {
     switch (method) {
-        case MUKEncryptNone:
+        case MUKXKeyMethodNone:
             return MUK_EXT_X_KEY_METHOD_NONE;
-        case MUKEncryptAes128:
+        case MUKXKeyMethodAes128:
             return MUK_EXT_X_KEY_METHOD_AES_128;
-        case MUKEncryptSampleAes:
+        case MUKXKeyMethodSampleAes:
             return MUK_EXT_X_KEY_METHOD_SAMPLE_AES;
         default:
             return nil;

@@ -14,16 +14,8 @@
 
 #define TAG_VALUE(__TAG, __LINE) [(__LINE) substringWithRange:NSMakeRange((__TAG).length, (__LINE).length - (__TAG).length)]
 
-#define SET_ERROR(__ppError, __Code, __Reason)                                             \
-    do {                                                                                   \
-        if (__ppError) {                                                                   \
-            *(__ppError) = [NSError muk_errorWithMUKErrorCode:(__Code) reason:(__Reason)]; \
-        }                                                                                  \
-    } while (0)
-
 extern NSString* const MUK_EXTM3U;
 extern NSString* const MUK_EXT_X_VERSION;
-extern NSString* const MUK_EXT_X_STREAM_INF;
 
 /// 4.3.2.1. EXTINF
 extern NSString* const MUK_EXTINF;
@@ -53,6 +45,18 @@ extern NSString* const MUK_EXT_X_PLAYLIST_TYPE;
 /// 4.3.3.6. EXT-X-I-FRAMES-ONLY
 extern NSString* const MUK_EXT_X_I_FRAMES_ONLY;
 
-extern NSString* const MUK_EXT_X_KEY_METHOD_NONE;
-extern NSString* const MUK_EXT_X_KEY_METHOD_AES_128;
-extern NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES;
+/// 4.3.4.1. EXT-X-MEDIA
+extern NSString* const MUK_EXT_X_MEDIA;
+/// 4.3.4.2. EXT-X-STREAM-INF
+extern NSString* const MUK_EXT_X_STREAM_INF;
+/// 4.3.4.3. EXT-X-I-FRAME-STREAM-INF
+extern NSString* const MUK_EXT_X_I_FRAME_STREAM_INF;
+/// 4.3.4.4. EXT-X-SESSION-DATA
+extern NSString* const MUK_EXT_X_SESSION_DATA;
+/// 4.3.4.5. EXT-X-SESSION-KEY
+extern NSString* const MUK_EXT_X_SESSION_KEY;
+
+/// 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
+extern NSString* const MUK_EXT_X_INDEPENDENZT_SEGMENT;
+/// 4.3.5.2. EXT-X-START
+extern NSString* const MUK_EXT_X_START;

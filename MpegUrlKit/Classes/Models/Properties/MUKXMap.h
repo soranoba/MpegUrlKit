@@ -1,5 +1,5 @@
 //
-//  MUKMediaInitializationMap.h
+//  MUKXMap.h
 //  MpegUrlKit
 //
 //  Created by Hinagiku Soranoba on 2017/01/08.
@@ -13,7 +13,7 @@
  * It have information that how to obtain the Media Initialization Section required to parse the applicable Media Segments.
  * See also 3. Media Segments.
  */
-@interface MUKMediaInitializationMap : NSObject
+@interface MUKXMap : NSObject
 
 @property (nonatomic, nonnull, copy, readonly) NSString* uri;
 /// If BYTERANGE is not found, byteRange.location returns NSNotFound.

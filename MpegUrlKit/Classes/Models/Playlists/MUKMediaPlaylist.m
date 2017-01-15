@@ -17,9 +17,9 @@
 @property (nonatomic, assign) BOOL isWaitingMediaSegmentUri;
 
 @property (nonatomic, nonnull, strong) NSMutableArray<MUKMediaSegment*>* processingMediaSegments;
-@property (nonatomic, nonnull, strong) NSMutableArray<MUKDateRange*>* processingDateRanges;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXDateRange*>* processingDateRanges;
 @property (nonatomic, nullable, copy) MUKSegmentValidator segmentValidator;
-@property (nonatomic, nullable, strong) MUKMediaEncrypt* encrypt;
+@property (nonatomic, nullable, strong) MUKXKey* encrypt;
 @property (nonatomic, nullable, strong) NSDate* programDate;
 @end
 
@@ -325,11 +325,11 @@
         return MUKLineActionResultErrored;
     }
 
-    self.encrypt = [[MUKMediaEncrypt alloc] initWithMethod:[MUKMediaEncrypt encryptMethodFromString:attributes[@"METHOD"].value]
-                                                       uri:attributes[@"URI"].value
-                                                        iv:(self.version >= 2 ? iv : nil)
-                                                 keyFormat:(self.version >= 5 ? attributes[@"KEYFORMAT"].value : nil)
-                                         keyFormatVersions:(self.version >= 5 ? keyFormatVersions : nil)];
+    self.encrypt = [[MUKXKey alloc] initWithMethod:[MUKXKey keyMethodFromString:attributes[@"METHOD"].value]
+                                               uri:attributes[@"URI"].value
+                                                iv:(self.version >= 2 ? iv : nil)
+                                         keyFormat:(self.version >= 5 ? attributes[@"KEYFORMAT"].value : nil)
+                                 keyFormatVersions:(self.version >= 5 ? keyFormatVersions : nil)];
     if ([self.encrypt validate:error]) {
         return MUKLineActionResultProcessed;
     } else {
@@ -376,10 +376,9 @@
         }
 
         NSRange range = NSMakeRange((strs.count == 2 ? [strs[1] integerValue] : 0), [strs[0] integerValue]);
-        mediaSegment.initializationMap = [[MUKMediaInitializationMap alloc] initWithUri:attributes[@"URI"].value
-                                                                                  range:range];
+        mediaSegment.initializationMap = [[MUKXMap alloc] initWithUri:attributes[@"URI"].value range:range];
     } else {
-        mediaSegment.initializationMap = [[MUKMediaInitializationMap alloc] initWithUri:attributes[@"URI"].value];
+        mediaSegment.initializationMap = [[MUKXMap alloc] initWithUri:attributes[@"URI"].value];
     }
     return MUKLineActionResultProcessed;
 }
@@ -488,17 +487,17 @@
             clientDefineds[key] = attributes[key];
         }
     }
-    MUKDateRange* dateRange = [[MUKDateRange alloc] initWithId:identify
-                                                         klass:class
-                                                         start:startDate
-                                                           end:endDate
-                                                      duration:duration
-                                               plannedDuration:plannedDuration
-                                                   isEndOnNext:endOnNext
-                                                     scte35Cmd:scte35Cmd
-                                                     scte35Out:scte35Out
-                                                      scte35In:scte35In
-                                         userDefinedAttributes:clientDefineds];
+    MUKXDateRange* dateRange = [[MUKXDateRange alloc] initWithId:identify
+                                                           klass:class
+                                                           start:startDate
+                                                             end:endDate
+                                                        duration:duration
+                                                 plannedDuration:plannedDuration
+                                                     isEndOnNext:endOnNext
+                                                       scte35Cmd:scte35Cmd
+                                                       scte35Out:scte35Out
+                                                        scte35In:scte35In
+                                           userDefinedAttributes:clientDefineds];
     if (![dateRange validate:nil]) {
         return MUKLineActionResultIgnored;
     }

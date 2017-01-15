@@ -60,6 +60,10 @@
             return @"Required tags are missing";
         case MUKErrorInvalidDateRange:
             return @"Invalid EXT-X-DATERANGE";
+        case MUKErrorInvalidMedia:
+            return @"Invalid EXT-X-MEDIA";
+        case MUKErrorInvalidStreamInf:
+            return @"Invalid EXT-X-STREAM-INF (or EXT-X-I-FRAME-STREAM-INF)";
         default:
             return @"Unknown error";
     }

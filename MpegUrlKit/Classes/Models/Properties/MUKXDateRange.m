@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import "MUKDateRange.h"
+#import "MUKXDateRange.h"
 #import "MUKConsts.h"
 #import "NSError+MUKErrorDomain.h"
 
-@interface MUKDateRange ()
+@interface MUKXDateRange ()
 
 @property (nonatomic, nonnull, copy, readwrite) NSString* identify;
 @property (nonatomic, nullable, copy, readwrite) NSString* klass;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation MUKDateRange
+@implementation MUKXDateRange
 
 #pragma mark - Lifecycle
 

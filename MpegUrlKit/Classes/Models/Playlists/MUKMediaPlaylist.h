@@ -6,10 +6,10 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import "MUKDateRange.h"
 #import "MUKErrorCode.h"
 #import "MUKMediaSegment.h"
 #import "MUKSerializing.h"
+#import "MUKXDateRange.h"
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, MUKPlaylistType) {
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, MUKPlaylistType) {
 @property (nonatomic, assign) BOOL hasEndList;
 @property (nonatomic, assign) BOOL isIframesOnly;
 @property (nonatomic, nonnull, copy) NSArray<MUKMediaSegment*>* mediaSegments;
-@property (nonatomic, nonnull, copy) NSArray<MUKDateRange*>* dateRanges;
+@property (nonatomic, nonnull, copy) NSArray<MUKXDateRange*>* dateRanges;
 
 /**
  * Convert to string from playlist type

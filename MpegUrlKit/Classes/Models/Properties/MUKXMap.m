@@ -1,19 +1,19 @@
 //
-//  MUKMediaInitializationMap.m
+//  MUKXMap.m
 //  MpegUrlKit
 //
 //  Created by Hinagiku Soranoba on 2017/01/08.
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import "MUKMediaInitializationMap.h"
+#import "MUKXMap.h"
 
-@interface MUKMediaInitializationMap ()
+@interface MUKXMap ()
 @property (nonatomic, nonnull, copy, readwrite) NSString* uri;
 @property (nonatomic, assign, readwrite) NSRange byteRange;
 @end
 
-@implementation MUKMediaInitializationMap
+@implementation MUKXMap
 
 #pragma mark - Lifecycle
 

@@ -1,5 +1,5 @@
 //
-//  MUKMediaEncrypt.h
+//  MUKXKey.h
 //  MpegUrlKit
 //
 //  Created by Hinagiku Soranoba on 2017/01/07.
@@ -9,20 +9,20 @@
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, MUKEncryptMethod) {
-    MUKEncryptUnknown = 0,
-    MUKEncryptNone,
-    MUKEncryptAes128,
-    MUKEncryptSampleAes,
+typedef NS_ENUM(NSUInteger, MUKXKeyMethod) {
+    MUKXKeyMethodUnknown = 0,
+    MUKXKeyMethodNone,
+    MUKXKeyMethodAes128,
+    MUKXKeyMethodSampleAes,
 };
 
 /*
  * 4.3.2.4 EXT-X-KEY
  * It have information that how to decrypt media segments.
  */
-@interface MUKMediaEncrypt : NSObject
+@interface MUKXKey : NSObject
 
-@property (nonatomic, assign, readonly) MUKEncryptMethod method;
+@property (nonatomic, assign, readonly) MUKXKeyMethod method;
 @property (nonatomic, nullable, copy, readonly) NSString* uri;
 /// 5.2 IV for AES_128
 /// IV means 16-octet Initialization Vector
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, MUKEncryptMethod) {
  * @param keyFormatVersions An array of positive integer (NSUInteger)
  * @return instance
  */
-- (instancetype _Nonnull)initWithMethod:(MUKEncryptMethod)method
+- (instancetype _Nonnull)initWithMethod:(MUKXKeyMethod)method
                                     uri:(NSString* _Nullable)uri
                                      iv:(NSData* _Nullable)iv
                               keyFormat:(NSString* _Nullable)keyFormat
@@ -61,21 +61,21 @@ typedef NS_ENUM(NSUInteger, MUKEncryptMethod) {
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error;
 
 /**
- * Convert to MUKEncryptMethod from NSString.
+ * Convert to MUKXKeyMethod from NSString.
  *
  * @param string An enumerated-string
- * @return Return MUKEncryptUnknown, if the string is not supported string. 
+ * @return Return MUKXKeyMethodUnknown, if the string is not supported string.
  *         Otherwise, return converted enumerated-value.
  */
-+ (MUKEncryptMethod)encryptMethodFromString:(NSString* _Nonnull)string;
++ (MUKXKeyMethod)keyMethodFromString:(NSString* _Nonnull)string;
 
 /**
- * Convert to NSString from MUKEncryptMethod.
+ * Convert to NSString from MUKXKeyMethod.
  *
  * @param method An enumerated-value
- * @return Return nil, if the method is MUKEncryptUnknown (or not enumerated-value).
+ * @return Return nil, if the method is MUKXKeyMethodUnknown (or not enumerated-value).
  *         Otherwise, return an enumerated-string.
  */
-+ (NSString* _Nullable)encryptMethodToString:(MUKEncryptMethod)method;
++ (NSString* _Nullable)keyMethodToString:(MUKXKeyMethod)method;
 
 @end

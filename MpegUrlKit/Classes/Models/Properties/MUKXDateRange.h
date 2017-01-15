@@ -1,5 +1,5 @@
 //
-//  MUKDateRange.h
+//  MUKXDateRange.h
 //  MpegUrlKit
 //
 //  Created by Hinagiku Soranoba on 2017/01/08.
@@ -13,7 +13,7 @@
 /**
  * 4.3.2.7. EXT-X-DATERANGE
  */
-@interface MUKDateRange : NSObject
+@interface MUKXDateRange : NSObject
 
 @property (nonatomic, nonnull, copy, readonly) NSString* identify;
 @property (nonatomic, nullable, copy, readonly) NSString* klass;

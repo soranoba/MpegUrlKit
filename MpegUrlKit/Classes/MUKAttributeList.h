@@ -9,6 +9,13 @@
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, MUKAttributeValidateOption) {
+    MUKAttributeQuotedString = 0x1,
+    MUKAttributeNotQuotedString = 0x2,
+    MUKAttributeBoolean = 0x6,
+    MUKAttributeRequired = 0x8,
+};
+
 /**
  * This class expresses attribute value.
  */
@@ -51,13 +58,21 @@
 #pragma mark - Public Methods
 
 /**
+ * @see parseFromString:validateOption:error:
+ */
++ (NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)parseFromString:(NSString* _Nonnull)string
+                                                                    error:(NSError* _Nullable* _Nullable)error;
+
+/**
  * Parse the attribute list.
  *
- * @param string A string of attribute list
- * @param error  If it return nil, detailed error information is saved here.
+ * @param string          A string of attribute list
+ * @param validateOption  The value is Bitwise OR of multiple MUKAttributeValidateOption.
+ * @param error           If it return nil, detailed error information is saved here.
  * @return Return nil, if it parse failed. Otherwise, return attribute key-value pairs.
  */
 + (NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)parseFromString:(NSString* _Nonnull)string
+                                                           validateOption:(NSDictionary<NSString*,NSNumber*>* _Nullable)validateOption
                                                                     error:(NSError* _Nullable* _Nullable)error;
 
 /**

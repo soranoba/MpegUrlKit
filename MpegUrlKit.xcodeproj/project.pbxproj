@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A4CAA39E1E20FEA000628B88 /* MUKMediaEncryptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */; };
+		A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */; };
 		A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */; };
 		A4CAA3A11E21178600628B88 /* MUKAttributeListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A01E21178600628B88 /* MUKAttributeListTests.m */; };
 		A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */; };
+		A4E863531E2A07560026E263 /* MUKXMediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E863521E2A07560026E263 /* MUKXMediaTests.m */; };
 		B5525B329B14A7D445DA5222 /* Pods_MpegUrlKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -18,10 +19,11 @@
 		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
-		A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaEncryptTests.m; sourceTree = "<group>"; };
+		A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXKeyTests.m; sourceTree = "<group>"; };
 		A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKMediaPlaylistTests.m; sourceTree = "<group>"; };
 		A4CAA3A01E21178600628B88 /* MUKAttributeListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKAttributeListTests.m; sourceTree = "<group>"; };
 		A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MUKExtensionTests.m"; sourceTree = "<group>"; };
+		A4E863521E2A07560026E263 /* MUKXMediaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXMediaTests.m; sourceTree = "<group>"; };
 		CB62F4691F65F086529CC4CD /* Pods-MpegUrlKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C586CA6E94CA9A1DA5756D /* Pods_MpegUrlKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MpegUrlKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE00EA95CB63177282D4E20 /* Pods-MpegUrlKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MpegUrlKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MpegUrlKitTests/Pods-MpegUrlKitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -64,8 +66,9 @@
 		A4CAA39B1E20FE3A00628B88 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A4CAA39C1E20FEA000628B88 /* MUKMediaEncryptTests.m */,
+				A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */,
 				A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */,
+				A4E863521E2A07560026E263 /* MUKXMediaTests.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,8 +210,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */,
-				A4CAA39E1E20FEA000628B88 /* MUKMediaEncryptTests.m in Sources */,
+				A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */,
 				A4CAA3A11E21178600628B88 /* MUKAttributeListTests.m in Sources */,
+				A4E863531E2A07560026E263 /* MUKXMediaTests.m in Sources */,
 				A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

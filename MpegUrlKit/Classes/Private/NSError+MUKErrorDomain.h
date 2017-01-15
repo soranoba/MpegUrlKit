@@ -9,6 +9,13 @@
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
+#define SET_ERROR(__ppError, __Code, __Reason)                                             \
+    do {                                                                                   \
+        if (__ppError) {                                                                   \
+            *(__ppError) = [NSError muk_errorWithMUKErrorCode:(__Code) reason:(__Reason)]; \
+        }                                                                                  \
+    } while (0)
+
 @interface NSError (MUKErrorDomain)
 
 /**

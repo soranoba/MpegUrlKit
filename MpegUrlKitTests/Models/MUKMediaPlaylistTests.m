@@ -385,7 +385,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@3));
-            expect(@(playlist.mediaSegments[0].encrypt.method)).to(equal(MUKEncryptAes128));
+            expect(@(playlist.mediaSegments[0].encrypt.method)).to(equal(MUKXKeyMethodAes128));
             expect(playlist.mediaSegments[0].encrypt.uri).to(equal(@"enc1"));
             expect(playlist.mediaSegments[0].encrypt.aesInitializeVector).to(equal(expectedIv));
             expect(playlist.mediaSegments[0].encrypt.keyFormat).to(equal(@"hoge"));
@@ -393,7 +393,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             expect(playlist.mediaSegments[0].encrypt).to(equal(playlist.mediaSegments[1].encrypt));
 
-            expect(@(playlist.mediaSegments[2].encrypt.method)).to(equal(MUKEncryptSampleAes));
+            expect(@(playlist.mediaSegments[2].encrypt.method)).to(equal(MUKXKeyMethodSampleAes));
             expect(playlist.mediaSegments[2].encrypt.uri).to(equal(@"enc2"));
             expect(playlist.mediaSegments[2].encrypt.aesInitializeVector).to(beNil());
             expect(playlist.mediaSegments[2].encrypt.keyFormat).to(equal(@"identity")); // default
@@ -404,24 +404,24 @@ QuickSpecBegin(MUKMediaPlaylistTests)
     describe(@"#EXT-X-PROGRAM-DATE-TIME", ^{
         it(@"gots error, if it format is invalid", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-TARGETDURATION:5\n"
-            @"\n"
-            @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08 21:20:00\n";
+                                    @"#EXT-X-TARGETDURATION:5\n"
+                                    @"\n"
+                                    @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08 21:20:00\n";
             SerializeFailed(playlistStr, MUKErrorInvalidType);
         });
 
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-TARGETDURATION:5\n"
-            @"\n"
-            @"#EXTINF:5,\n"
-            @"url1\n"
-            @"#EXTINF:5,\n"
-            @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08T21:20:00.0Z\n"
-            @"url2\n"
-            @"#EXTINF:5,\n"
-            @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08T21:20:05.0Z\n"
-            @"url3\n";
+                                    @"#EXT-X-TARGETDURATION:5\n"
+                                    @"\n"
+                                    @"#EXTINF:5,\n"
+                                    @"url1\n"
+                                    @"#EXTINF:5,\n"
+                                    @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08T21:20:00.0Z\n"
+                                    @"url2\n"
+                                    @"#EXTINF:5,\n"
+                                    @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08T21:20:05.0Z\n"
+                                    @"url3\n";
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
@@ -435,11 +435,11 @@ QuickSpecBegin(MUKMediaPlaylistTests)
     describe(@"EXT-X-DATERANGE", ^{
         it(@"ignore EXT-X-DATERANGE tags with illegal syntax", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-TARGETDURATION:5\n"
-            @"\n"
-            @"#EXT-X-DATERANGE:START-DATE=\"2016-12-25T00:00:00.00Z\"\n" // id is required
-            @"#EXT-X-DATERANGE:ID=\"hoge\"\n" // start-date is required
-            @"#EXT-X-DATERANGE:invalid-format\n"; // invalid format
+                                    @"#EXT-X-TARGETDURATION:5\n"
+                                    @"\n"
+                                    @"#EXT-X-DATERANGE:START-DATE=\"2016-12-25T00:00:00.00Z\"\n" // id is required
+                                    @"#EXT-X-DATERANGE:ID=\"hoge\"\n" // start-date is required
+                                    @"#EXT-X-DATERANGE:invalid-format\n"; // invalid format
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
@@ -449,11 +449,11 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-TARGETDURATION:5\n"
-            @"\n"
-            @"#EXT-X-DATERANGE:ID=\"id\",CLASS=\"class\",START-DATE=\"2016-12-25T00:00:00.00Z\","
-            @"END-DATE=\"2016-12-25T00:00:05.50Z\",DURATION=5.5,PLANNED-DURATION=10.5,"
-            @"X-CUSTOM=YES\n";
+                                    @"#EXT-X-TARGETDURATION:5\n"
+                                    @"\n"
+                                    @"#EXT-X-DATERANGE:ID=\"id\",CLASS=\"class\",START-DATE=\"2016-12-25T00:00:00.00Z\","
+                                    @"END-DATE=\"2016-12-25T00:00:05.50Z\",DURATION=5.5,PLANNED-DURATION=10.5,"
+                                    @"X-CUSTOM=YES\n";
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;

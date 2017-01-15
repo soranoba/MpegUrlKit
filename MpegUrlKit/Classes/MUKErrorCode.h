@@ -21,6 +21,8 @@ typedef NS_ENUM(NSUInteger, MUKErrorCode) {
     MUKErrorLocationIncorrect,
     MUKErrorMissingRequiredTag,
     MUKErrorInvalidDateRange,
+    MUKErrorInvalidMedia,
+    MUKErrorInvalidStreamInf,
 };
 
 extern NSString* const MUKErrorDomain;

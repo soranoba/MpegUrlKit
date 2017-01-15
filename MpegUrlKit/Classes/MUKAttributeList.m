@@ -141,6 +141,49 @@
     return attributes;
 }
 
++ (NSDictionary<NSString*, MUKAttributeValue*>* _Nullable)parseFromString:(NSString* _Nonnull)string
+                                                           validateOption:(NSDictionary<NSString *,NSNumber *> * _Nullable)validateOption
+                                                                    error:(NSError* _Nullable* _Nullable)error
+{
+    NSDictionary<NSString*, MUKAttributeValue*>* attributes = [self parseFromString:string error:error];
+    if (!attributes) {
+        return nil;
+    }
+
+    for (NSString* key in validateOption) {
+        MUKAttributeValue* v = attributes[key];
+        NSUInteger opt = [validateOption[key] unsignedIntegerValue];
+
+        if ((opt & MUKAttributeRequired) && !v) {
+            SET_ERROR(error, MUKErrorInvalidAttributeList,
+                      ([NSString stringWithFormat:@"%@ is REQUIRED", key]));
+            return nil;
+        }
+
+        if ((opt & MUKAttributeQuotedString) && v && !v.isQuotedString) {
+            SET_ERROR(error, MUKErrorInvalidType,
+                      ([NSString stringWithFormat:@"%@ MUST be quoted-string", key]));
+            return nil;
+        }
+
+        if ((opt & MUKAttributeNotQuotedString) && v.isQuotedString) {
+            SET_ERROR(error, MUKErrorInvalidType,
+                      ([NSString stringWithFormat:@"%@ MUST NOT be quoted-string", key]));
+            return nil;
+        }
+
+        if ((opt & MUKAttributeBoolean) && v) {
+            NSString* s = v.value;
+            if (!([s isEqualToString:@"YES"] || [s isEqualToString:@"NO"])) {
+                SET_ERROR(error, MUKErrorInvalidType,
+                          ([NSString stringWithFormat:@"%@ MUST be YES or NO (enumeraterated-string)", key]));
+                return nil;
+            }
+        }
+    }
+    return attributes;
+}
+
 + (NSString* _Nullable)makeFromDict:(NSDictionary<NSString*, MUKAttributeValue*>* _Nonnull)attributes
                               error:(NSError* _Nullable* _Nullable)error
 {
