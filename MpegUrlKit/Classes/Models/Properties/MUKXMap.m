@@ -81,7 +81,7 @@
             if (range.location == NSNotFound) {
                 return nil;
             } else {
-                return [[MUKAttributeValue alloc] initWithValue:[NSString stringWithFormat:@"%lu@%lu", range.length, range.location]
+                return [[MUKAttributeValue alloc] initWithValue:[NSString stringWithFormat:@"%tu@%tu", range.length, range.location]
                                                  isQuotedString:YES];
             }
         }];

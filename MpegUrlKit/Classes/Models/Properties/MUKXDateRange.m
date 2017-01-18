@@ -101,6 +101,19 @@
                                    reverseBlock:nil];
 }
 
+- (BOOL)finalizeOfFromStringWithAttributes:(NSDictionary<NSString*, MUKAttributeValue*>* _Nonnull)attributes
+                                     error:(NSError* _Nullable* _Nullable)error
+{
+    NSMutableDictionary<NSString*, MUKAttributeValue*>* userDefinedAttributes = [NSMutableDictionary dictionary];
+    for (NSString* key in attributes) {
+        if ([key hasPrefix:@"X-"]) {
+            userDefinedAttributes[key] = attributes[key];
+        }
+    }
+    self.userDefinedAttributes = userDefinedAttributes;
+    return YES;
+}
+
 #pragma mark - MUKAttributeModel (Override)
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

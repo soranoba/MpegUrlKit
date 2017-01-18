@@ -73,6 +73,28 @@
 @optional
 + (NSDictionary<NSString*, NSNumber*>* _Nonnull)minimumAttributeSupportedVersions;
 
+/**
+ * It will called after convert from string to model and before validatation.
+ *
+ * @param attributes  The attributes parsed input string.
+ * @param error       If it return NO, detailed error information is saved here.
+ * @return If it is correct, it return YES. Otherwise, return NO.
+ */
+@optional
+- (BOOL)finalizeOfFromStringWithAttributes:(NSDictionary<NSString*, MUKAttributeValue*>* _Nonnull)attributes
+                                     error:(NSError* _Nullable* _Nullable)error;
+
+/**
+ * It will called after convert to string from model.
+ *
+ * @param attributeString  A string converted from model.
+ * @param error            If it return nil, detailed error information is saved here.
+ * @return If it is correct, it return final result of conversion to a string. Otherwise, return nil.
+ */
+@optional
+- (NSString* _Nullable)finalizeOfToString:(NSString* _Nonnull)attributeString
+                                    error:(NSError* _Nullable* _Nullable)error;
+
 @end
 
 /**

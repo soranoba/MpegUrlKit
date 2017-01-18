@@ -54,7 +54,7 @@
     if ([modelClass respondsToSelector:@selector(minimumModelSupportedVersion)]) {
         if (self.version > [modelClass minimumModelSupportedVersion]) {
             SET_ERROR(error, MUKErrorUnsupportedVersion,
-                      ([NSString stringWithFormat:@"EXT-X-VERSION is %lu, but %@ is NOT supported less than %lu",
+                      ([NSString stringWithFormat:@"EXT-X-VERSION is %tu, but %@ is NOT supported less than %tu",
                                                   self.version, modelClass, [modelClass minimumModelSupportedVersion]]));
             return nil;
         }
@@ -120,6 +120,12 @@
             return nil;
         }
     }
+
+    if ([modelObj respondsToSelector:@selector(finalizeOfFromStringWithAttributes:error:)]) {
+        if (![modelObj finalizeOfFromStringWithAttributes:attributes error:error]) {
+            return nil;
+        }
+    }
     return modelObj;
 }
 
@@ -132,7 +138,7 @@
     if ([model.class respondsToSelector:@selector(minimumModelSupportedVersion)]) {
         if (self.version > [model.class minimumModelSupportedVersion]) {
             SET_ERROR(error, MUKErrorUnsupportedVersion,
-                      ([NSString stringWithFormat:@"EXT-X-VERSION is %lu, but %@ is NOT supported less than %lu",
+                      ([NSString stringWithFormat:@"EXT-X-VERSION is %tu, but %@ is NOT supported less than %tu",
                                                   self.version, model.class, [model.class minimumModelSupportedVersion]]));
             return nil;
         }
@@ -185,7 +191,11 @@
         }
     }
 
-    return [self.class makeStringFromDict:attributes order:order error:error];
+    NSString* serializingStr = [self.class makeStringFromDict:attributes order:order error:error];
+    if (serializingStr && [model respondsToSelector:@selector(finalizeOfToString:error:)]) {
+        return [model finalizeOfToString:serializingStr error:error];
+    }
+    return serializingStr;
 }
 
 #pragma mark - Private Methods
@@ -367,8 +377,7 @@
     } else if (strncmp(attributeStr, "T{CGSize=", 9) == 0) { // CGSize
         return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithSize:[value CGSizeValue]] isQuotedString:NO];
     } else {
-        NSString* reason = [NSString stringWithFormat:@"%@ # %@ is unsupported type", [object class], propertyKey];
-        NSAssert(NO, reason);
+        NSAssert(NO, @"%@ # %@ is unsupported type", [object class], propertyKey);
         return nil;
     }
 }
