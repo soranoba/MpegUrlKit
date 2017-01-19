@@ -469,7 +469,7 @@
     if (supportedClass) {
         SET_ERROR(error, MUKErrorInvalidType,
                   ([NSString stringWithFormat:@"%@ MUST %@be quoted-string",
-                    propertyKey, (value.isQuotedString ? @"NOT " : @"")]));
+                                              propertyKey, (value.isQuotedString ? @"NOT " : @"")]));
     } else {
         NSString* reason = [NSString stringWithFormat:@"%@ # %@ is unsupported type", [object class], propertyKey];
         NSAssert(NO, reason);

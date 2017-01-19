@@ -33,6 +33,16 @@
     return [[self alloc] initWithBlock:block reverseBlock:reverseBlock];
 }
 
++ (instancetype _Nonnull)transformerWithBlock:(MUKTransformBlock _Nonnull)block
+{
+    return [[self alloc] initWithBlock:block reverseBlock:nil];
+}
+
++ (instancetype _Nonnull)transformerWithReverseBlock:(MUKReverseTransformBlock _Nonnull)reverseBlock
+{
+    return [[self alloc] initWithBlock:nil reverseBlock:reverseBlock];
+}
+
 #pragma mark - Public Methods
 
 - (BOOL)hasTransformBlock

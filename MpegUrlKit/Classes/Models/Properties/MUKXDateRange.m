@@ -97,8 +97,7 @@
                 return nil;
             }
         }
-    }
-                                   reverseBlock:nil];
+    }];
 }
 
 - (BOOL)finalizeOfFromStringWithAttributes:(NSDictionary<NSString*, MUKAttributeValue*>* _Nonnull)attributes

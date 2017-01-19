@@ -166,8 +166,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
                 return nil;
             }
         }
-    }
-                                   reverseBlock:nil];
+    }];
 }
 
 #pragma mark - MUKAttributeModel (Override)

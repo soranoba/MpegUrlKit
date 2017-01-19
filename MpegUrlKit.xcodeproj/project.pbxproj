@@ -48,6 +48,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A418FD0E1E310C3D0086FA9E /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				A418FD0C1E2FE0910086FA9E /* MUKTypeEncodingTests.m */,
+				A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */,
+			);
+			name = Helper;
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		A4CAA3441E1F837300628B88 = {
 			isa = PBXGroup;
 			children = (
@@ -61,14 +71,13 @@
 		A4CAA35E1E1F83BF00628B88 /* MpegUrlKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				A418FD0E1E310C3D0086FA9E /* Helper */,
 				A4CAA39B1E20FE3A00628B88 /* Models */,
 				A4E8636D1E2B5E290026E263 /* TestModels */,
 				A4CAA3611E1F83BF00628B88 /* Info.plist */,
 				A4E8636B1E2B5DE00026E263 /* MUKAttributeSerializerTests.m */,
 				A4CAA3A01E21178600628B88 /* MUKAttributeValueTests.m */,
 				A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */,
-				A4CAA3A61E21425000628B88 /* NSString+MUKExtensionTests.m */,
-				A418FD0C1E2FE0910086FA9E /* MUKTypeEncodingTests.m */,
 			);
 			path = MpegUrlKitTests;
 			sourceTree = "<group>";

@@ -30,14 +30,13 @@
 
 + (MUKTransformer* _Nonnull)sTransformer
 {
-    return [MUKTransformer transformerWithBlock:nil // default transformer
-                                   reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
-                                       if ([value length] > 0) {
-                                           return [[MUKAttributeValue alloc] initWithValue:value isQuotedString:YES];
-                                       } else {
-                                           return nil;
-                                       }
-                                   }];
+    return [MUKTransformer transformerWithReverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+        if ([value length] > 0) {
+            return [[MUKAttributeValue alloc] initWithValue:value isQuotedString:YES];
+        } else {
+            return nil;
+        }
+    }];
 }
 
 + (MUKTransformer* _Nonnull)eTransformer
