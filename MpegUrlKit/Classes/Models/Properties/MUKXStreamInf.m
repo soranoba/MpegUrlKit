@@ -109,6 +109,12 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
               @"AUDIO", @"VIDEO", @"SUBTITLES", @"CLOSED-CAPTIONS" ];
 }
 
+- (NSString* _Nullable)finalizeOfToString:(NSString* _Nonnull)attributeString
+                                    error:(NSError* _Nullable* _Nullable)error
+{
+    return [NSString stringWithFormat:@"%@\n%@", attributeString, self.uri];
+}
+
 + (MUKTransformer* _Nonnull)codecsTransformer
 {
     return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {

@@ -8,6 +8,7 @@
 
 #import "MUKAttributeSerializer.h"
 #import "MUKAttributeValue.h"
+#import "MUKTypeEncoding.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
 #import <objc/runtime.h>
@@ -357,29 +358,36 @@
     }
 
     objc_property_t property = class_getProperty([object class], propertyKey.UTF8String);
-    const char* const attributeStr = property_getAttributes(property);
+    NSAssert(property != nil, @"Property is not exist. Property name is %@", propertyKey);
 
-    if (strncmp(attributeStr, "T@\"NSString\",", 13) == 0) { // NSString
-        return [[MUKAttributeValue alloc] initWithValue:value isQuotedString:YES];
-    } else if (strncmp(attributeStr, "T@\"NSDate\",", 11) == 0) { // NSDate
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDate:value] isQuotedString:YES];
-    } else if (strncmp(attributeStr, "T@\"NSData\",", 11) == 0) {
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringHexWithData:value] isQuotedString:NO];
-    } else if (strncmp(attributeStr, "Td", 2) == 0) { // double
+    MUKTypeEncoding* enc = [[MUKTypeEncoding alloc] initWithProperty:property];
+    if (strcmp(enc.objCType, @encode(double)) == 0) {
         return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDouble:[value doubleValue]]
                                          isQuotedString:NO];
-    } else if (strncmp(attributeStr, "TB", 2) == 0) { // BOOL
+    } else if (strcmp(enc.objCType, @encode(BOOL)) == 0) {
         return [[MUKAttributeValue alloc] initWithValue:([value boolValue] == YES ? @"YES" : @"NO")
                                          isQuotedString:NO];
-    } else if (strncmp(attributeStr, "TQ", 2) == 0) { // NSUInteger
+    } else if (strcmp(enc.objCType, @encode(NSUInteger)) == 0) {
         return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDecimal:[value unsignedIntegerValue]]
                                          isQuotedString:NO];
-    } else if (strncmp(attributeStr, "T{CGSize=", 9) == 0) { // CGSize
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithSize:[value CGSizeValue]] isQuotedString:NO];
-    } else {
-        NSAssert(NO, @"%@ # %@ is unsupported type", [object class], propertyKey);
-        return nil;
+    } else if (strcmp(enc.objCType, @encode(CGSize)) == 0) {
+        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithSize:[value CGSizeValue]]
+                                         isQuotedString:NO];
+    } else if (strcmp(enc.objCType, @encode(id)) == 0) {
+        if (enc.klass == NSString.class) {
+            return [[MUKAttributeValue alloc] initWithValue:value
+                                             isQuotedString:YES];
+        } else if (enc.klass == NSDate.class) {
+            return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDate:value]
+                                             isQuotedString:YES];
+        } else if (enc.klass == NSData.class) {
+            return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringHexWithData:value]
+                                             isQuotedString:NO];
+        }
     }
+
+    NSAssert(NO, @"%@ # %@ is unsupported type", [object class], propertyKey);
+    return nil;
 }
 
 /**
@@ -399,75 +407,75 @@
     objc_property_t property = class_getProperty([object class], propertyKey.UTF8String);
 
     NSAssert(property != nil, @"Property is not exist. Property name is %@", propertyKey);
-    const char* const attributeStr = property_getAttributes(property);
+    MUKTypeEncoding* enc = [[MUKTypeEncoding alloc] initWithProperty:property];
 
-    if (strncmp(attributeStr, "T@\"NSString\",", 13) == 0) { // NSString
-        if (!value.isQuotedString) {
-            SET_ERROR(error, MUKErrorInvalidType,
-                      ([NSString stringWithFormat:@"%@ MUST be quoted-string", propertyKey]));
-            return NO;
-        }
-        [object setValue:value.value forKey:propertyKey];
-    } else if (strncmp(attributeStr, "T@\"NSDate\",", 11) == 0) { // NSDate
-        if (!value.isQuotedString) {
-            SET_ERROR(error, MUKErrorInvalidType,
-                      ([NSString stringWithFormat:@"%@ MUST be quoted-string", propertyKey]));
-            return NO;
-        }
-        NSDate* date;
-        if (![value.value muk_scanDate:&date error:error]) {
-            return NO;
-        }
-        [object setValue:date forKey:propertyKey];
-    } else {
-        if (value.isQuotedString) {
-            SET_ERROR(error, MUKErrorInvalidType,
-                      ([NSString stringWithFormat:@"%@ MUST NOT be quoted-string", propertyKey]));
-            return NO;
-        }
+    BOOL supportedClass = NO;
+    BOOL isError = NO;
 
-        if (strncmp(attributeStr, "T@\"NSData\",", 11) == 0) { // NSData
+    if (strcmp(enc.objCType, @encode(id)) == 0) {
+        if (!supportedClass && (supportedClass |= (enc.klass == NSString.class)) && value.isQuotedString) {
+            [object setValue:value.value forKey:propertyKey];
+        } else if (!supportedClass && (supportedClass |= (enc.klass == NSDate.class)) && value.isQuotedString) {
+            NSDate* date;
+            if (![value.value muk_scanDate:&date error:error]) {
+                return NO;
+            }
+            [object setValue:date forKey:propertyKey];
+        } else if (!supportedClass && (supportedClass |= (enc.klass == NSData.class)) && !value.isQuotedString) {
             NSData* data;
             if (![value.value muk_scanHexadecimal:&data error:error]) {
                 return NO;
             }
             [object setValue:data forKey:propertyKey];
-        } else if (strncmp(attributeStr, "Td", 2) == 0) { // double
-            double d;
-            if (![value.value muk_scanDouble:&d error:error]) {
-                return NO;
-            }
-            [object setValue:@(d) forKey:propertyKey];
-        } else if (strncmp(attributeStr, "TB", 2) == 0) { // BOOL
-            if ([value.value isEqualToString:@"YES"]) {
-                [object setValue:@(YES) forKey:propertyKey];
-            } else if ([value.value isEqualToString:@"NO"]) {
-                [object setValue:@(NO) forKey:propertyKey];
-            } else {
-                SET_ERROR(error, MUKErrorInvalidType,
-                          ([NSString stringWithFormat:@"%@ MUST be either YES or NO", propertyKey]));
-                return NO;
-            }
-        } else if (strncmp(attributeStr, "TQ", 2) == 0) { // NSUInteger
-            NSUInteger i;
-            if (![value.value muk_scanDecimalInteger:&i error:error]) {
-                return NO;
-            }
-            [object setValue:@(i) forKey:propertyKey];
-        } else if (strncmp(attributeStr, "T{CGSize=", 9) == 0) { // CGSize
-            CGSize size;
-            if (![value.value muk_scanDecimalResolution:&size error:error]) {
-                return NO;
-            }
-            [object setValue:[NSValue valueWithBytes:&size objCType:@encode(CGSize)] forKey:propertyKey];
         } else {
-            NSString* reason = [NSString stringWithFormat:@"%@ # %@ is unsupported type", [object class], propertyKey];
-            NSAssert(NO, reason);
-            SET_ERROR(error, MUKErrorInvalidType, reason);
+            isError = YES;
+        }
+    } else if (!supportedClass && (supportedClass |= (strcmp(enc.objCType, @encode(double)) == 0)) && !value.isQuotedString) {
+        double d;
+        if (![value.value muk_scanDouble:&d error:error]) {
             return NO;
         }
+        [object setValue:@(d) forKey:propertyKey];
+    } else if (!supportedClass && (supportedClass |= (strcmp(enc.objCType, @encode(BOOL)) == 0)) && !value.isQuotedString) {
+        if ([value.value isEqualToString:@"YES"]) {
+            [object setValue:@(YES) forKey:propertyKey];
+        } else if ([value.value isEqualToString:@"NO"]) {
+            [object setValue:@(NO) forKey:propertyKey];
+        } else {
+            SET_ERROR(error, MUKErrorInvalidType,
+                      ([NSString stringWithFormat:@"%@ MUST be either YES or NO", propertyKey]));
+            return NO;
+        }
+    } else if (!supportedClass && (supportedClass |= (strcmp(enc.objCType, @encode(NSUInteger)) == 0)) && !value.isQuotedString) {
+        NSUInteger i;
+        if (![value.value muk_scanDecimalInteger:&i error:error]) {
+            return NO;
+        }
+        [object setValue:@(i) forKey:propertyKey];
+    } else if (!supportedClass && (supportedClass |= (strcmp(enc.objCType, @encode(CGSize)) == 0)) && !value.isQuotedString) {
+        CGSize size;
+        if (![value.value muk_scanDecimalResolution:&size error:error]) {
+            return NO;
+        }
+        [object setValue:[NSValue valueWithBytes:&size objCType:@encode(CGSize)] forKey:propertyKey];
+    } else {
+        isError = YES;
     }
-    return YES;
+
+    if (!isError) {
+        return YES;
+    }
+
+    if (supportedClass) {
+        SET_ERROR(error, MUKErrorInvalidType,
+                  ([NSString stringWithFormat:@"%@ MUST %@be quoted-string",
+                    propertyKey, (value.isQuotedString ? @"NOT " : @"")]));
+    } else {
+        NSString* reason = [NSString stringWithFormat:@"%@ # %@ is unsupported type", [object class], propertyKey];
+        NSAssert(NO, reason);
+        SET_ERROR(error, MUKErrorInvalidType, reason);
+    }
+    return NO;
 }
 
 @end
