@@ -464,7 +464,7 @@
 /**
  * 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
  */
-- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable * _Nullable)error
+- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
     if (self.isIndependentSegment) {
         SET_ERROR(error, MUKErrorDuplicateTag,
@@ -479,7 +479,7 @@
 /**
  * 4.3.5.2. EXT-X-START
  */
-- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
     if (self.startOffset) {
         SET_ERROR(error, MUKErrorDuplicateTag,

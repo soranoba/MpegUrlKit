@@ -139,7 +139,7 @@
 /**
  * 4.3.4.5. EXT-X-SESSION-KEY
  */
-- (MUKTagActionResult)onSessionKey:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+- (MUKTagActionResult)onSessionKey:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
     MUKXKey* encrypt = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXKey.class
                                                                     fromString:tagValue
@@ -154,7 +154,7 @@
 /**
  * 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
  */
-- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable * _Nullable)error
+- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
     if (self.isIndependentSegment) {
         SET_ERROR(error, MUKErrorDuplicateTag,
@@ -169,7 +169,7 @@
 /**
  * 4.3.5.2. EXT-X-START
  */
-- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
     if (self.startOffset) {
         SET_ERROR(error, MUKErrorDuplicateTag,
@@ -204,7 +204,7 @@
                   MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:tagValue error:error]),
                   MUK_EXT_X_SESSION_KEY : ACTION([self onSessionKey:tagValue error:error]),
                   MUK_EXT_X_INDEPENDENZT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
-                  MUK_EXT_X_START : ACTION([self onStart:tagValue error:error])};
+                  MUK_EXT_X_START : ACTION([self onStart:tagValue error:error]) };
     }
 }
 
@@ -221,7 +221,7 @@
     self.sessionKeys = self.processingSessionKeys;
 }
 
-- (BOOL)validate:(NSError *_Nullable *_Nullable)error
+- (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
     if (!self.hasExtm3u) {
         SET_ERROR(error, MUKErrorInvalidM3UFormat, @"EXTM3U is NOT found");

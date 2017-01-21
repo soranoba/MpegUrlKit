@@ -34,16 +34,16 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.medias[0].language).to(equal(@"en"));
             expect(playlist.medias[0].associatedLanguage).to(equal(@"ja"));
             expect(playlist.medias[0].forced).to(beTrue());
-            expect(playlist.medias[0].characteristics).to(equal(@[@"com.a", @"com.b"]));
-            expect(playlist.medias[0].channels).to(equal(@[@1, @2, @4]));
+            expect(playlist.medias[0].characteristics).to(equal(@[ @"com.a", @"com.b" ]));
+            expect(playlist.medias[0].channels).to(equal(@[ @1, @2, @4 ]));
             expect(playlist.medias[0].uri).to(equal(@"main/english-audio.m3u8"));
         });
 
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=\"1\",NAME=\"1\",INSTREAM-ID=\"CC1\"\n"
-            @"\n"
-            @"#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=\"2\",NAME=\"2\",INSTREAM-ID=\"SERVICE1\"\n";
+                                    @"#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=\"1\",NAME=\"1\",INSTREAM-ID=\"CC1\"\n"
+                                    @"\n"
+                                    @"#EXT-X-MEDIA:TYPE=CLOSED-CAPTIONS,GROUP-ID=\"2\",NAME=\"2\",INSTREAM-ID=\"SERVICE1\"\n";
 
             __block NSError* error = nil;
             __block MUKMasterPlaylist* playlist;
@@ -59,11 +59,11 @@ QuickSpecBegin(MUKMasterPlaylistTests)
     describe(@"EXT-X-STREAM-INF", ^{
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-STREAM-INF:BANDWIDTH=1280000,AVERAGE-BANDWIDTH=1000000,"
-            @"CODECS=\"mp4a.40.2,avc1.4d401e\",RESOLUTION=100x200,FRAME-RATE=24.5,"
-            @"HDCP-LEVEL=TYPE-0,AUDIO=\"a\",VIDEO=\"v\",SUBTITLES=\"s\",CLOSED-CAPTIONS=\"c\"\n"
-            @"\n"
-            @"http://example.com/low.m3u8\n";
+                                    @"#EXT-X-STREAM-INF:BANDWIDTH=1280000,AVERAGE-BANDWIDTH=1000000,"
+                                    @"CODECS=\"mp4a.40.2,avc1.4d401e\",RESOLUTION=100x200,FRAME-RATE=24.5,"
+                                    @"HDCP-LEVEL=TYPE-0,AUDIO=\"a\",VIDEO=\"v\",SUBTITLES=\"s\",CLOSED-CAPTIONS=\"c\"\n"
+                                    @"\n"
+                                    @"http://example.com/low.m3u8\n";
 
             __block NSError* error = nil;
             __block MUKMasterPlaylist* playlist;
@@ -71,7 +71,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.streamInfs.count).to(equal(1));
             expect(playlist.streamInfs[0].maxBitrate).to(equal(1280000));
             expect(playlist.streamInfs[0].averageBitrate).to(equal(1000000));
-            expect(playlist.streamInfs[0].codecs).to(equal(@[@"mp4a.40.2", @"avc1.4d401e"]));
+            expect(playlist.streamInfs[0].codecs).to(equal(@[ @"mp4a.40.2", @"avc1.4d401e" ]));
             expect(playlist.streamInfs[0].resolution.width).to(equal(100));
             expect(playlist.streamInfs[0].resolution.height).to(equal(200));
             expect(playlist.streamInfs[0].maxFrameRate).to(equal(24.5));
@@ -87,10 +87,10 @@ QuickSpecBegin(MUKMasterPlaylistTests)
     describe(@"EXT-X-I-FRAME-STREAM-INF", ^{
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=1280000,AVERAGE-BANDWIDTH=1000000,"
-            @"CODECS=\"mp4a.40.2,avc1.4d401e\",RESOLUTION=100x200,FRAME-RATE=24.5,"
-            @"HDCP-LEVEL=TYPE-0,AUDIO=\"a\",VIDEO=\"v\",SUBTITLES=\"s\",CLOSED-CAPTIONS=\"c\","
-            @"URI=\"http://example.com/low.m3u8\"\n";
+                                    @"#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=1280000,AVERAGE-BANDWIDTH=1000000,"
+                                    @"CODECS=\"mp4a.40.2,avc1.4d401e\",RESOLUTION=100x200,FRAME-RATE=24.5,"
+                                    @"HDCP-LEVEL=TYPE-0,AUDIO=\"a\",VIDEO=\"v\",SUBTITLES=\"s\",CLOSED-CAPTIONS=\"c\","
+                                    @"URI=\"http://example.com/low.m3u8\"\n";
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error = nil;
@@ -99,7 +99,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect([playlist.streamInfs[0] isKindOfClass:MUKXIframeStreamInf.class]).to(equal(YES));
             expect(playlist.streamInfs[0].maxBitrate).to(equal(1280000));
             expect(playlist.streamInfs[0].averageBitrate).to(equal(1000000));
-            expect(playlist.streamInfs[0].codecs).to(equal(@[@"mp4a.40.2", @"avc1.4d401e"]));
+            expect(playlist.streamInfs[0].codecs).to(equal(@[ @"mp4a.40.2", @"avc1.4d401e" ]));
             expect(playlist.streamInfs[0].resolution.width).to(equal(100));
             expect(playlist.streamInfs[0].resolution.height).to(equal(200));
             expect(playlist.streamInfs[0].maxFrameRate).to(equal(0));
@@ -115,8 +115,8 @@ QuickSpecBegin(MUKMasterPlaylistTests)
     describe(@"EXT-X-SESSION-DATA", ^{
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-SESSION-DATA:DATA-ID=\"com.example.titles\",VALUE=\"hoge\",LANGUAGE=\"en\"\n"
-            @"#EXT-X-SESSION-DATA:DATA-ID=\"com.example.lyrics\",URI=\"lyrics.json\",LANGUAGE=\"en\"\n";
+                                    @"#EXT-X-SESSION-DATA:DATA-ID=\"com.example.titles\",VALUE=\"hoge\",LANGUAGE=\"en\"\n"
+                                    @"#EXT-X-SESSION-DATA:DATA-ID=\"com.example.lyrics\",URI=\"lyrics.json\",LANGUAGE=\"en\"\n";
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error = nil;
@@ -137,7 +137,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
     describe(@"EXT-X-SESSION-KEY", ^{
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
-            @"#EXT-X-SESSION-KEY:METHOD=AES-128,URI=\"https://priv.example.com/key.php?r=52\"\n";
+                                    @"#EXT-X-SESSION-KEY:METHOD=AES-128,URI=\"https://priv.example.com/key.php?r=52\"\n";
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error;

@@ -6,13 +6,13 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "MUKAttributeModel.h"
 #import "MUKErrorCode.h"
+#import <Foundation/Foundation.h>
 
 @interface MUKXStart : MUKAttributeModel <MUKAttributeSerializing>
 
-@property(nonatomic, assign, readonly) double timeOffset;
-@property(nonatomic, assign, readonly, getter=isPrecise) BOOL precise;
+@property (nonatomic, assign, readonly) double timeOffset;
+@property (nonatomic, assign, readonly, getter=isPrecise) BOOL precise;
 
 @end
