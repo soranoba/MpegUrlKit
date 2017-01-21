@@ -12,7 +12,7 @@
 
 @interface MUKAttributeValue ()
 
-@property (nonatomic, assign, readwrite) BOOL isQuotedString;
+@property (nonatomic, assign, readwrite, getter=isQuotedString) BOOL quotedString;
 @property (nonatomic, nonnull, copy, readwrite) NSString* value;
 
 @end
@@ -27,7 +27,7 @@
     NSParameterAssert(value != nil);
 
     if (self = [super init]) {
-        self.isQuotedString = isQuotedString;
+        self.quotedString = isQuotedString;
         self.value = value;
     }
     return self;

@@ -21,5 +21,8 @@ typedef NS_ENUM(NSUInteger, MUKTEnum) {
 @property (nonatomic, assign) CGSize size;
 @property (nonatomic, nullable, strong) NSString* s;
 @property (nonatomic, assign) MUKTEnum e;
+@property (nonatomic, nullable, strong) NSURL* url;
+@property (nonatomic, nullable, strong) NSData* data;
+@property (nonatomic, nullable, strong) NSDate* date;
 
 @end

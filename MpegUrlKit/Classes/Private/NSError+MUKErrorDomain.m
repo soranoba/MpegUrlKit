@@ -14,13 +14,13 @@
 
 + (instancetype _Nonnull)muk_errorWithMUKErrorCode:(MUKErrorCode)code
 {
-    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey : [self description:code] };
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey : [self muk_localizedDescription:code] };
     return [NSError errorWithDomain:MUKErrorDomain code:code userInfo:userInfo];
 }
 
 + (instancetype _Nonnull)muk_errorWithMUKErrorCode:(MUKErrorCode)code reason:(NSString* _Nonnull)reason
 {
-    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey : [self description:code],
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey : [self muk_localizedDescription:code],
                                 NSLocalizedFailureReasonErrorKey : reason };
     return [NSError errorWithDomain:MUKErrorDomain code:code userInfo:userInfo];
 }
@@ -33,7 +33,7 @@
  * @param code
  * @return description string
  */
-+ (NSString* _Nonnull)description:(MUKErrorCode)code
++ (NSString* _Nonnull)muk_localizedDescription:(MUKErrorCode)code
 {
     switch (code) {
         case MUKErrorInvalidM3UFormat:

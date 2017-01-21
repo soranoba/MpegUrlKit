@@ -12,7 +12,6 @@
 #import "MUKXStreamInf+Private.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
-#import "NSURL+MUKExtension.h"
 
 @interface MUKMasterPlaylist ()
 @property (nonatomic, assign) BOOL hasExtm3u;
@@ -95,7 +94,7 @@
 
     if (tagValue.length > 0 && ![tagValue hasPrefix:@"#"]) {
         MUKXStreamInf* streamInf = (MUKXStreamInf*)(self.processingStreamInfs.lastObject);
-        streamInf.uri = [NSURL muk_URLWithString:tagValue relativeToURL:self.playlistUrl];
+        streamInf.uri = [NSURL URLWithString:tagValue relativeToURL:self.playlistUrl];
         self.isWaitingStreamUri = NO;
 
         return MUKTagActionResultProcessed;

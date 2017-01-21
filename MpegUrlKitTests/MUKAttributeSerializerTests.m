@@ -8,6 +8,7 @@
 
 #import "MUKAttributeSerializer.h"
 #import "MUKTAttributeModel.h"
+#import "MUKTAttributeModel2.h"
 
 @interface MUKAttributeSerializer ()
 + (SEL)makeSelectorWithPrefix:(NSString* _Nonnull)prefix suffix:(const char*)suffix;
@@ -159,6 +160,94 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             expect(m).to(beNil());
             expect(error.code).to(equal(MUKErrorInvalidType));
         });
+
+        it(@"can convert to NSURL from string", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"URL=\"http://host/path1\""
+                                                                                      error:&error];
+            expect(m.url.absoluteString).to(equal(@"http://host/path1"));
+
+            MUKAttributeSerializer* serializer
+                = [[MUKAttributeSerializer alloc] initWithVersion:nil
+                                                          baseUri:[NSURL URLWithString:@"http://host/path1/variant.m3u8"]];
+
+            m = [serializer modelOfClass:MUKTAttributeModel.class fromString:@"URL=\"../path2/data.json\"" error:&error];
+            expect(m.url.absoluteString).to(equal(@"http://host/path2/data.json"));
+        });
+
+        it(@"return nil, if URL is invalid", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"URL=http://host"
+                                                                                      error:&error];
+            expect(m).to(beNil());
+            expect(error.code).to(equal(MUKErrorInvalidType));
+        });
+
+        it(@"can convert to NSData from string", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"DATA=0x616A"
+                                                                                      error:&error];
+            expect(m.data).to(equal([NSData dataWithBytes:"aj" length:2]));
+        });
+
+        it(@"return nil, if DATA is invalid", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"DATA=\"0x123\""
+                                                                                      error:&error];
+            expect(m).to(beNil());
+            expect(error.code).to(equal(MUKErrorInvalidType));
+        });
+
+        it(@"can convert to NSDate from string", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"DATE=\"2017-01-01T00:00:00.00Z\""
+                                                                                      error:&error];
+
+            NSCalendar* calendar = [NSCalendar currentCalendar];
+            calendar.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+            NSDateComponents* components = [NSDateComponents new];
+            components.year = 2017;
+            components.month = 1;
+            components.day = 1;
+
+            expect(m.date).to(equal([calendar dateFromComponents:components]));
+        });
+
+        it(@"return nil, if DATE is invalid", ^{
+            NSError* error = nil;
+            MUKTAttributeModel* m = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKTAttributeModel.class
+                                                                                 fromString:@"DATE=\"2016-12-11 10:00:00\""
+                                                                                      error:&error];
+            expect(m).to(beNil());
+            expect(error.code).to(equal(MUKErrorInvalidType));
+        });
+
+        it(@"ignore attributes, when the version doesn't support the attributes", ^{
+            NSError* error = nil;
+            MUKAttributeSerializer* serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(2) baseUri:nil];
+            MUKTAttributeModel2* m = [serializer modelOfClass:MUKTAttributeModel2.class
+                                                   fromString:@"V1=\"1\",V2=\"2\",V3=\"3\",V4=\"4\""
+                                                        error:&error];
+            expect(m).notTo(beNil());
+            expect(m.v1).to(equal(@"1"));
+            expect(m.v2).to(equal(@"2"));
+            expect(m.v3).to(beNil());
+            expect(m.v4).to(beNil());
+            expect(error).to(beNil());
+
+            serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(3) baseUri:nil];
+            m = [serializer modelOfClass:MUKTAttributeModel2.class
+                              fromString:@"V1=\"1\",V2=\"2\",V3=\"3\",V4=\"4\""
+                                   error:&error];
+            expect(m).to(beNil());
+            expect(error).notTo(beNil());
+            expect(error.code).to(equal(MUKErrorUnsupportedVersion));
+        });
     });
 
     describe(@"stringFromModel:error:", ^{
@@ -174,14 +263,80 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             __block NSError* error = nil;
             expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
                 .to(equal(@"BOOL=YES,INTEGER=2,DOUBLE=2.5,SIZE=100x200,STRING=\"hoge\",ENUM=B"));
+            expect(error).to(beNil());
         });
 
-        it(@"can ignore attribute, if it use transformer", ^{
+        it(@"can ignore attribute, if it use transformer and object type", ^{
             MUKTAttributeModel* m = [MUKTAttributeModel new];
             __block NSError* error = nil;
             expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
                 .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0"));
             expect(error).to(beNil());
+        });
+
+        it(@"can convert to string from NSURL", ^{
+            __block NSError* error = nil;
+
+            MUKTAttributeModel* m = [MUKTAttributeModel new];
+            m.url = [NSURL URLWithString:@"http://host/path1/data.json"];
+
+            expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
+                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,URL=\"http://host/path1/data.json\""));
+
+            m.url = [NSURL URLWithString:@"data.json" relativeToURL:nil];
+            MUKAttributeSerializer* serializer
+                = [[MUKAttributeSerializer alloc] initWithVersion:nil
+                                                          baseUri:[NSURL URLWithString:@"http://host/path1/variant.m3u8"]];
+            expect([serializer stringFromModel:m error:&error])
+                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,URL=\"data.json\""));
+        });
+
+        it(@"can convert to string from NSData", ^{
+            __block NSError* error = nil;
+
+            MUKTAttributeModel* m = [MUKTAttributeModel new];
+            m.data = [NSData dataWithBytes:"abc" length:3];
+
+            expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
+                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,DATA=0x616263"));
+        });
+
+        it(@"can convert to string from NSDate", ^{
+            __block NSError* error = nil;
+
+            MUKTAttributeModel* m = [MUKTAttributeModel new];
+
+            NSCalendar* calendar = [NSCalendar currentCalendar];
+            calendar.timeZone = [NSTimeZone timeZoneWithName:@"JST"];
+            NSDateComponents* components = [NSDateComponents new];
+            components.year = 2016;
+            components.month = 1;
+            components.day = 21;
+
+            m.date = [calendar dateFromComponents:components];
+            [NSTimeZone setDefaultTimeZone:[NSTimeZone timeZoneWithName:@"JST"]];
+
+            expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
+                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,DATE=\"2016-01-21T00:00:00.000+09:00\""));
+        });
+
+        it(@"ignore attributes, when the version doesn't support the attributes", ^{
+            __block NSError* error = nil;
+            MUKAttributeSerializer* serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(2) baseUri:nil];
+
+            MUKTAttributeModel2* m = [MUKTAttributeModel2 new];
+            m.v1 = @"1";
+            m.v2 = @"2";
+            m.v3 = @"3";
+            m.v4 = @"4";
+
+            expect([serializer stringFromModel:m error:&error]).to(equal(@"V1=\"1\",V2=\"2\""));
+            expect(error).to(beNil());
+
+            serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(3) baseUri:nil];
+            expect([serializer stringFromModel:m error:&error]).to(beNil());
+            expect(error).notTo(beNil());
+            expect(error.code).to(equal(MUKErrorUnsupportedVersion));
         });
     });
 }

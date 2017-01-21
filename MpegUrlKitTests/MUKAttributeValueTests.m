@@ -47,5 +47,20 @@ QuickSpecBegin(MUKAttributeValueTests)
             expect(error.code).to(equal(MUKErrorInvalidAttributeList));
         });
     });
+
+    describe(@"isEqual:", ^{
+        it(@"return YES, when isQuotedString is equal and value is equal", ^{
+            MUKAttributeValue* v1 = [[MUKAttributeValue alloc] initWithValue:@"hoge" isQuotedString:YES];
+            MUKAttributeValue* v2 = [[MUKAttributeValue alloc] initWithValue:@"hoge" isQuotedString:NO];
+            MUKAttributeValue* v3 = [[MUKAttributeValue alloc] initWithValue:@"fugo" isQuotedString:YES];
+            MUKAttributeValue* v4 = [[MUKAttributeValue alloc] initWithValue:@"fugo" isQuotedString:NO];
+            MUKAttributeValue* v5 = [[MUKAttributeValue alloc] initWithValue:@"hoge" isQuotedString:YES];
+
+            expect(v1).notTo(equal(v2));
+            expect(v1).notTo(equal(v3));
+            expect(v1).notTo(equal(v4));
+            expect(v1).to(equal(v5));
+        });
+    });
 }
 QuickSpecEnd

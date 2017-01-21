@@ -20,12 +20,15 @@
               @"DOUBLE" : @"d",
               @"SIZE" : @"size",
               @"STRING" : @"s",
-              @"ENUM" : @"e" };
+              @"ENUM" : @"e",
+              @"URL" : @"url",
+              @"DATE" : @"date",
+              @"DATA" : @"data" };
 }
 
 + (NSArray<NSString*>* _Nonnull)attributeOrder
 {
-    return @[ @"BOOL", @"INTEGER", @"DOUBLE", @"SIZE", @"STRING", @"ENUM" ];
+    return @[ @"BOOL", @"INTEGER", @"DOUBLE", @"SIZE", @"STRING", @"ENUM", @"URL", @"DATE", @"DATA" ];
 }
 
 + (MUKTransformer* _Nonnull)sTransformer

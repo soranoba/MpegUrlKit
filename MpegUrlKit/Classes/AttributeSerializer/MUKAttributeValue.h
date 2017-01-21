@@ -14,7 +14,10 @@
  */
 @interface MUKAttributeValue : NSObject
 
-@property (nonatomic, assign, readonly) BOOL isQuotedString;
+/// If the value is quoted-string, it returns YES. Otherwise, it returns NO.
+@property (nonatomic, assign, readonly, getter=isQuotedString) BOOL quotedString;
+/// A string of the value.
+/// If the value is quoted-string, it does NOT contain double quotes.
 @property (nonatomic, nonnull, copy, readonly) NSString* value;
 
 #pragma mark - Lifecycle

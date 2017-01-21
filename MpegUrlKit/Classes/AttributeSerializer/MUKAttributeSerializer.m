@@ -11,7 +11,6 @@
 #import "MUKTypeEncoding.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
-#import "NSURL+MUKExtension.h"
 #import <objc/runtime.h>
 
 @interface MUKAttributeSerializer ()
@@ -434,7 +433,7 @@
             }
             [object setValue:data forKey:propertyKey];
         } else if (!supportedClass && (supportedClass |= (enc.klass == NSURL.class)) && value.isQuotedString) {
-            NSURL* url = [NSURL muk_URLWithString:value.value relativeToURL:self.baseUri];
+            NSURL* url = [NSURL URLWithString:value.value relativeToURL:self.baseUri];
             [object setValue:url forKey:propertyKey];
         } else {
             isError = YES;
