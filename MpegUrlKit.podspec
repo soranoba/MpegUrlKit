@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'MpegUrlKit'
-  s.version          = '0.1.0'
+  s.version          = '0.1.0-a'
   s.summary          = 'MpegUrlKit is a serializer/deserializer of m3u (m3u8) format used in HLS.'
   s.homepage         = 'https://github.com/soranoba/MpegUrlKit'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
