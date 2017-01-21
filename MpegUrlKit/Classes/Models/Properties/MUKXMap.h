@@ -17,7 +17,9 @@
  */
 @interface MUKXMap : MUKAttributeModel <MUKAttributeSerializing>
 
+/// A URI that identifies a resource that contains the Media Initialization Section.
 @property (nonatomic, nonnull, copy, readonly) NSURL* uri;
+
 /// If BYTERANGE is not found, byteRange.location returns NSNotFound.
 /// Otherwise, it returns byteRange of resource that specified uri.
 @property (nonatomic, assign, readonly) NSRange byteRange;

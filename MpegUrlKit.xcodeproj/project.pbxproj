@@ -11,6 +11,8 @@
 		A418FD101E3111790086FA9E /* MUKMasterPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A418FD0F1E3111790086FA9E /* MUKMasterPlaylistTests.m */; };
 		A418FD1D1E3376060086FA9E /* MUKAttributeModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A418FD1C1E3376060086FA9E /* MUKAttributeModelTests.m */; };
 		A418FD201E33783D0086FA9E /* MUKTAttributeModel2.m in Sources */ = {isa = PBXBuildFile; fileRef = A418FD1F1E33783D0086FA9E /* MUKTAttributeModel2.m */; };
+		A456FC271E33A2A8002EA7B0 /* MUKXMapTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */; };
+		A456FC291E33AD52002EA7B0 /* MUKXDateRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */; };
 		A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */; };
 		A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */; };
 		A4CAA3A11E21178600628B88 /* MUKAttributeValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A01E21178600628B88 /* MUKAttributeValueTests.m */; };
@@ -27,6 +29,8 @@
 		A418FD1C1E3376060086FA9E /* MUKAttributeModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKAttributeModelTests.m; sourceTree = "<group>"; };
 		A418FD1E1E33783D0086FA9E /* MUKTAttributeModel2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKTAttributeModel2.h; sourceTree = "<group>"; };
 		A418FD1F1E33783D0086FA9E /* MUKTAttributeModel2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKTAttributeModel2.m; sourceTree = "<group>"; };
+		A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXMapTests.m; sourceTree = "<group>"; };
+		A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXDateRangeTests.m; sourceTree = "<group>"; };
 		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -71,8 +75,27 @@
 				A4E8636B1E2B5DE00026E263 /* MUKAttributeSerializerTests.m */,
 				A4CAA3A01E21178600628B88 /* MUKAttributeValueTests.m */,
 			);
-			name = AttributeSerializer;
 			path = AttributeSerializer;
+			sourceTree = "<group>";
+		};
+		A418FD211E338ED60086FA9E /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */,
+				A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */,
+				A4E863521E2A07560026E263 /* MUKXMediaTests.m */,
+				A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */,
+			);
+			path = Properties;
+			sourceTree = "<group>";
+		};
+		A418FD221E338EF00086FA9E /* Playlists */ = {
+			isa = PBXGroup;
+			children = (
+				A418FD0F1E3111790086FA9E /* MUKMasterPlaylistTests.m */,
+				A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */,
+			);
+			path = Playlists;
 			sourceTree = "<group>";
 		};
 		A4CAA3441E1F837300628B88 = {
@@ -101,10 +124,8 @@
 		A4CAA39B1E20FE3A00628B88 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A418FD0F1E3111790086FA9E /* MUKMasterPlaylistTests.m */,
-				A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */,
-				A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */,
-				A4E863521E2A07560026E263 /* MUKXMediaTests.m */,
+				A418FD221E338EF00086FA9E /* Playlists */,
+				A418FD211E338ED60086FA9E /* Properties */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -264,9 +285,11 @@
 				A4E863701E2B5E600026E263 /* MUKTAttributeModel.m in Sources */,
 				A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */,
 				A418FD101E3111790086FA9E /* MUKMasterPlaylistTests.m in Sources */,
+				A456FC291E33AD52002EA7B0 /* MUKXDateRangeTests.m in Sources */,
 				A4CAA3A11E21178600628B88 /* MUKAttributeValueTests.m in Sources */,
 				A4E863531E2A07560026E263 /* MUKXMediaTests.m in Sources */,
 				A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */,
+				A456FC271E33A2A8002EA7B0 /* MUKXMapTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

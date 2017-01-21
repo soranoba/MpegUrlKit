@@ -18,7 +18,7 @@
 @property (nonatomic, nullable, strong, readwrite) NSDate* endDate;
 @property (nonatomic, assign, readwrite) NSTimeInterval duration;
 @property (nonatomic, assign, readwrite) NSTimeInterval plannedDuration;
-@property (nonatomic, assign, readwrite) BOOL isEndOnNext;
+@property (nonatomic, assign, readwrite, getter=isEndOnNext) BOOL endOnNext;
 @property (nonatomic, nullable, copy, readwrite) NSData* scte35Cmd;
 @property (nonatomic, nullable, copy, readwrite) NSData* scte35Out;
 @property (nonatomic, nullable, copy, readwrite) NSData* scte35In;
@@ -60,7 +60,7 @@
         self.endDate = endDate;
         self.duration = duration;
         self.plannedDuration = plannedDuration;
-        self.isEndOnNext = isEndOnNext;
+        self.endOnNext = isEndOnNext;
         self.scte35Cmd = scte35Cmd;
         self.scte35Out = scte35Out;
         self.scte35In = scte35In;
@@ -79,23 +79,19 @@
               @"END-DATE" : @"endDate",
               @"DURATION" : @"duration",
               @"PLANNED-DURATION" : @"plannedDuration",
-              @"END-ON-NEXT" : @"isEndOnNext",
+              @"END-ON-NEXT" : @"endOnNext",
               @"SCTE35-CMD" : @"scte35cmd",
               @"SCTE35-OUT" : @"scte35Out",
               @"SCTE35-IN" : @"scte35In" };
 }
 
-+ (MUKTransformer* _Nonnull)isEndOnNextTransformer
++ (MUKTransformer* _Nonnull)endOnNextTransformer
 {
-    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
-        if (value.isQuotedString) {
-            return nil;
+    return [MUKTransformer transformerWithReverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+        if ([value isKindOfClass:NSValue.class] && [value boolValue]) {
+            return [[MUKAttributeValue alloc] initWithValue:@"YES" isQuotedString:NO];
         } else {
-            if ([value.value isEqualToString:@"YES"]) {
-                return @(YES);
-            } else {
-                return nil;
-            }
+            return nil;
         }
     }];
 }
@@ -127,7 +123,7 @@
         return NO;
     }
 
-    if ([self.startDate compare:self.endDate] == NSOrderedDescending) {
+    if (self.endDate && [self.startDate compare:self.endDate] == NSOrderedDescending) {
         SET_ERROR(error, MUKErrorInvalidDateRange, @"END-DATE MUST be later than START-DATE");
         return NO;
     }
@@ -136,15 +132,18 @@
         SET_ERROR(error, MUKErrorInvalidDateRange, @"If it has END-ON-NEXT, CLASS MUST NOT be contained");
         return NO;
     }
+
     if (self.isEndOnNext && (self.duration >= 0 || self.endDate)) {
         SET_ERROR(error, MUKErrorInvalidDateRange, @"If it has END-ON-NEXT, DURATION and END-DATE MUST NOT be contained");
         return NO;
     }
-    if (!self.endDate && self.duration >= 0 && [self.startDate timeIntervalSinceDate:self.endDate] != self.duration) {
+
+    if (self.endDate && self.duration >= 0 && [self.endDate timeIntervalSinceDate:self.startDate] != self.duration) {
         SET_ERROR(error, MUKErrorInvalidDateRange,
                   @"If it contains both END-DATE and DURATION, it MUST equals START-DATE + duration == END-DATE");
         return NO;
     }
+
     for (NSString* key in self.userDefinedAttributes) {
         if (![key hasPrefix:@"X-"]) {
             SET_ERROR(error, MUKErrorInvalidDateRange, @"User definied attributes MUST prefix 'X-'");

@@ -150,6 +150,8 @@ static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
 
             NSMutableString* str = [NSMutableString string];
             for (NSNumber* num in value) {
+                NSAssert([num isKindOfClass:NSNumber.class], @"KEYFORMATVERSIONS MUST be an array of NSNumber");
+
                 if (str.length > 0) {
                     [str appendString:@"/"];
                 }

@@ -23,7 +23,7 @@
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
 /// If plannedDuration is unknown, it return a negative value.
 @property (nonatomic, assign, readonly) NSTimeInterval plannedDuration;
-@property (nonatomic, assign, readonly) BOOL isEndOnNext;
+@property (nonatomic, assign, readonly, getter=isEndOnNext) BOOL endOnNext;
 @property (nonatomic, nullable, copy, readonly) NSData* scte35Cmd;
 @property (nonatomic, nullable, copy, readonly) NSData* scte35Out;
 @property (nonatomic, nullable, copy, readonly) NSData* scte35In;

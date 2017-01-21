@@ -23,7 +23,9 @@ typedef NS_ENUM(NSUInteger, MUKXKeyMethod) {
  */
 @interface MUKXKey : MUKAttributeModel <MUKAttributeSerializing>
 
+/// Encryption method
 @property (nonatomic, assign, readonly) MUKXKeyMethod method;
+/// A URI that specifies how to obtain the key
 @property (nonatomic, nullable, copy, readonly) NSURL* uri;
 /// 5.2 IV for AES_128
 /// IV means 16-octet Initialization Vector
@@ -46,7 +48,7 @@ typedef NS_ENUM(NSUInteger, MUKXKeyMethod) {
  * @return instance
  */
 - (instancetype _Nonnull)initWithMethod:(MUKXKeyMethod)method
-                                    uri:(NSString* _Nullable)uri
+                                    uri:(NSURL* _Nullable)uri
                                      iv:(NSData* _Nullable)iv
                               keyFormat:(NSString* _Nullable)keyFormat
                       keyFormatVersions:(NSArray<NSNumber*>* _Nullable)keyFormatVersions;
