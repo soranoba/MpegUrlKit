@@ -67,11 +67,12 @@
 		A418FD1B1E3374250086FA9E /* AttributeSerializer */ = {
 			isa = PBXGroup;
 			children = (
+				A418FD1C1E3376060086FA9E /* MUKAttributeModelTests.m */,
 				A4E8636B1E2B5DE00026E263 /* MUKAttributeSerializerTests.m */,
 				A4CAA3A01E21178600628B88 /* MUKAttributeValueTests.m */,
-				A418FD1C1E3376060086FA9E /* MUKAttributeModelTests.m */,
 			);
 			name = AttributeSerializer;
+			path = AttributeSerializer;
 			sourceTree = "<group>";
 		};
 		A4CAA3441E1F837300628B88 = {
@@ -100,10 +101,10 @@
 		A4CAA39B1E20FE3A00628B88 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A418FD0F1E3111790086FA9E /* MUKMasterPlaylistTests.m */,
 				A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */,
 				A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */,
 				A4E863521E2A07560026E263 /* MUKXMediaTests.m */,
-				A418FD0F1E3111790086FA9E /* MUKMasterPlaylistTests.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";

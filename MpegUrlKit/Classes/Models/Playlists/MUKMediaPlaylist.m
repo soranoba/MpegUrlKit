@@ -41,6 +41,13 @@
 
 #pragma mark - Custom Accessor
 
+- (void)setPlaylistUrl:(NSURL* _Nullable)playlistUrl
+{
+    [super setPlaylistUrl:playlistUrl];
+    self.serializer = [[MUKAttributeSerializer alloc] initWithVersion:(self.version ? @(self.version) : nil)
+                                                              baseUri:self.playlistUrl];
+}
+
 - (void)setVersion:(NSUInteger)version
 {
     _version = version;

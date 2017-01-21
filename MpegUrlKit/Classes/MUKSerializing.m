@@ -16,9 +16,16 @@
 {
     if (self = [super init]) {
         self.playlistUrl = url;
-        self.serializer = [[MUKAttributeSerializer alloc] initWithVersion:nil baseUri:self.playlistUrl];
     }
     return self;
+}
+
+#pragma mark - Custom Accessor
+
+- (void)setPlaylistUrl:(NSURL* _Nullable)playlistUrl
+{
+    _playlistUrl = playlistUrl;
+    self.serializer = [[MUKAttributeSerializer alloc] initWithVersion:nil baseUri:self.playlistUrl];
 }
 
 #pragma mark - Public Methods
