@@ -17,7 +17,7 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 
 @interface MUKXMedia ()
 @property (nonatomic, assign, readwrite) MUKXMediaType mediaType;
-@property (nonatomic, nullable, copy, readwrite) NSString* uri;
+@property (nonatomic, nullable, copy, readwrite) NSURL* uri;
 @property (nonatomic, nonnull, copy, readwrite) NSString* groupId;
 @property (nonatomic, nullable, copy, readwrite) NSString* language;
 @property (nonatomic, nullable, copy, readwrite) NSString* associatedLanguage;
@@ -35,7 +35,7 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 #pragma mark - Lifecycle
 
 - (instancetype _Nullable)initWithType:(MUKXMediaType)mediaType
-                                   uri:(NSString* _Nullable)uri
+                                   uri:(NSURL* _Nullable)uri
                                groupId:(NSString* _Nonnull)groupId
                               language:(NSString* _Nullable)language
                     associatedLanguage:(NSString* _Nullable)associatedLanguage

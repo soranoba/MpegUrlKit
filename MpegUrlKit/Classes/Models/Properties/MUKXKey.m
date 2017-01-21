@@ -16,7 +16,7 @@ static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
 
 @interface MUKXKey ()
 @property (nonatomic, assign, readwrite) MUKXKeyMethod method;
-@property (nonatomic, nullable, copy, readwrite) NSString* uri;
+@property (nonatomic, nullable, copy, readwrite) NSURL* uri;
 @property (nonatomic, nullable, copy, readwrite) NSData* aesInitializeVector;
 @property (nonatomic, nonnull, copy, readwrite) NSString* keyFormat;
 @property (nonatomic, nonnull, copy, readwrite) NSArray<NSNumber*>* keyFormatVersions;
@@ -36,7 +36,7 @@ static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
 }
 
 - (instancetype _Nonnull)initWithMethod:(MUKXKeyMethod)method
-                                    uri:(NSString* _Nullable)uri
+                                    uri:(NSURL* _Nullable)uri
                                      iv:(NSData* _Nullable)iv
                               keyFormat:(NSString* _Nullable)keyFormat
                       keyFormatVersions:(NSArray<NSNumber*>* _Nullable)keyFormatVersions
@@ -163,7 +163,7 @@ static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
-    if (self.method != MUKXKeyMethodNone && self.uri.length == 0) {
+    if (self.method != MUKXKeyMethodNone && !self.uri) {
         SET_ERROR(error, MUKErrorInvalidEncrypt,
                   ([NSString stringWithFormat:@"Uri is REQUIRED unless the method is NONE. method is %@",
                                               [self.class keyMethodToString:self.method]]));

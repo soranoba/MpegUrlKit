@@ -36,7 +36,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.medias[0].forced).to(beTrue());
             expect(playlist.medias[0].characteristics).to(equal(@[ @"com.a", @"com.b" ]));
             expect(playlist.medias[0].channels).to(equal(@[ @1, @2, @4 ]));
-            expect(playlist.medias[0].uri).to(equal(@"main/english-audio.m3u8"));
+            expect(playlist.medias[0].uri.absoluteString).to(equal(@"main/english-audio.m3u8"));
         });
 
         it(@"can parse", ^{
@@ -80,7 +80,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.streamInfs[0].videoGroupId).to(equal(@"v"));
             expect(playlist.streamInfs[0].subtitlesGroupId).to(equal(@"s"));
             expect(playlist.streamInfs[0].closedCaptionsGroupId).to(equal(@"c"));
-            expect(playlist.streamInfs[0].uri).to(equal(@"http://example.com/low.m3u8"));
+            expect(playlist.streamInfs[0].uri.absoluteString).to(equal(@"http://example.com/low.m3u8"));
         });
     });
 
@@ -108,7 +108,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.streamInfs[0].videoGroupId).to(equal(@"v"));
             expect(playlist.streamInfs[0].subtitlesGroupId).to(beNil());
             expect(playlist.streamInfs[0].closedCaptionsGroupId).to(beNil());
-            expect(playlist.streamInfs[0].uri).to(equal(@"http://example.com/low.m3u8"));
+            expect(playlist.streamInfs[0].uri.absoluteString).to(equal(@"http://example.com/low.m3u8"));
         });
     });
 
@@ -128,7 +128,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.sessionDatas[0].uri).to(beNil());
 
             expect(playlist.sessionDatas[1].dataId).to(equal(@"com.example.lyrics"));
-            expect(playlist.sessionDatas[1].uri).to(equal(@"lyrics.json"));
+            expect(playlist.sessionDatas[1].uri.absoluteString).to(equal(@"lyrics.json"));
             expect(playlist.sessionDatas[1].language).to(equal(@"en"));
             expect(playlist.sessionDatas[1].value).to(beNil());
         });
@@ -144,7 +144,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.sessionKeys.count).to(equal(1));
             expect(@(playlist.sessionKeys[0].method)).to(equal(MUKXKeyMethodAes128));
-            expect(playlist.sessionKeys[0].uri).to(equal(@"https://priv.example.com/key.php?r=52"));
+            expect(playlist.sessionKeys[0].uri.absoluteString).to(equal(@"https://priv.example.com/key.php?r=52"));
         });
     });
 }

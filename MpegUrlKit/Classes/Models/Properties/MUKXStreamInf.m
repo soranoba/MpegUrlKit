@@ -23,7 +23,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
 @property (nonatomic, nullable, copy, readwrite) NSString* videoGroupId;
 @property (nonatomic, nullable, copy, readwrite) NSString* subtitlesGroupId;
 @property (nonatomic, nullable, copy, readwrite) NSString* closedCaptionsGroupId;
-@property (nonatomic, nonnull, copy, readwrite) NSString* uri;
+@property (nonatomic, nonnull, copy, readwrite) NSURL* uri;
 @end
 
 @implementation MUKXStreamInf
@@ -40,7 +40,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
                                videoGroupId:(NSString* _Nullable)videoGroupId
                            subtitlesGroupId:(NSString* _Nullable)subtitlesGroupId
                       closedCaptionsGroupId:(NSString* _Nullable)closedCaptionsGroupId
-                                        uri:(NSString* _Nonnull)uri
+                                        uri:(NSURL* _Nonnull)uri
 {
     NSParameterAssert(maxBitrate > 0 && uri != nil);
 

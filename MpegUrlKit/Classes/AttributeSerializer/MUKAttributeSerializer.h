@@ -61,6 +61,8 @@
 - (NSString* _Nullable)stringFromModel:(id<MUKAttributeSerializing> _Nonnull)model
                                  error:(NSError* _Nullable* _Nullable)error;
 
+#pragma mark Helper Methods for Conversion
+
 /**
  * Convert to NSDictionary from NSString of AttributeList.
  *

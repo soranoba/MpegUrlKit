@@ -49,7 +49,7 @@
     __block NSError* tmpError;
 
     for (Class class in self.serializableClasses) {
-        id<MUKSerializing> obj = [class new];
+        id<MUKSerializing> obj = [[class alloc] initWithPlaylistUrl:nil];
         if (obj) {
             [obj beginSerialization];
             [objs addObject:obj];

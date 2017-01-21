@@ -9,5 +9,5 @@
 #import "MUKXStreamInf.h"
 
 @interface MUKXStreamInf ()
-@property (nonatomic, nonnull, copy, readwrite) NSString* uri;
+@property (nonatomic, nonnull, copy, readwrite) NSURL* uri;
 @end

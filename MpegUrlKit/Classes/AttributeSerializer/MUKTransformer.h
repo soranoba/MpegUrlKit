@@ -9,7 +9,9 @@
 #import "MUKAttributeValue.h"
 #import <Foundation/Foundation.h>
 
+/// If conversion succeeded, it returns an object. Otherwise, it returns nil.
 typedef id _Nullable (^MUKTransformBlock)(MUKAttributeValue* _Nonnull);
+/// If conversion succeeded, it returns a MUKAttributeValue object. Otherwise, it returns nil.
 typedef MUKAttributeValue* _Nullable (^MUKReverseTransformBlock)(id _Nonnull);
 
 /**

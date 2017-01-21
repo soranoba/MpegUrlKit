@@ -15,7 +15,7 @@
 
 - (instancetype _Nullable)initWithDataId:(NSString* _Nonnull)dataId
                                    value:(NSString* _Nullable)value
-                                     uri:(NSString* _Nullable)uri
+                                     uri:(NSURL* _Nullable)uri
                                 language:(NSString* _Nullable)language
 {
     NSParameterAssert(dataId != nil);

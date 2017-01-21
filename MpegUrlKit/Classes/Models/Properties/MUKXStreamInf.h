@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
 @property (nonatomic, nullable, copy, readonly) NSString* closedCaptionsGroupId;
 
 /// It specifies a Media Playlist that carries a Rendition of the Variant Stream.
-@property (nonatomic, nonnull, copy, readonly) NSString* uri;
+@property (nonatomic, nonnull, copy, readonly) NSURL* uri;
 
 #pragma mark - Lifecycle
 
@@ -96,7 +96,7 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
                                videoGroupId:(NSString* _Nullable)videoGroupId
                            subtitlesGroupId:(NSString* _Nullable)subtitlesGroupId
                       closedCaptionsGroupId:(NSString* _Nullable)closedCaptionsGroupId
-                                        uri:(NSString* _Nonnull)uri;
+                                        uri:(NSURL* _Nonnull)uri;
 
 #pragma mark - Public Methods
 

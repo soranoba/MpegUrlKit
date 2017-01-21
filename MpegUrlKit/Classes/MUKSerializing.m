@@ -10,6 +10,17 @@
 
 @implementation MUKSerializing
 
+#pragma mark - Lifecycle
+
+- (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url
+{
+    if (self = [super init]) {
+        self.playlistUrl = url;
+        self.serializer = [[MUKAttributeSerializer alloc] initWithVersion:nil baseUri:self.playlistUrl];
+    }
+    return self;
+}
+
 #pragma mark - Public Methods
 
 - (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions

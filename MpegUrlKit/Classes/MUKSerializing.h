@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Hinagiku Soranoba. All rights reserved.
 //
 
+#import "MUKAttributeSerializer.h"
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MUKTagActionResult) {
@@ -25,10 +26,11 @@ typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError*
  * Do not create other designated initializer.
  * MUKSerializing object is always initialized by this method.
  *
+ * @param url  A url of the playlist.
  * @return instance
  */
 @required
-- (instancetype _Nullable)init;
+- (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url;
 
 /**
  * If you want to do specific processing when starting serialize, initialize here.
@@ -69,6 +71,9 @@ typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError*
  * You do not necessarily have to use this class.
  */
 @interface MUKSerializing : NSObject <MUKSerializing>
+
+@property (nonatomic, nullable, strong) NSURL* playlistUrl;
+@property (nonatomic, nullable, strong) MUKAttributeSerializer* serializer;
 
 /**
  * Returns processing action by tags.

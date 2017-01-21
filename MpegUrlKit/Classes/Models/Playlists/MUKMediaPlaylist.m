@@ -22,17 +22,15 @@
 @property (nonatomic, nullable, copy) MUKSegmentValidator segmentValidator;
 @property (nonatomic, nullable, strong) MUKXKey* encrypt;
 @property (nonatomic, nullable, strong) NSDate* programDate;
-
-@property (nonatomic, nullable, strong) MUKAttributeSerializer* serializer;
 @end
 
 @implementation MUKMediaPlaylist
 
 #pragma mark - Lifecycle
 
-- (instancetype _Nullable)init
+- (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url
 {
-    if (self = [super init]) {
+    if (self = [super initWithPlaylistUrl:url]) {
         self.processingMediaSegments = [NSMutableArray array];
         self.mediaSegments = [NSArray array];
         self.processingDateRanges = [NSMutableArray array];
@@ -43,16 +41,10 @@
 
 #pragma mark - Custom Accessor
 
-- (MUKAttributeSerializer* _Nullable)serializer
+- (void)setVersion:(NSUInteger)version
 {
-    if (_serializer) {
-        return _serializer;
-    } else if (self.version > 0) {
-        _serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(self.version) baseUri:nil];
-        return _serializer;
-    } else {
-        return [MUKAttributeSerializer sharedSerializer];
-    }
+    _version = version;
+    self.serializer = [[MUKAttributeSerializer alloc] initWithVersion:@(version) baseUri:self.playlistUrl];
 }
 
 #pragma mark - Public Methods

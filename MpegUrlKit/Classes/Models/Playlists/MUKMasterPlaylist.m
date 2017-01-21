@@ -12,6 +12,7 @@
 #import "MUKXStreamInf+Private.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
+#import "NSURL+MUKExtension.h"
 
 @interface MUKMasterPlaylist ()
 @property (nonatomic, assign) BOOL hasExtm3u;
@@ -26,9 +27,9 @@
 
 #pragma mark - Lifecycle
 
-- (instancetype _Nullable)init
+- (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url
 {
-    if (self = [super init]) {
+    if (self = [super initWithPlaylistUrl:url]) {
         self.processingMedias = [NSMutableArray array];
         self.processingStreamInfs = [NSMutableArray array];
         self.processingSessionDatas = [NSMutableArray array];
@@ -66,9 +67,7 @@
  */
 - (MUKTagActionResult)onMedia:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    MUKXMedia* media = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXMedia.class
-                                                                    fromString:tagValue
-                                                                         error:error];
+    MUKXMedia* media = [self.serializer modelOfClass:MUKXMedia.class fromString:tagValue error:error];
     if (!media) {
         return MUKTagActionResultErrored;
     }
@@ -81,9 +80,7 @@
  */
 - (MUKTagActionResult)onStreamInf:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    MUKXStreamInf* streamInf = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXStreamInf.class
-                                                                            fromString:tagValue
-                                                                                 error:error];
+    MUKXStreamInf* streamInf = [self.serializer modelOfClass:MUKXStreamInf.class fromString:tagValue error:error];
     if (!streamInf) {
         return MUKTagActionResultErrored;
     }
@@ -98,7 +95,7 @@
 
     if (tagValue.length > 0 && ![tagValue hasPrefix:@"#"]) {
         MUKXStreamInf* streamInf = (MUKXStreamInf*)(self.processingStreamInfs.lastObject);
-        streamInf.uri = tagValue;
+        streamInf.uri = [NSURL muk_URLWithString:tagValue relativeToURL:self.playlistUrl];
         self.isWaitingStreamUri = NO;
 
         return MUKTagActionResultProcessed;
@@ -111,9 +108,9 @@
  */
 - (MUKTagActionResult)onIframeStreamInf:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    MUKXIframeStreamInf* streamInf = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXIframeStreamInf.class
-                                                                                  fromString:tagValue
-                                                                                       error:error];
+    MUKXIframeStreamInf* streamInf = [self.serializer modelOfClass:MUKXIframeStreamInf.class
+                                                        fromString:tagValue
+                                                             error:error];
     if (!streamInf) {
         return MUKTagActionResultErrored;
     }
@@ -126,9 +123,7 @@
  */
 - (MUKTagActionResult)onSessionData:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    MUKXSessionData* sessionData = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXSessionData.class
-                                                                                fromString:tagValue
-                                                                                     error:error];
+    MUKXSessionData* sessionData = [self.serializer modelOfClass:MUKXSessionData.class fromString:tagValue error:error];
     if (!sessionData) {
         return MUKTagActionResultErrored;
     }
@@ -141,9 +136,7 @@
  */
 - (MUKTagActionResult)onSessionKey:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
 {
-    MUKXKey* encrypt = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXKey.class
-                                                                    fromString:tagValue
-                                                                         error:error];
+    MUKXKey* encrypt = [self.serializer modelOfClass:MUKXKey.class fromString:tagValue error:error];
     if (!encrypt) {
         return MUKTagActionResultErrored;
     }
@@ -177,9 +170,7 @@
         return MUKTagActionResultErrored;
     }
 
-    MUKXStart* start = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXStart.class
-                                                                    fromString:tagValue
-                                                                         error:error];
+    MUKXStart* start = [self.serializer modelOfClass:MUKXStart.class fromString:tagValue error:error];
     if (!start) {
         return MUKTagActionResultErrored;
     }

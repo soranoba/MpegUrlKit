@@ -24,7 +24,7 @@
 @property (nonatomic, nullable, copy) NSString* value;
 
 /// The uri specifies contents that be formatted JSON.
-@property (nonatomic, nullable, copy) NSString* uri;
+@property (nonatomic, nullable, copy) NSURL* uri;
 
 /// It is a language tag (RFC5646)
 @property (nonatomic, nullable, copy) NSString* language;

@@ -11,6 +11,7 @@
 #import "MUKTypeEncoding.h"
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
+#import "NSURL+MUKExtension.h"
 #import <objc/runtime.h>
 
 @interface MUKAttributeSerializer ()
@@ -111,7 +112,7 @@
             }
         }
 
-        if (![self.class setValue:value forObject:modelObj forKey:propertyKey error:error]) {
+        if (![self setValue:value forObject:modelObj forKey:propertyKey error:error]) {
             return nil;
         }
     }
@@ -186,7 +187,7 @@
             }
         }
 
-        MUKAttributeValue* v = [self.class valueForObject:model forKey:propertyKey];
+        MUKAttributeValue* v = [self valueForObject:model forKey:propertyKey];
         if (v) {
             attributes[attributeKey] = v;
         }
@@ -199,7 +200,7 @@
     return serializingStr;
 }
 
-#pragma mark - Private Methods
+#pragma mark Helper Methods for Conversion
 
 /**
  * Parse the attribute list.
@@ -312,6 +313,8 @@
     return result;
 }
 
+#pragma mark - Private Methods
+
 /**
  * Create SEL from prefix and suffix
  *
@@ -349,7 +352,7 @@
  * @return If it can take a value and convert to MUKAttributeValue, it return converted value.
  *         Otherwise, it return nil.
  */
-+ (MUKAttributeValue* _Nullable)valueForObject:(id _Nonnull)object
+- (MUKAttributeValue* _Nullable)valueForObject:(id _Nonnull)object
                                         forKey:(NSString* _Nonnull)propertyKey
 {
     id value = [object valueForKey:propertyKey];
@@ -383,6 +386,9 @@
         } else if (enc.klass == NSData.class) {
             return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringHexWithData:value]
                                              isQuotedString:NO];
+        } else if (enc.klass == NSURL.class) {
+            NSURL* url = (NSURL*)value;
+            return [[MUKAttributeValue alloc] initWithValue:url.absoluteString isQuotedString:YES];
         }
     }
 
@@ -399,7 +405,7 @@
  * @param error       If it return NO, detailed error information is saved here.
  * @return If it is succeeded, it returns YES. Otherwise, it returns NO.
  */
-+ (BOOL)setValue:(MUKAttributeValue* _Nonnull)value
+- (BOOL)setValue:(MUKAttributeValue* _Nonnull)value
        forObject:(id _Nonnull)object
           forKey:(NSString* _Nonnull)propertyKey
            error:(NSError* _Nullable* _Nullable)error
@@ -427,6 +433,9 @@
                 return NO;
             }
             [object setValue:data forKey:propertyKey];
+        } else if (!supportedClass && (supportedClass |= (enc.klass == NSURL.class)) && value.isQuotedString) {
+            NSURL* url = [NSURL muk_URLWithString:value.value relativeToURL:self.baseUri];
+            [object setValue:url forKey:propertyKey];
         } else {
             isError = YES;
         }

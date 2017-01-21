@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, MUKXMediaType) {
 /// the URI that specified a Media Playlist file of the Rendition.
 ///
 /// If mediaType is MUKXMediaTypeClosedCaptions, uri MUST be nil.
-@property (nonatomic, nullable, copy, readonly) NSString* uri;
+@property (nonatomic, nullable, copy, readonly) NSURL* uri;
 
 /// Specified a group of Renditions.
 ///

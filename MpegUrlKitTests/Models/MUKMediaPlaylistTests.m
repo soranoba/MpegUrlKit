@@ -386,7 +386,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@3));
             expect(@(playlist.mediaSegments[0].encrypt.method)).to(equal(MUKXKeyMethodAes128));
-            expect(playlist.mediaSegments[0].encrypt.uri).to(equal(@"enc1"));
+            expect(playlist.mediaSegments[0].encrypt.uri.absoluteString).to(equal(@"enc1"));
             expect(playlist.mediaSegments[0].encrypt.aesInitializeVector).to(equal(expectedIv));
             expect(playlist.mediaSegments[0].encrypt.keyFormat).to(equal(@"hoge"));
             expect(playlist.mediaSegments[0].encrypt.keyFormatVersions).to(equal(@[ @1, @2 ]));
@@ -394,7 +394,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             expect(playlist.mediaSegments[0].encrypt).to(equal(playlist.mediaSegments[1].encrypt));
 
             expect(@(playlist.mediaSegments[2].encrypt.method)).to(equal(MUKXKeyMethodSampleAes));
-            expect(playlist.mediaSegments[2].encrypt.uri).to(equal(@"enc2"));
+            expect(playlist.mediaSegments[2].encrypt.uri.absoluteString).to(equal(@"enc2"));
             expect(playlist.mediaSegments[2].encrypt.aesInitializeVector).to(beNil());
             expect(playlist.mediaSegments[2].encrypt.keyFormat).to(equal(@"identity")); // default
             expect(playlist.mediaSegments[2].encrypt.keyFormatVersions).to(equal(@[ @1 ])); // default

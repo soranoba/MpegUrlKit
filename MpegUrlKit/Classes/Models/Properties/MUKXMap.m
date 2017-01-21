@@ -10,7 +10,7 @@
 #import "NSError+MUKErrorDomain.h"
 
 @interface MUKXMap ()
-@property (nonatomic, nonnull, copy, readwrite) NSString* uri;
+@property (nonatomic, nonnull, copy, readwrite) NSURL* uri;
 @property (nonatomic, assign, readwrite) NSRange byteRange;
 @end
 
@@ -31,7 +31,7 @@
     return [self initWithUri:uri range:NSMakeRange(NSNotFound, 0)];
 }
 
-- (instancetype _Nonnull)initWithUri:(NSString* _Nonnull)uri
+- (instancetype _Nonnull)initWithUri:(NSURL* _Nonnull)uri
                                range:(NSRange)range
 {
     if (self = [super init]) {
