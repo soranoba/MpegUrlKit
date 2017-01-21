@@ -12,6 +12,8 @@
 #import "MUKXMedia.h"
 #import "MUKXSessionData.h"
 #import "MUKXStreamInf.h"
+#import "MUKXKey.h"
+#import "MUKXStart.h"
 #import <Foundation/Foundation.h>
 
 @interface MUKMasterPlaylist : MUKSerializing
@@ -19,5 +21,8 @@
 @property (nonatomic, nonnull, copy) NSArray<MUKXMedia*>* medias;
 @property (nonatomic, nonnull, copy) NSArray<MUKXStreamInf*>* streamInfs;
 @property (nonatomic, nonnull, copy) NSArray<MUKXSessionData*>* sessionDatas;
+@property (nonatomic, nonnull, copy) NSArray<MUKXKey*>* sessionKeys;
+@property (nonatomic, assign, getter=isIndependentSegment) BOOL independentSegment;
+@property (nonatomic, nullable, strong) MUKXStart* startOffset;
 
 @end

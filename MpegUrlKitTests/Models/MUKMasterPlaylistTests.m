@@ -133,5 +133,19 @@ QuickSpecBegin(MUKMasterPlaylistTests)
             expect(playlist.sessionDatas[1].value).to(beNil());
         });
     });
+
+    describe(@"EXT-X-SESSION-KEY", ^{
+        it(@"can parse", ^{
+            NSString* playlistStr = @"#EXTM3U\n"
+            @"#EXT-X-SESSION-KEY:METHOD=AES-128,URI=\"https://priv.example.com/key.php?r=52\"\n";
+
+            __block MUKMasterPlaylist* playlist;
+            __block NSError* error;
+            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist.sessionKeys.count).to(equal(1));
+            expect(@(playlist.sessionKeys[0].method)).to(equal(MUKXKeyMethodAes128));
+            expect(playlist.sessionKeys[0].uri).to(equal(@"https://priv.example.com/key.php?r=52"));
+        });
+    });
 }
 QuickSpecEnd

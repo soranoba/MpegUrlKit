@@ -19,6 +19,7 @@
 @property (nonatomic, assign) BOOL isWaitingStreamUri;
 @property (nonatomic, nonnull, strong) NSMutableArray<MUKXStreamInf*>* processingStreamInfs;
 @property (nonatomic, nonnull, strong) NSMutableArray<MUKXSessionData*>* processingSessionDatas;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXKey*>* processingSessionKeys;
 @end
 
 @implementation MUKMasterPlaylist
@@ -35,6 +36,8 @@
         self.medias = [NSArray array];
         self.streamInfs = [NSArray array];
         self.sessionDatas = [NSArray array];
+        self.sessionKeys = [NSArray array];
+        self.processingSessionKeys = [NSMutableArray array];
     }
     return self;
 }
@@ -133,6 +136,58 @@
     return MUKTagActionResultProcessed;
 }
 
+/**
+ * 4.3.4.5. EXT-X-SESSION-KEY
+ */
+- (MUKTagActionResult)onSessionKey:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+{
+    MUKXKey* encrypt = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXKey.class
+                                                                    fromString:tagValue
+                                                                         error:error];
+    if (!encrypt) {
+        return MUKTagActionResultErrored;
+    }
+    [self.processingSessionKeys addObject:encrypt];
+    return MUKTagActionResultProcessed;
+}
+
+/**
+ * 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
+ */
+- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable * _Nullable)error
+{
+    if (self.isIndependentSegment) {
+        SET_ERROR(error, MUKErrorDuplicateTag,
+                  @"EXT-X-INDEPENDENT-SEGMENTS MUST NOT appear more than once in a playlist");
+        return MUKTagActionResultErrored;
+    }
+
+    self.independentSegment = YES;
+    return MUKTagActionResultProcessed;
+}
+
+/**
+ * 4.3.5.2. EXT-X-START
+ */
+- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+{
+    if (self.startOffset) {
+        SET_ERROR(error, MUKErrorDuplicateTag,
+                  @"EXT-X-START MUST NOT appear more than once in a playlist");
+        return MUKTagActionResultErrored;
+    }
+
+    MUKXStart* start = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXStart.class
+                                                                    fromString:tagValue
+                                                                         error:error];
+    if (!start) {
+        return MUKTagActionResultErrored;
+    }
+
+    self.startOffset = start;
+    return MUKTagActionResultProcessed;
+}
+
 #pragma mark - MUKSerializing (Override)
 
 - (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions
@@ -146,7 +201,10 @@
         return @{ MUK_EXT_X_MEDIA : ACTION([self onMedia:tagValue error:error]),
                   MUK_EXT_X_STREAM_INF : ACTION([self onStreamInf:tagValue error:error]),
                   MUK_EXT_X_I_FRAME_STREAM_INF : ACTION([self onIframeStreamInf:tagValue error:error]),
-                  MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:tagValue error:error]) };
+                  MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:tagValue error:error]),
+                  MUK_EXT_X_SESSION_KEY : ACTION([self onSessionKey:tagValue error:error]),
+                  MUK_EXT_X_INDEPENDENZT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
+                  MUK_EXT_X_START : ACTION([self onStart:tagValue error:error])};
     }
 }
 
@@ -160,6 +218,7 @@
     self.medias = self.processingMedias;
     self.streamInfs = self.processingStreamInfs;
     self.sessionDatas = self.processingSessionDatas;
+    self.sessionKeys = self.processingSessionKeys;
 }
 
 - (BOOL)validate:(NSError *_Nullable *_Nullable)error

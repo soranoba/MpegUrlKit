@@ -10,6 +10,7 @@
 #import "MUKMediaSegment.h"
 #import "MUKSerializing.h"
 #import "MUKXDateRange.h"
+#import "MUKXStart.h"
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, MUKPlaylistType) {
@@ -29,6 +30,8 @@ typedef NS_ENUM(NSUInteger, MUKPlaylistType) {
 @property (nonatomic, assign) BOOL isIframesOnly;
 @property (nonatomic, nonnull, copy) NSArray<MUKMediaSegment*>* mediaSegments;
 @property (nonatomic, nonnull, copy) NSArray<MUKXDateRange*>* dateRanges;
+@property (nonatomic, assign, getter=isIndependentSegment) BOOL independentSegment;
+@property (nonatomic, nullable, strong) MUKXStart* startOffset;
 
 /**
  * Convert to string from playlist type

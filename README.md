@@ -1,4 +1,4 @@
-MpegUrlKit (WIP)
+MpegUrlKit
 =======
 MpegUrlKit is a serializer/deserializer of m3u (m3u8) format used in HLS.
 
@@ -38,7 +38,49 @@ pod 'MpegUrlKit'
 
 ## How to use functions of MpegUrlKit
 
-### Other information
+### Parse a M3U8 file
+
+```objc
+// #import <MpegUrlKit/MUKSerializer.h>
+// #import <MpegUrlKit/MUKMediaPlaylist.h>
+
+MUKSerializer* serializer = [MUKSerializer new];
+serializer.serializableClasses = @[ MUKMediaPlaylist.class ];
+
+NSError* error;
+MUKMediaPlaylist* playlist = [serializer serializeFromString:@"#EXTM3U\n"
+                                                             @"#EXT-X-TARGETDURATION:5\n"
+                                                             @"...."
+                                                       error:&error];
+```
+
+### Generate a M3U8 file
+
+TODO
+
+### Create a parser corresponding to your own tag
+
+TODO
+
+### How to use AttributeModel (AttributeSerializer)
+
+One of tag formats of HLS has [Attribute Lists](https://tools.ietf.org/html/draft-pantos-http-live-streaming-20#section-4.2).
+
+This library contains the model converter of the Attribute List.
+
+```objc
+#import <MpegUrlKit/MUKAttributeModel.h>
+
+@interface Model : MUKAttributeModel <MUKAttributeSerializing>
+@end
+```
+
+When creating AttributeModel, inherit from `MUKAttributeModel` and define `MUKAttributeSerializing` protocol.
+
+For details, please see below
+- [MUKAttributeModel's document](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeModel.h)
+- [MUKAttributeSerializer's document](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeSerializer.h)
+- [MUKAttributeModel sample](MpegUrlKit/Classes/Models/Properties/MUKXKey.m)
 
 ## Contribute
 

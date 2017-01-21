@@ -461,6 +461,43 @@
     return MUKTagActionResultProcessed;
 }
 
+/**
+ * 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
+ */
+- (MUKTagActionResult)onIndependentSegment:(NSString* _Nonnull)tagValue error:(NSError* _Nullable * _Nullable)error
+{
+    if (self.isIndependentSegment) {
+        SET_ERROR(error, MUKErrorDuplicateTag,
+                  @"EXT-X-INDEPENDENT-SEGMENTS MUST NOT appear more than once in a playlist");
+        return MUKTagActionResultErrored;
+    }
+
+    self.independentSegment = YES;
+    return MUKTagActionResultProcessed;
+}
+
+/**
+ * 4.3.5.2. EXT-X-START
+ */
+- (MUKTagActionResult)onStart:(NSString* _Nonnull)tagValue error:(NSError* _Nullable *_Nullable)error
+{
+    if (self.startOffset) {
+        SET_ERROR(error, MUKErrorDuplicateTag,
+                  @"EXT-X-START MUST NOT appear more than once in a playlist");
+        return MUKTagActionResultErrored;
+    }
+
+    MUKXStart* start = [[MUKAttributeSerializer sharedSerializer] modelOfClass:MUKXStart.class
+                                                                    fromString:tagValue
+                                                                         error:error];
+    if (!start) {
+        return MUKTagActionResultErrored;
+    }
+
+    self.startOffset = start;
+    return MUKTagActionResultProcessed;
+}
+
 #pragma mark - MUKSerializing (Override)
 
 - (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions
@@ -485,6 +522,8 @@
                   MUK_EXT_X_ENDLIST : ACTION([self onEndList:tagValue error:error]),
                   MUK_EXT_X_PLAYLIST_TYPE : ACTION([self onPlaylistType:tagValue error:error]),
                   MUK_EXT_X_I_FRAMES_ONLY : ACTION([self onIframesOnly:tagValue error:error]),
+                  MUK_EXT_X_INDEPENDENZT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
+                  MUK_EXT_X_START : ACTION([self onStart:tagValue error:error]),
                   @"" : ACTION([self onMediaSegmentUrl:tagValue error:error]) };
     }
 }
