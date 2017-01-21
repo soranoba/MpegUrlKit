@@ -36,9 +36,9 @@
 
 #pragma mark - MUKXStreamInf (Override)
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
-    NSMutableDictionary<NSString*, NSString*>* dict = [[super keyByPropertyKey] mutableCopy];
+    NSMutableDictionary<NSString*, NSString*>* dict = [[super propertyByAttributeKey] mutableCopy];
     [dict addEntriesFromDictionary:@{ @"URI" : @"uri" }];
     [dict removeObjectsForKeys:@[@"FRAME-RATE", @"AUDIO", @"SUBTITLES", @"CLOSED-CAPTIONS"]];
     return dict;

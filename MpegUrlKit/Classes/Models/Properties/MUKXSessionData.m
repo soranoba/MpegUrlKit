@@ -31,7 +31,7 @@
 
 #pragma mark - MUKAttributeSerializing
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
     return @{ @"DATA-ID" : @"dataId",
               @"VALUE" : @"value",

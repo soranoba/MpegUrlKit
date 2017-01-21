@@ -89,7 +89,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
 
 #pragma mark - MUKAttributeSerializing
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
     return @{ @"BANDWIDTH" : @"maxBitrate",
               @"AVERAGE-BANDWIDTH" : @"averageBitrate",

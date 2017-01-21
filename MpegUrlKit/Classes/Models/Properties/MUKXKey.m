@@ -85,7 +85,7 @@ static NSString* const MUK_EXT_X_KEY_METHOD_SAMPLE_AES = @"SAMPLE-AES";
 
 #pragma mark - MUKAttributeSerializing
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
     return @{ @"METHOD" : @"method",
               @"URI" : @"uri",

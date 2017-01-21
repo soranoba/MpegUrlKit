@@ -67,7 +67,7 @@
     }
 
     id modelObj = [modelClass new];
-    NSDictionary<NSString*, NSString*>* keyByKey = [modelClass keyByPropertyKey];
+    NSDictionary<NSString*, NSString*>* keyByKey = [modelClass propertyByAttributeKey];
     NSDictionary<NSString*, NSNumber*>* versions;
     if ([modelClass respondsToSelector:@selector(minimumAttributeSupportedVersions)]) {
         versions = [modelClass minimumAttributeSupportedVersions];
@@ -149,10 +149,10 @@
     if ([model.class respondsToSelector:@selector(attributeOrder)]) {
         order = [model.class attributeOrder];
     } else {
-        order = [[model.class keyByPropertyKey] allKeys];
+        order = [[model.class propertyByAttributeKey] allKeys];
     }
 
-    NSDictionary<NSString*, NSString*>* keyByKey = [[model class] keyByPropertyKey];
+    NSDictionary<NSString*, NSString*>* keyByKey = [[model class] propertyByAttributeKey];
     NSMutableDictionary<NSString*, MUKAttributeValue*>* attributes = [NSMutableDictionary dictionary];
     NSDictionary<NSString*, NSNumber*>* versions;
     if ([model.class respondsToSelector:@selector(minimumAttributeSupportedVersions)]) {

@@ -68,14 +68,60 @@ One of tag formats of HLS has [Attribute Lists](https://tools.ietf.org/html/draf
 
 This library contains the model converter of the Attribute List.
 
+When creating AttributeModel, inherit from `MUKAttributeModel` and define `MUKAttributeSerializing` protocol.
+
 ```objc
 #import <MpegUrlKit/MUKAttributeModel.h>
 
-@interface Model : MUKAttributeModel <MUKAttributeSerializing>
+@interface MUKXKey : MUKAttributeModel <MUKAttributeSerializing>
 @end
 ```
 
-When creating AttributeModel, inherit from `MUKAttributeModel` and define `MUKAttributeSerializing` protocol.
+```objc
+@implementation MUKXKey
+
+#pragma mark - MUKAttributeSerializing
+
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
+{
+    //
+    // {AttributeKey : PropertyName}
+    //
+    return @{ @"METHOD" : @"method",
+              @"URI" : @"uri",
+              @"IV" : @"aesInitializeVector",
+              @"KEYFORMAT" : @"keyFormat",
+              @"KEYFORMATVERSIONS" : @"keyFormatVersions" };
+}
+```
+
+If it is a supported type, MUKAttributeSerializer automatically converts it according to the type of property.
+
+In the case of a type that does not support or if you want to perform special conversion, you need to define transformer.
+
+```objc
+#pragma mark MUKAttributeSerializing (Optional)
+
+///
+/// + (MUKTransformer* _Nonnull) ${propertyName}Transformer
+///
++ (MUKTransformer* _Nonnull)keyFormatVersionsTransformer
+{
+    return [MUKTransformer transformerWithBlock:^id _Nullable(MUKAttributeValue* _Nonnull value) {
+        // If format of the value is "quoted-string", it is YES.
+        if (value.isQuotedString) {
+            return [value.value componentsSeparatedByString:@"/"];
+        } else {
+            // It returns nil that means unsupported format. So, conversion fails.
+            return nil;
+        }
+    }
+        reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
+            NSString* str = [value appendString:@"/"];
+            return [[MUKAttributeValue alloc] initWithValue:str isQuotedString:YES];
+        }];
+}
+```
 
 For details, please see below
 - [MUKAttributeModel's document](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeModel.h)

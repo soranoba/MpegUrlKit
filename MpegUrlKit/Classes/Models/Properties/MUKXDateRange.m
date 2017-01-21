@@ -71,7 +71,7 @@
 
 #pragma mark - MUKAttributeSerializing
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
     return @{ @"ID" : @"identify",
               @"CLASS" : @"klass",

@@ -29,7 +29,7 @@
  * It define the association between key of attribute and property name of the model.
  *
  * ```
- * + (NSDictionary*)keyByPropertyKey
+ * + (NSDictionary*)propertyByAttributeKey
  * {
  *     return @{ @"NAME" : @"name" };
  * }
@@ -39,7 +39,7 @@
  *         Its keys are keys of attribute. Its values are property names of the model.
  */
 @required
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey;
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey;
 
 /**
  * When converting from model to a string, it specify the order of attribute.
@@ -52,7 +52,7 @@
  * ```
  *
  * @return An array of attribute keys.
- *         All its values MUST be contained keyByPropertyKey.
+ *         All its values MUST be contained propertyByAttributeKey.
  */
 @optional
 + (NSArray<NSString*>* _Nonnull)attributeOrder;

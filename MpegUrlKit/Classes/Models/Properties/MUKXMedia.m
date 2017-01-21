@@ -145,7 +145,7 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 
 #pragma mark - MUKAttributeSerializing
 
-+ (NSDictionary<NSString*, NSString*>* _Nonnull)keyByPropertyKey
++ (NSDictionary<NSString*, NSString*>* _Nonnull)propertyByAttributeKey
 {
     return @{ @"TYPE" : @"mediaType",
               @"URI" : @"uri",
