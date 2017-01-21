@@ -16,4 +16,8 @@
 
 @interface MUKMasterPlaylist : MUKSerializing
 
+@property (nonatomic, nonnull, copy) NSArray<MUKXMedia*>* medias;
+@property (nonatomic, nonnull, copy) NSArray<MUKXStreamInf*>* streamInfs;
+@property (nonatomic, nonnull, copy) NSArray<MUKXSessionData*>* sessionDatas;
+
 @end

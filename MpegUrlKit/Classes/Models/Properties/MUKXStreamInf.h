@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, MUKXStreamInfHdcpLevel) {
 /**
  * Convert to NSString from MUKXStreamInfHdcpLevel.
  *
- * @param mediaType An enumerated-value
+ * @param hdcpLevel An enumerated-value
  * @return Return nil, if the method is MUKXStreamInfoHdcpLevelUnknown (or not enumerated-value).
  *         Otherwise, return an enumerated-string.
  */

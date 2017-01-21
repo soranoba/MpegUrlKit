@@ -10,7 +10,7 @@
 #import "NSError+MUKErrorDomain.h"
 
 static NSString* const MUK_X_STREAM_INF_HDCP_NONE = @"NONE";
-static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
+static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
 
 @interface MUKXStreamInf ()
 @property (nonatomic, assign, readwrite) NSUInteger maxBitrate;
@@ -100,7 +100,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE0";
               @"AUDIO" : @"audioGroupId",
               @"VIDEO" : @"videoGroupId",
               @"SUBTITLES" : @"subtitlesGroupId",
-              @"CLOSED-CAPTIONS" : @"closedCaptionGroupId" };
+              @"CLOSED-CAPTIONS" : @"closedCaptionsGroupId" };
 }
 
 + (NSArray<NSString*>* _Nonnull)attributeOrder

@@ -14,10 +14,11 @@
 #import "NSString+MUKExtension.h"
 
 @interface MUKMasterPlaylist ()
+@property (nonatomic, assign) BOOL hasExtm3u;
 @property (nonatomic, nonnull, strong) NSMutableArray<MUKXMedia*>* processingMedias;
 @property (nonatomic, assign) BOOL isWaitingStreamUri;
 @property (nonatomic, nonnull, strong) NSMutableArray<MUKXStreamInf*>* processingStreamInfs;
-@property (nonatomic, nonnull, strong) NSMutableArray<MUKXSessionData*>* processingSessionData;
+@property (nonatomic, nonnull, strong) NSMutableArray<MUKXSessionData*>* processingSessionDatas;
 @end
 
 @implementation MUKMasterPlaylist
@@ -29,8 +30,11 @@
     if (self = [super init]) {
         self.processingMedias = [NSMutableArray array];
         self.processingStreamInfs = [NSMutableArray array];
-        self.processingSessionData = [NSMutableArray array];
+        self.processingSessionDatas = [NSMutableArray array];
         self.isWaitingStreamUri = NO;
+        self.medias = [NSArray array];
+        self.streamInfs = [NSArray array];
+        self.sessionDatas = [NSArray array];
     }
     return self;
 }
@@ -38,6 +42,21 @@
 #pragma mark - Private Methods
 
 #pragma mark M3U8 Tag
+
+/**
+ * 4.3.1.1 EXTM3U
+ */
+- (MUKTagActionResult)onExtm3u:(NSString* _Nonnull)tagValue error:(NSError* _Nullable* _Nullable)error
+{
+    self.hasExtm3u = YES;
+    return MUKTagActionResultProcessed;
+}
+
+- (MUKTagActionResult)notFoundExtm3u:(NSError* _Nullable* _Nullable)error
+{
+    SET_ERROR(error, MUKErrorInvalidM3UFormat, @"EXTM3U is not on the first line");
+    return MUKTagActionResultErrored;
+}
 
 /**
  * 4.3.4.1. EXT-X-MEDIA
@@ -110,7 +129,7 @@
     if (!sessionData) {
         return MUKTagActionResultErrored;
     }
-    [self.processingSessionData addObject:sessionData];
+    [self.processingSessionDatas addObject:sessionData];
     return MUKTagActionResultProcessed;
 }
 
@@ -118,7 +137,10 @@
 
 - (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions
 {
-    if (self.isWaitingStreamUri) {
+    if (!self.hasExtm3u) {
+        return @{ MUK_EXTM3U : ACTION([self onExtm3u:tagValue error:error]),
+                  @"" : ACTION([self notFoundExtm3u:error]) };
+    } else if (self.isWaitingStreamUri) {
         return @{ @"" : ACTION([self onStreamInfUri:tagValue error:error]) };
     } else {
         return @{ MUK_EXT_X_MEDIA : ACTION([self onMedia:tagValue error:error]),
@@ -126,6 +148,32 @@
                   MUK_EXT_X_I_FRAME_STREAM_INF : ACTION([self onIframeStreamInf:tagValue error:error]),
                   MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:tagValue error:error]) };
     }
+}
+
+- (void)beginSerialization
+{
+    // NOP
+}
+
+- (void)endSerialization
+{
+    self.medias = self.processingMedias;
+    self.streamInfs = self.processingStreamInfs;
+    self.sessionDatas = self.processingSessionDatas;
+}
+
+- (BOOL)validate:(NSError *_Nullable *_Nullable)error
+{
+    if (!self.hasExtm3u) {
+        SET_ERROR(error, MUKErrorInvalidM3UFormat, @"EXTM3U is NOT found");
+        return NO;
+    }
+
+    if (self.isWaitingStreamUri) {
+        SET_ERROR(error, MUKErrorInvalidStreamInf, @"EXT-X-I-FRAME-STREAM-INF MUST have a url line");
+        return NO;
+    }
+    return YES;
 }
 
 @end

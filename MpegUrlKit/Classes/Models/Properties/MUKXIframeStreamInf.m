@@ -40,6 +40,7 @@
 {
     NSMutableDictionary<NSString*, NSString*>* dict = [[super keyByPropertyKey] mutableCopy];
     [dict addEntriesFromDictionary:@{ @"URI" : @"uri" }];
+    [dict removeObjectsForKeys:@[@"FRAME-RATE", @"AUDIO", @"SUBTITLES", @"CLOSED-CAPTIONS"]];
     return dict;
 }
 
