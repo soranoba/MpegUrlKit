@@ -22,8 +22,8 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
 @property (nonatomic, nullable, copy, readwrite) NSString* language;
 @property (nonatomic, nullable, copy, readwrite) NSString* associatedLanguage;
 @property (nonatomic, nonnull, copy, readwrite) NSString* name;
-@property (nonatomic, assign, readwrite) BOOL isDefaultRendition;
-@property (nonatomic, assign, readwrite) BOOL canAutoSelect;
+@property (nonatomic, assign, readwrite, getter=isDefaultRendition) BOOL defaultRendition;
+@property (nonatomic, assign, readwrite, getter=canAutoSelect) BOOL autoSelect;
 @property (nonatomic, assign, readwrite) BOOL forced;
 @property (nonatomic, nullable, copy, readwrite) NSString* instreamId;
 @property (nonatomic, nullable, copy, readwrite) NSArray<NSString*>* characteristics;
@@ -56,8 +56,8 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
         self.language = language;
         self.associatedLanguage = associatedLanguage;
         self.name = name;
-        self.isDefaultRendition = isDefaultRendition;
-        self.canAutoSelect = canAutoSelect;
+        self.defaultRendition = isDefaultRendition;
+        self.autoSelect = canAutoSelect;
         self.forced = forced;
         self.instreamId = instreamId;
         self.characteristics = characteristics;
@@ -153,8 +153,8 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
               @"LANGUAGE" : @"language",
               @"ASSOC-LANGUAGE" : @"associatedLanguage",
               @"NAME" : @"name",
-              @"DEFAULT" : @"isDefaultRendition",
-              @"AUTOSELECT" : @"canAutoSelect",
+              @"DEFAULT" : @"defaultRendition",
+              @"AUTOSELECT" : @"autoSelect",
               @"FORCED" : @"forced",
               @"INSTREAM-ID" : @"instreamId",
               @"CHARACTERISTICS" : @"characteristics",
@@ -203,6 +203,9 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
         reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
             NSParameterAssert([value isKindOfClass:NSArray.class]);
 
+            if (![value count]) {
+                return nil;
+            }
             return [[MUKAttributeValue alloc] initWithValue:[value componentsJoinedByString:@","]
                                              isQuotedString:YES];
         }];
@@ -228,6 +231,9 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
     }
         reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
             NSParameterAssert([value isKindOfClass:NSArray.class]);
+            if (![value count]) {
+                return nil;
+            }
 
             NSMutableString* str = [NSMutableString string];
             for (NSNumber* num in value) {
@@ -265,8 +271,8 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
         return NO;
     }
 
-    if (self.canAutoSelect && !self.isDefaultRendition) {
-        SET_ERROR(error, MUKErrorInvalidMedia, @"if the AUTOSELECT is YES, the DEFAULT MUST be YES");
+    if (!self.canAutoSelect && self.isDefaultRendition) {
+        SET_ERROR(error, MUKErrorInvalidMedia, @"AUTOSELECT MUST be YES, if the DEFAULT is YES");
         return NO;
     }
 
@@ -283,6 +289,14 @@ static NSString* const MUK_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS = @"CLOSED-CAPTIONS"
     for (NSString* uti in self.characteristics) {
         if ([uti rangeOfString:@","].location != NSNotFound) {
             SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CHARACTERISTICS MUST NOT contain a comma");
+            return NO;
+        }
+    }
+
+    if (self.channels) {
+        NSArray* sorted = [self.channels sortedArrayUsingSelector:@selector(compare:)];
+        if (![sorted isEqualToArray:self.channels]) {
+            SET_ERROR(error, MUKErrorInvalidMedia, @"CHANNELS MUST be an ordered array");
             return NO;
         }
     }

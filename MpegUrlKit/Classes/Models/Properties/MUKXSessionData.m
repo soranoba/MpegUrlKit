@@ -9,6 +9,13 @@
 #import "MUKXSessionData.h"
 #import "NSError+MUKErrorDomain.h"
 
+@interface MUKXSessionData ()
+@property (nonatomic, nonnull, copy, readwrite) NSString* dataId;
+@property (nonatomic, nullable, copy, readwrite) NSString* value;
+@property (nonatomic, nullable, strong, readwrite) NSURL* uri;
+@property (nonatomic, nullable, copy, readwrite) NSString* language;
+@end
+
 @implementation MUKXSessionData
 
 #pragma mark - Lifecycle
@@ -53,10 +60,11 @@
         return NO;
     }
 
-    if (!self.value && !self.uri) {
+    if ((BOOL)(self.value) == (BOOL)(self.uri)) {
         SET_ERROR(error, MUKErrorInvalidSesseionData, @"It MUST be contain either a VALUE or URI");
         return NO;
     }
+
     return YES;
 }
 

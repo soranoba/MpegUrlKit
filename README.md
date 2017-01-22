@@ -97,6 +97,14 @@ When creating AttributeModel, inherit from `MUKAttributeModel` and define `MUKAt
 
 If it is a supported type, MUKAttributeSerializer automatically converts it according to the type of property.
 
+Supported types are as below
+- NSUInteger, double, CGSize, BOOL
+ - When converting to string from model, if the value is 0, it is ignored.
+- NSString, NSDate, NSData, NSURL
+ - When converting to string from model, if the value is nil, it is ignored.
+
+Please refer to [MUKAttributeSerializer # valueForObject:forKey and MUKAttributeSerializer # setValue:forObject:forKey:error:](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeSerializer.m) for implementation.
+
 In the case of a type that does not support or if you want to perform special conversion, you need to define transformer.
 
 ```objc
@@ -123,7 +131,7 @@ In the case of a type that does not support or if you want to perform special co
 }
 ```
 
-For details, please see below
+For more details, please see below
 - [MUKAttributeModel's document](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeModel.h)
 - [MUKAttributeSerializer's document](MpegUrlKit/Classes/AttributeSerializer/MUKAttributeSerializer.h)
 - [MUKAttributeModel sample](MpegUrlKit/Classes/Models/Properties/MUKXKey.m)

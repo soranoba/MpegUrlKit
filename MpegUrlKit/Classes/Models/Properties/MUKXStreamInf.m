@@ -8,6 +8,7 @@
 
 #import "MUKXStreamInf.h"
 #import "NSError+MUKErrorDomain.h"
+#import "NSString+MUKExtension.h"
 
 static NSString* const MUK_X_STREAM_INF_HDCP_NONE = @"NONE";
 static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
@@ -126,6 +127,9 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
     }
         reverseBlock:^MUKAttributeValue* _Nullable(id _Nonnull value) {
             NSParameterAssert([value isKindOfClass:NSArray.class]);
+            if (![value count]) {
+                return nil;
+            }
             return [[MUKAttributeValue alloc] initWithValue:[value componentsJoinedByString:@","] isQuotedString:YES];
         }];
 }
@@ -185,7 +189,7 @@ static NSString* const MUK_X_STREAM_INF_HDCP_TYPE0 = @"TYPE-0";
 
     for (NSString* codec in self.codecs) {
         if ([codec rangeOfString:@","].location != NSNotFound) {
-            SET_ERROR(error, MUKErrorInvalidMedia, @"Each element of CODECS MUST NOT contain a comma");
+            SET_ERROR(error, MUKErrorInvalidStreamInf, @"Each element of CODECS MUST NOT contain a comma");
             return NO;
         }
     }

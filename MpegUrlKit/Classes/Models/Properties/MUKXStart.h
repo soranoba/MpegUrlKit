@@ -10,6 +10,11 @@
 #import "MUKErrorCode.h"
 #import <Foundation/Foundation.h>
 
+/**
+ * 4.3.5.2. EXT-X-START
+ *
+ * A class that indicates a preferred point at which to start playing a Playlist.
+ */
 @interface MUKXStart : MUKAttributeModel <MUKAttributeSerializing>
 
 @property (nonatomic, assign, readonly) double timeOffset;

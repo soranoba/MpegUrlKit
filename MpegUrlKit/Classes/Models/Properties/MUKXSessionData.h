@@ -18,16 +18,16 @@
 
 /// It is identifies.
 /// It SHOULD conform to a reverse DNS naming convention, such as "com.example.movie.title"
-@property (nonatomic, nonnull, copy) NSString* dataId;
+@property (nonatomic, nonnull, copy, readonly) NSString* dataId;
 
 /// It contains the data identified by DATA-ID.
-@property (nonatomic, nullable, copy) NSString* value;
+@property (nonatomic, nullable, copy, readonly) NSString* value;
 
 /// The uri specifies contents that be formatted JSON.
-@property (nonatomic, nullable, copy) NSURL* uri;
+@property (nonatomic, nullable, strong, readonly) NSURL* uri;
 
 /// It is a language tag (RFC5646)
-@property (nonatomic, nullable, copy) NSString* language;
+@property (nonatomic, nullable, copy, readonly) NSString* language;
 
 #pragma mark - Lifecycle
 

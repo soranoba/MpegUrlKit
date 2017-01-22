@@ -53,12 +53,12 @@ typedef NS_ENUM(NSUInteger, MUKXMediaType) {
 @property (nonatomic, nonnull, copy, readonly) NSString* name;
 
 /// The Rendition with the value YES is selected if client is not specified by the user.
-@property (nonatomic, assign, readonly) BOOL isDefaultRendition;
+@property (nonatomic, assign, readonly, getter=isDefaultRendition) BOOL defaultRendition;
 
 /// If the value is YES, the client may automatically select when user does not specify.
 ///
 /// The value MUST be YES, if isDefaultRendition is YES.
-@property (nonatomic, assign, readonly) BOOL canAutoSelect;
+@property (nonatomic, assign, readonly, getter=canAutoSelect) BOOL autoSelect;
 
 /// If this value is YES, the Rendition contains content that is considered essential to play.
 ///

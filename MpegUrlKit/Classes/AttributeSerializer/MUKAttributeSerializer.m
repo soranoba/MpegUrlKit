@@ -363,19 +363,7 @@
     NSAssert(property != nil, @"Property is not exist. Property name is %@", propertyKey);
 
     MUKTypeEncoding* enc = [[MUKTypeEncoding alloc] initWithProperty:property];
-    if (strcmp(enc.objCType, @encode(double)) == 0) {
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDouble:[value doubleValue]]
-                                         isQuotedString:NO];
-    } else if (strcmp(enc.objCType, @encode(BOOL)) == 0) {
-        return [[MUKAttributeValue alloc] initWithValue:([value boolValue] == YES ? @"YES" : @"NO")
-                                         isQuotedString:NO];
-    } else if (strcmp(enc.objCType, @encode(NSUInteger)) == 0) {
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDecimal:[value unsignedIntegerValue]]
-                                         isQuotedString:NO];
-    } else if (strcmp(enc.objCType, @encode(CGSize)) == 0) {
-        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithSize:[value CGSizeValue]]
-                                         isQuotedString:NO];
-    } else if (strcmp(enc.objCType, @encode(id)) == 0) {
+    if (strcmp(enc.objCType, @encode(id)) == 0) {
         if (enc.klass == NSString.class) {
             return [[MUKAttributeValue alloc] initWithValue:value
                                              isQuotedString:YES];
@@ -389,6 +377,24 @@
             NSURL* url = (NSURL*)value;
             return [[MUKAttributeValue alloc] initWithValue:url.absoluteString isQuotedString:YES];
         }
+    } else if ([value isKindOfClass:NSNumber.class] && [value unsignedIntegerValue] == 0) {
+        return nil;
+    } else if (strcmp(enc.objCType, @encode(double)) == 0) {
+        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDouble:[value doubleValue]]
+                                         isQuotedString:NO];
+    } else if (strcmp(enc.objCType, @encode(BOOL)) == 0) {
+        return [[MUKAttributeValue alloc] initWithValue:([value boolValue] == YES ? @"YES" : @"NO")
+                                         isQuotedString:NO];
+    } else if (strcmp(enc.objCType, @encode(NSUInteger)) == 0) {
+        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithDecimal:[value unsignedIntegerValue]]
+                                         isQuotedString:NO];
+    } else if (strcmp(enc.objCType, @encode(CGSize)) == 0) {
+        CGSize size = [value CGSizeValue];
+        if (size.width == CGSizeZero.width && size.height == CGSizeZero.height) {
+            return nil;
+        }
+        return [[MUKAttributeValue alloc] initWithValue:[NSString muk_stringWithSize:size]
+                                         isQuotedString:NO];
     }
 
     NSAssert(NO, @"%@ # %@ is unsupported type", [object class], propertyKey);

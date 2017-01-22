@@ -47,6 +47,7 @@
 + (NSArray<NSString*>* _Nonnull)attributeOrder
 {
     NSMutableArray<NSString*>* arr = [[super attributeOrder] mutableCopy];
+    [arr removeObjectsInArray:@[ @"FRAME-RATE", @"AUDIO", @"SUBTITLES", @"CLOSED-CAPTIONS" ]];
     [arr addObject:@"URI"];
     return arr;
 }

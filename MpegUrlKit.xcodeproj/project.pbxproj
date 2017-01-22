@@ -13,6 +13,10 @@
 		A418FD201E33783D0086FA9E /* MUKTAttributeModel2.m in Sources */ = {isa = PBXBuildFile; fileRef = A418FD1F1E33783D0086FA9E /* MUKTAttributeModel2.m */; };
 		A456FC271E33A2A8002EA7B0 /* MUKXMapTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */; };
 		A456FC291E33AD52002EA7B0 /* MUKXDateRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */; };
+		A456FC2B1E3478FC002EA7B0 /* MUKXStreamInfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC2A1E3478FC002EA7B0 /* MUKXStreamInfTests.m */; };
+		A456FC2D1E3497D2002EA7B0 /* MUKXIframeStreamInfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC2C1E3497D2002EA7B0 /* MUKXIframeStreamInfTests.m */; };
+		A456FC2F1E349A61002EA7B0 /* MUKXSessionDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC2E1E349A61002EA7B0 /* MUKXSessionDataTests.m */; };
+		A456FC331E349DCB002EA7B0 /* MUKXStartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A456FC321E349DCB002EA7B0 /* MUKXStartTests.m */; };
 		A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39C1E20FEA000628B88 /* MUKXKeyTests.m */; };
 		A4CAA39F1E20FEA000628B88 /* MUKMediaPlaylistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA39D1E20FEA000628B88 /* MUKMediaPlaylistTests.m */; };
 		A4CAA3A11E21178600628B88 /* MUKAttributeValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CAA3A01E21178600628B88 /* MUKAttributeValueTests.m */; };
@@ -31,6 +35,10 @@
 		A418FD1F1E33783D0086FA9E /* MUKTAttributeModel2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKTAttributeModel2.m; sourceTree = "<group>"; };
 		A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXMapTests.m; sourceTree = "<group>"; };
 		A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXDateRangeTests.m; sourceTree = "<group>"; };
+		A456FC2A1E3478FC002EA7B0 /* MUKXStreamInfTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXStreamInfTests.m; sourceTree = "<group>"; };
+		A456FC2C1E3497D2002EA7B0 /* MUKXIframeStreamInfTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXIframeStreamInfTests.m; sourceTree = "<group>"; };
+		A456FC2E1E349A61002EA7B0 /* MUKXSessionDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXSessionDataTests.m; sourceTree = "<group>"; };
+		A456FC321E349DCB002EA7B0 /* MUKXStartTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKXStartTests.m; sourceTree = "<group>"; };
 		A4CAA3611E1F83BF00628B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4CAA3721E1F8F7600628B88 /* MpegUrlKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MpegUrlKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CAA3881E1FC79500628B88 /* MpegUrlKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MpegUrlKitTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -85,6 +93,10 @@
 				A456FC261E33A2A8002EA7B0 /* MUKXMapTests.m */,
 				A4E863521E2A07560026E263 /* MUKXMediaTests.m */,
 				A456FC281E33AD52002EA7B0 /* MUKXDateRangeTests.m */,
+				A456FC2A1E3478FC002EA7B0 /* MUKXStreamInfTests.m */,
+				A456FC2C1E3497D2002EA7B0 /* MUKXIframeStreamInfTests.m */,
+				A456FC2E1E349A61002EA7B0 /* MUKXSessionDataTests.m */,
+				A456FC321E349DCB002EA7B0 /* MUKXStartTests.m */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -284,11 +296,15 @@
 				A418FD0D1E2FE0910086FA9E /* MUKTypeEncodingTests.m in Sources */,
 				A4E863701E2B5E600026E263 /* MUKTAttributeModel.m in Sources */,
 				A4CAA39E1E20FEA000628B88 /* MUKXKeyTests.m in Sources */,
+				A456FC2F1E349A61002EA7B0 /* MUKXSessionDataTests.m in Sources */,
 				A418FD101E3111790086FA9E /* MUKMasterPlaylistTests.m in Sources */,
 				A456FC291E33AD52002EA7B0 /* MUKXDateRangeTests.m in Sources */,
+				A456FC331E349DCB002EA7B0 /* MUKXStartTests.m in Sources */,
 				A4CAA3A11E21178600628B88 /* MUKAttributeValueTests.m in Sources */,
+				A456FC2B1E3478FC002EA7B0 /* MUKXStreamInfTests.m in Sources */,
 				A4E863531E2A07560026E263 /* MUKXMediaTests.m in Sources */,
 				A4CAA3A71E21425000628B88 /* NSString+MUKExtensionTests.m in Sources */,
+				A456FC2D1E3497D2002EA7B0 /* MUKXIframeStreamInfTests.m in Sources */,
 				A456FC271E33A2A8002EA7B0 /* MUKXMapTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

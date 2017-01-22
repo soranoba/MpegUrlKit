@@ -402,14 +402,6 @@ QuickSpecBegin(MUKMediaPlaylistTests)
     });
 
     describe(@"#EXT-X-PROGRAM-DATE-TIME", ^{
-        it(@"gots error, if it format is invalid", ^{
-            NSString* playlistStr = @"#EXTM3U\n"
-                                    @"#EXT-X-TARGETDURATION:5\n"
-                                    @"\n"
-                                    @"#EXT-X-PROGRAM-DATE-TIME:2017-01-08 21:20:00\n";
-            SerializeFailed(playlistStr, MUKErrorInvalidType);
-        });
-
         it(@"can parse", ^{
             NSString* playlistStr = @"#EXTM3U\n"
                                     @"#EXT-X-TARGETDURATION:5\n"
@@ -459,7 +451,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.dateRanges.count).to(equal(1));
-            expect(playlist.dateRanges[0].identify).to(equal(@"id"));
+            expect(playlist.dateRanges[0].identifier).to(equal(@"id"));
             expect(playlist.dateRanges[0].klass).to(equal(@"class"));
             expect(playlist.dateRanges[0].startDate).notTo(beNil());
             expect(playlist.dateRanges[0].endDate).notTo(beNil());

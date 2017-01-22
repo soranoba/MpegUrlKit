@@ -17,8 +17,8 @@ QuickSpecBegin(MUKAttributeModelTests)
             model.d = 2.5;
             model.s = @"hoge";
 
-            expect([NSString stringWithFormat:@"%@", model]).to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=2.5,SIZE=0x0,STRING=\"hoge\""));
-            expect([model description]).to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=2.5,SIZE=0x0,STRING=\"hoge\""));
+            expect([NSString stringWithFormat:@"%@", model]).to(equal(@"DOUBLE=2.5,STRING=\"hoge\""));
+            expect([model description]).to(equal(@"DOUBLE=2.5,STRING=\"hoge\""));
         });
     });
 }

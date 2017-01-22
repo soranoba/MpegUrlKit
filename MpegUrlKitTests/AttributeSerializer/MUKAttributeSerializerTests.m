@@ -266,11 +266,10 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             expect(error).to(beNil());
         });
 
-        it(@"can ignore attribute, if it use transformer and object type", ^{
+        it(@"ignore values that are not set", ^{
             MUKTAttributeModel* m = [MUKTAttributeModel new];
             __block NSError* error = nil;
-            expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
-                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0"));
+            expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error]).to(equal(@""));
             expect(error).to(beNil());
         });
 
@@ -281,14 +280,14 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             m.url = [NSURL URLWithString:@"http://host/path1/data.json"];
 
             expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
-                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,URL=\"http://host/path1/data.json\""));
+                .to(equal(@"URL=\"http://host/path1/data.json\""));
 
             m.url = [NSURL URLWithString:@"data.json" relativeToURL:nil];
             MUKAttributeSerializer* serializer
                 = [[MUKAttributeSerializer alloc] initWithVersion:nil
                                                           baseUri:[NSURL URLWithString:@"http://host/path1/variant.m3u8"]];
             expect([serializer stringFromModel:m error:&error])
-                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,URL=\"data.json\""));
+                .to(equal(@"URL=\"data.json\""));
         });
 
         it(@"can convert to string from NSData", ^{
@@ -298,7 +297,7 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             m.data = [NSData dataWithBytes:"abc" length:3];
 
             expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
-                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,DATA=0x616263"));
+                .to(equal(@"DATA=0x616263"));
         });
 
         it(@"can convert to string from NSDate", ^{
@@ -317,7 +316,7 @@ QuickSpecBegin(MUKAttributeSerializerTests)
             [NSTimeZone setDefaultTimeZone:[NSTimeZone timeZoneWithName:@"JST"]];
 
             expect([[MUKAttributeSerializer sharedSerializer] stringFromModel:m error:&error])
-                .to(equal(@"BOOL=NO,INTEGER=0,DOUBLE=0,SIZE=0x0,DATE=\"2016-01-21T00:00:00.000+09:00\""));
+                .to(equal(@"DATE=\"2016-01-21T00:00:00.000+09:00\""));
         });
 
         it(@"ignore attributes, when the version doesn't support the attributes", ^{
