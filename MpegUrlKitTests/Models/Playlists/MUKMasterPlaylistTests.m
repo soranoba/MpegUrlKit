@@ -24,7 +24,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMasterPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.medias.count).to(equal(1));
             expect(@(playlist.medias[0].mediaType)).to(equal(MUKXMediaTypeAudio));
             expect(playlist.medias[0].groupId).to(equal(@"aac"));
@@ -47,7 +47,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMasterPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.medias.count).to(equal(2));
             expect(@(playlist.medias[0].mediaType)).to(equal(MUKXMediaTypeClosedCaptions));
             expect(playlist.medias[0].instreamId).to(equal(@"CC1"));
@@ -67,7 +67,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMasterPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.streamInfs.count).to(equal(1));
             expect(playlist.streamInfs[0].maxBitrate).to(equal(1280000));
             expect(playlist.streamInfs[0].averageBitrate).to(equal(1000000));
@@ -94,7 +94,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error = nil;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.streamInfs.count).to(equal(1));
             expect([playlist.streamInfs[0] isKindOfClass:MUKXIframeStreamInf.class]).to(equal(YES));
             expect(playlist.streamInfs[0].maxBitrate).to(equal(1280000));
@@ -120,7 +120,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error = nil;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.sessionDatas.count).to(equal(2));
             expect(playlist.sessionDatas[0].dataId).to(equal(@"com.example.titles"));
             expect(playlist.sessionDatas[0].value).to(equal(@"hoge"));
@@ -141,7 +141,7 @@ QuickSpecBegin(MUKMasterPlaylistTests)
 
             __block MUKMasterPlaylist* playlist;
             __block NSError* error;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.sessionKeys.count).to(equal(1));
             expect(@(playlist.sessionKeys[0].method)).to(equal(MUKXKeyMethodAes128));
             expect(playlist.sessionKeys[0].uri.absoluteString).to(equal(@"https://priv.example.com/key.php?r=52"));

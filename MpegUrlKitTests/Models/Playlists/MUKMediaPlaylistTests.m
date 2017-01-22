@@ -9,11 +9,11 @@
 #import "MUKMediaPlaylist.h"
 #import "MUKSerializer.h"
 
-#define SerializeFailed(__PlaylistStr, __Code)                                           \
-    do {                                                                                 \
-        __block NSError* error = nil;                                                    \
-        expect([serializer serializeFromString:__PlaylistStr error:&error]).to(beNil()); \
-        expect(error.code).to(equal(__Code));                                            \
+#define SerializeFailed(__PlaylistStr, __Code)                                       \
+    do {                                                                             \
+        __block NSError* error = nil;                                                \
+        expect([serializer modelFromString:__PlaylistStr error:&error]).to(beNil()); \
+        expect(error.code).to(equal(__Code));                                        \
     } while (0)
 
 QuickSpecBegin(MUKMediaPlaylistTests)
@@ -35,7 +35,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
                                  @"#EXT-X-TARGETDURATION:5\n";
 
             __block NSError* error = nil;
-            expect([serializer serializeFromString:playlist error:&error]).notTo(beNil());
+            expect([serializer modelFromString:playlist error:&error]).notTo(beNil());
         });
 
         it(@"gets an error, if playlist is empty string", ^{
@@ -51,7 +51,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.version).to(equal(@1));
         });
 
@@ -62,7 +62,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.version).to(equal(@3));
         });
     });
@@ -89,7 +89,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
             expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1.0));
@@ -105,7 +105,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
             expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1));
@@ -122,7 +122,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
             expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1));
@@ -161,7 +161,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@2));
             expect(playlist.mediaSegments[1].uri).to(equal(@"url2"));
             expect(playlist.mediaSegments[1].duration).to(equal(@2));
@@ -180,7 +180,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
             expect(playlist.mediaSegments[0].byteRange.location).to(equal(@0));
             expect(playlist.mediaSegments[0].byteRange.length).to(equal(@0));
@@ -227,7 +227,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@2));
             expect(playlist.mediaSegments[0].byteRange.location).to(equal(0));
             expect(playlist.mediaSegments[0].byteRange.length).to(equal(100));
@@ -249,7 +249,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@2));
             expect(playlist.mediaSegments[0].byteRange.location).to(equal(0));
             expect(playlist.mediaSegments[0].byteRange.length).to(equal(100));
@@ -271,7 +271,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@2));
             expect(playlist.mediaSegments[0].discontinuity).to(equal(NO));
             expect(playlist.mediaSegments[1].discontinuity).to(equal(YES));
@@ -314,7 +314,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@1));
             expect(playlist.mediaSegments[0].encrypt.keyFormat).to(equal(@"identity"));
         });
@@ -330,7 +330,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@1));
             expect(playlist.mediaSegments[0].encrypt.aesInitializeVector).to(beNil());
         });
@@ -346,7 +346,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@1));
             expect(playlist.mediaSegments[0].encrypt.keyFormatVersions).to(equal(@[ @1 ]));
         });
@@ -383,7 +383,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(@3));
             expect(@(playlist.mediaSegments[0].encrypt.method)).to(equal(MUKXKeyMethodAes128));
             expect(playlist.mediaSegments[0].encrypt.uri.absoluteString).to(equal(@"enc1"));
@@ -417,7 +417,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(3));
             expect(playlist.mediaSegments[0].programDate).to(beNil());
             expect([playlist.mediaSegments[2].programDate timeIntervalSinceDate:playlist.mediaSegments[1].programDate]).to(equal(5));
@@ -435,7 +435,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.dateRanges.count).to(equal(0));
         });
 
@@ -449,7 +449,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.dateRanges.count).to(equal(1));
             expect(playlist.dateRanges[0].identifier).to(equal(@"id"));
             expect(playlist.dateRanges[0].klass).to(equal(@"class"));
@@ -474,7 +474,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.targetDuration).to(equal(5));
         });
 
@@ -500,7 +500,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.firstSequenceNumber).to(equal(2));
         });
 
@@ -510,7 +510,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.firstSequenceNumber).to(equal(0));
         });
 
@@ -542,7 +542,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.firstDiscontinuitySequenceNumber).to(equal(2));
         });
 
@@ -552,7 +552,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.firstDiscontinuitySequenceNumber).to(equal(0));
         });
 
@@ -591,7 +591,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.mediaSegments.count).to(equal(1));
             expect(playlist.hasEndList).to(equal(YES));
         });
@@ -613,14 +613,14 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(@(playlist.playlistType)).to(equal(MUKPlaylistTypeVod));
 
             playlistStr = @"#EXTM3U\n"
                           @"#EXT-X-TARGETDURATION:5\n"
                           @"#EXT-X-PLAYLIST-TYPE:EVENT\n";
 
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(@(playlist.playlistType)).to(equal(MUKPlaylistTypeEvent));
         });
     });
@@ -634,7 +634,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.isIframesOnly).to(equal(YES));
         });
 
@@ -646,7 +646,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
 
             __block NSError* error = nil;
             __block MUKMediaPlaylist* playlist;
-            expect(playlist = [serializer serializeFromString:playlistStr error:&error]).notTo(beNil());
+            expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect(playlist.isIframesOnly).to(equal(NO));
         });
     });

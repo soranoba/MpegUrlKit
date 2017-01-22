@@ -529,18 +529,22 @@
 
 #pragma mark - MUKSerializing
 
-- (void)beginSerialization
-{
-    // NOP
-}
-
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     if (self.version == 0) {
         self.version = 1;
     }
     self.mediaSegments = self.processingMediaSegments;
     self.dateRanges = self.processingDateRanges;
+}
+
+- (NSArray* _Nonnull)arrayOfElements
+{
+    NSMutableArray* arr = [NSMutableArray array];
+    [arr addObject:MUK_EXTM3U];
+    [arr addObject:[NSString stringWithFormat:@"%@:%tu", MUK_EXT_X_VERSION, self.version]];
+
+    return arr;
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

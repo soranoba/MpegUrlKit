@@ -198,17 +198,27 @@
     }
 }
 
-- (void)beginSerialization
-{
-    // NOP
-}
+#pragma mark - MUKSerializing
 
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     self.medias = self.processingMedias;
     self.streamInfs = self.processingStreamInfs;
     self.sessionDatas = self.processingSessionDatas;
     self.sessionKeys = self.processingSessionKeys;
+}
+
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject
+{
+    return @{};
+}
+
+- (NSString* _Nonnull)renderTemplate
+{
+    NSString* path = [[NSBundle bundleForClass:MUKMasterPlaylist.class] pathForResource:@"master" ofType:@"mustache"];
+    return [NSString stringWithContentsOfFile:path
+                                     encoding:NSUTF8StringEncoding
+                                        error:nil];
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

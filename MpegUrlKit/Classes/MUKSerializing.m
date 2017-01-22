@@ -35,12 +35,7 @@
     return @{};
 }
 
-#pragma mark - MUKSerializable
-
-- (void)beginSerialization
-{
-    // NOP
-}
+#pragma mark - MUKSerializing
 
 - (MUKTagActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
@@ -59,9 +54,19 @@
     return MUKTagActionResultIgnored;
 }
 
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     // NOP
+}
+
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject
+{
+    return @{};
+}
+
+- (NSString* _Nonnull)renderTemplate
+{
+    return @"";
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error
