@@ -52,6 +52,12 @@
     return arr;
 }
 
+- (NSString* _Nullable)finalizeOfToString:(NSString* _Nonnull)attributeString
+                                    error:(NSError* _Nullable* _Nullable)error
+{
+    return attributeString;
+}
+
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error
 {
     if (![super validate:error]) {

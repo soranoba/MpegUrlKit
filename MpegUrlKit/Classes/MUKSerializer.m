@@ -138,9 +138,21 @@
     NSParameterAssert([model conformsToProtocol:@protocol(MUKSerializing)]);
 
 #ifdef MPEG_URL_KIT_MUSTACHE_ENABLE
-    return [GRMustacheTemplate renderObject:[model renderObject]
+
+    NSDictionary* originalObject = [model renderObject];
+    NSMutableDictionary* object = [NSMutableDictionary dictionary];
+    for (NSString* key in originalObject) {
+        if ([key hasPrefix:@"#"]) {
+            object[[key substringFromIndex:1]] = originalObject[key];
+        } else {
+            object[key] = originalObject[key];
+        }
+    }
+
+    return [GRMustacheTemplate renderObject:object
                                  fromString:[model renderTemplate]
                                       error:error];
+
 #else
     if (error) {
         *error = [NSError muk_errorWithMUKErrorCode:MUKErrorBuildSettings];

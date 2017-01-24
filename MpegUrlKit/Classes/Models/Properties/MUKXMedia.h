@@ -102,7 +102,7 @@ typedef NS_ENUM(NSUInteger, MUKXMediaType) {
  * @return instance
  */
 - (instancetype _Nullable)initWithType:(MUKXMediaType)mediaType
-                                   uri:(NSString* _Nullable)uri
+                                   uri:(NSURL* _Nullable)uri
                                groupId:(NSString* _Nonnull)groupId
                               language:(NSString* _Nullable)language
                     associatedLanguage:(NSString* _Nullable)associatedLanguage

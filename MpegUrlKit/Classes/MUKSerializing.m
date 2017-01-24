@@ -12,6 +12,14 @@
 
 #pragma mark - Lifecycle
 
+- (instancetype _Nullable)init
+{
+    if (self = [super init]) {
+        self.playlistUrl = nil;
+    }
+    return self;
+}
+
 - (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url
 {
     if (self = [super init]) {

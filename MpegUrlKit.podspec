@@ -9,19 +9,19 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.default_subspec      = 'Mustache'
+  s.default_subspec  = 'Core'
+
+  s.subspec 'Full' do |ss|
+    ss.source_files         = 'MpegUrlKit/Classes/**/*.{m,h}'
+    ss.private_header_files = 'MpegUrlKit/Classes/Private/*.h'
+    ss.resources            = 'MpegUrlKit/Resources/*'
+    ss.compiler_flags       = '-DMPEG_URL_KIT_MUSTACHE_ENABLE'
+    ss.dependency 'GRMustache', '~> 7.3'
+  end
 
   s.subspec 'Core' do |ss|
     ss.source_files         = 'MpegUrlKit/Classes/**/*.{m,h}'
     ss.private_header_files = 'MpegUrlKit/Classes/Private/*.h'
     ss.resources            = 'MpegUrlKit/Resources/*'
-  end
-
-  s.subspec 'Mustache' do |ss|
-    ss.source_files         = 'MpegUrlKit/Classes/**/*.{m,h}'
-    ss.private_header_files = 'MpegUrlKit/Classes/Private/*.h'
-    ss.resources            = 'MpegUrlKit/Resources/*'
-    ss.dependency 'GRMustache', '~> 7.3'
-    ss.compiler_flags = '-DMPEG_URL_KIT_MUSTACHE_ENABLE'
   end
 end

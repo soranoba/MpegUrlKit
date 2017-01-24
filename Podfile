@@ -6,7 +6,7 @@ use_frameworks!
 target :MpegUrlKitTests do
   inherit! :search_paths
 
-  pod 'MpegUrlKit', :path => '.'
+  pod 'MpegUrlKit/Full', :path => '.'
 
   pod 'Quick',  '0.10.0'
   pod 'Nimble', '5.1.1'

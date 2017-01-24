@@ -55,6 +55,6 @@ extern NSString* const MUK_EXT_X_SESSION_DATA;
 extern NSString* const MUK_EXT_X_SESSION_KEY;
 
 /// 4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS
-extern NSString* const MUK_EXT_X_INDEPENDENZT_SEGMENT;
+extern NSString* const MUK_EXT_X_INDEPENDENT_SEGMENT;
 /// 4.3.5.2. EXT-X-START
 extern NSString* const MUK_EXT_X_START;

@@ -91,7 +91,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
-            expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
+            expect(playlist.mediaSegments[0].uri.absoluteString).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1.0));
             expect(playlist.mediaSegments[0].title).to(equal(@""));
         });
@@ -107,7 +107,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
-            expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
+            expect(playlist.mediaSegments[0].uri.absoluteString).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1));
             expect(playlist.mediaSegments[0].title).to(equal(@""));
         });
@@ -124,7 +124,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@1));
-            expect(playlist.mediaSegments[0].uri).to(equal(@"url"));
+            expect(playlist.mediaSegments[0].uri.absoluteString).to(equal(@"url"));
             expect(playlist.mediaSegments[0].duration).to(equal(@1));
             expect(playlist.mediaSegments[0].title).to(equal(@"title"));
         });
@@ -163,7 +163,7 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             __block MUKMediaPlaylist* playlist;
             expect(playlist = [serializer modelFromString:playlistStr error:&error]).notTo(beNil());
             expect([playlist.mediaSegments count]).to(equal(@2));
-            expect(playlist.mediaSegments[1].uri).to(equal(@"url2"));
+            expect(playlist.mediaSegments[1].uri.absoluteString).to(equal(@"url2"));
             expect(playlist.mediaSegments[1].duration).to(equal(@2));
         });
     });
@@ -662,6 +662,74 @@ QuickSpecBegin(MUKMediaPlaylistTests)
             expect(@([MUKMediaPlaylist playlistTypeFromString:@"VOD"])).to(equal(MUKPlaylistTypeVod));
             expect(@([MUKMediaPlaylist playlistTypeFromString:@"EVENT"])).to(equal(MUKPlaylistTypeEvent));
             expect(@([MUKMediaPlaylist playlistTypeFromString:@"vod"])).to(equal(MUKPlaylistTypeUnknown));
+        });
+    });
+
+    describe(@"stringFromModel:error:", ^{
+        it(@"can generate m3u8 file", ^{
+            __block NSError* error = nil;
+            MUKMediaPlaylist* playlist = [MUKMediaPlaylist new];
+
+            NSCalendar* calendar = [NSCalendar currentCalendar];
+            calendar.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+            NSDateComponents* components = [NSDateComponents new];
+            components.year = 2017;
+            components.month = 1;
+            components.day = 1;
+            NSDate* date = [calendar dateFromComponents:components];
+
+            playlist.version = 2;
+            playlist.targetDuration = 5;
+            playlist.firstSequenceNumber = 30;
+            playlist.firstDiscontinuitySequenceNumber = 3;
+            playlist.playlistType = MUKPlaylistTypeVod;
+            playlist.hasEndList = YES;
+            playlist.iframesOnly = YES;
+            playlist.mediaSegments = @[ [[MUKMediaSegment alloc] initWithDuration:4.5
+                                                                              uri:[NSURL URLWithString:@"seg1.ts"]] ];
+            playlist.dateRanges = @[ [[MUKXDateRange alloc] initWithId:@"ID"
+                                                                 klass:nil
+                                                                 start:date
+                                                                   end:nil
+                                                              duration:@12.5
+                                                       plannedDuration:nil
+                                                           isEndOnNext:NO
+                                                             scte35Cmd:nil
+                                                             scte35Out:nil
+                                                              scte35In:nil
+                                                 userDefinedAttributes:nil] ];
+            playlist.independentSegment = YES;
+            playlist.startOffset = [[MUKXStart alloc] initWithTimeOffset:5.5 precise:YES];
+
+            [NSTimeZone setDefaultTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+
+            expect([serializer stringFromModel:playlist error:&error])
+                .to(equal(@"#EXTM3U\n"
+                          @"\n"
+                          @"#EXT-X-VERSION:2\n"
+                          @"\n\n"
+                          @"#EXT-X-TARGETDURATION:5\n"
+                          @"\n\n"
+                          @"#EXT-X-MEDIA-SEQUENCE:30\n"
+                          @"\n\n"
+                          @"#EXT-X-DISCONTINUITY-SEQUENCE:3\n"
+                          @"\n\n"
+                          @"#EXT-X-PLAYLIST-TYPE:VOD\n"
+                          @"\n\n"
+                          @"#EXT-X-I-FRAMES-ONLY\n"
+                          @"\n\n"
+                          @"\n"
+                          @"#EXT-X-START:TIME-OFFSET=5.5,PRECISE=YES\n"
+                          @"\n\n"
+                          @"#EXT-X-DATERANGE:START-DATE=\"2017-01-01T00:00:00.000Z\",DURATION=12.5,ID=\"ID\"\n"
+                          @"\n\n\n\n\n\n\n\n"
+                          @"#EXTINF:4.5,\n"
+                          @"seg1.ts\n"
+                          @"\n\n"
+                          @"\n"
+                          @"#EXT-X-ENDLIST\n"
+                          @"\n"));
+            expect(error).to(beNil());
         });
     });
 }

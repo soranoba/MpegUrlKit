@@ -73,10 +73,10 @@ NSString* playlistStr = [serializer stringFromMode:mediaPlaylist
 
 It use [GRMustache](https://github.com/groue/GRMustache) to generate M3U8 files.
 
-If you want to **disable** this function, change the specification method in podfile.
+If you want to **enable** this function, change the specification method in podfile.
 
 ```ruby
-pod 'MpegUrlKit/Core'
+pod 'MpegUrlKit/Full'
 ```
 
 For more details, please see below

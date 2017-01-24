@@ -10,7 +10,24 @@
 #import "NSError+MUKErrorDomain.h"
 #import "NSString+MUKExtension.h"
 
+@interface MUKXStart ()
+@property (nonatomic, assign, readwrite) double timeOffset;
+@property (nonatomic, assign, readwrite, getter=isPrecise) BOOL precise;
+@end
+
 @implementation MUKXStart
+
+#pragma mark - Lifecycle
+
+- (instancetype _Nonnull)initWithTimeOffset:(double)timeOffset
+                                    precise:(BOOL)isPrecise
+{
+    if (self = [super init]) {
+        self.timeOffset = timeOffset;
+        self.precise = isPrecise;
+    }
+    return self;
+}
 
 #pragma mark - MUKAttributeSerializing
 
