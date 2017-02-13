@@ -221,7 +221,7 @@
 {
     if (tagValue.length > 0 && ![tagValue hasPrefix:@"#"]) {
         MUKMediaSegment* mediaSegment = [self currentMediaSegment];
-        mediaSegment.uri = tagValue;
+        mediaSegment.uri = [NSURL URLWithString:tagValue relativeToURL:self.playlistUrl];
         return [self commitMediaSegment:mediaSegment error:error] ? MUKTagActionResultProcessed : MUKTagActionResultErrored;
     }
     return MUKTagActionResultIgnored;
@@ -266,7 +266,7 @@
         mediaSegment.byteRange = NSMakeRange(NSMaxRange(previousMediaSegment.byteRange), length);
         mediaSegment.uri = previousMediaSegment.uri;
         self.segmentValidator = [^(MUKMediaSegment* _Nonnull mediaSegment, NSError* _Nullable* _Nullable error) {
-            if (![mediaSegment.uri isEqualToString:previousMediaSegment.uri]) {
+            if (![mediaSegment.uri isEqual:previousMediaSegment.uri]) {
                 SET_ERROR(error, MUKErrorInvalidByteRange,
                           @"offcet is not present, but previous media segment is not same media resource");
                 return NO;
@@ -456,7 +456,7 @@
         return MUKTagActionResultIgnored;
     }
 
-    self.isIframesOnly = YES;
+    self.iframesOnly = YES;
     return MUKTagActionResultProcessed;
 }
 
@@ -521,7 +521,7 @@
                   MUK_EXT_X_ENDLIST : ACTION([self onEndList:tagValue error:error]),
                   MUK_EXT_X_PLAYLIST_TYPE : ACTION([self onPlaylistType:tagValue error:error]),
                   MUK_EXT_X_I_FRAMES_ONLY : ACTION([self onIframesOnly:tagValue error:error]),
-                  MUK_EXT_X_INDEPENDENZT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
+                  MUK_EXT_X_INDEPENDENT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
                   MUK_EXT_X_START : ACTION([self onStart:tagValue error:error]),
                   @"" : ACTION([self onMediaSegmentUrl:tagValue error:error]) };
     }
@@ -529,18 +529,98 @@
 
 #pragma mark - MUKSerializing
 
-- (void)beginSerialization
-{
-    // NOP
-}
-
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     if (self.version == 0) {
         self.version = 1;
     }
     self.mediaSegments = self.processingMediaSegments;
     self.dateRanges = self.processingDateRanges;
+}
+
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject
+{
+    NSString* xStart = nil;
+    if (self.startOffset) {
+        xStart = [self.serializer stringFromModel:self.startOffset error:nil];
+        if (!xStart) {
+            return nil;
+        }
+    }
+
+    NSMutableArray<NSString*>* xDateRanges = [NSMutableArray array];
+    for (MUKXDateRange* dateRange in self.dateRanges) {
+        NSString* str = [self.serializer stringFromModel:dateRange error:nil];
+        if (!str) {
+            return nil;
+        }
+        [xDateRanges addObject:str];
+    }
+
+    NSMutableArray* xExtInfs = [NSMutableArray arrayWithCapacity:self.mediaSegments.count];
+    for (MUKMediaSegment* seg in self.mediaSegments) {
+        NSString* xKey = nil;
+        if (seg.encrypt) {
+            xKey = [self.serializer stringFromModel:seg.encrypt error:nil];
+            if (!xKey) {
+                return nil;
+            }
+        }
+        NSString* xMap = nil;
+        if (seg.initializationMap) {
+            xMap = [self.serializer stringFromModel:seg.initializationMap error:nil];
+            if (!xMap) {
+                return nil;
+            }
+        }
+
+        [xExtInfs addObject:[@{ MUK_EXT_X_DISCONTINUITY : @(seg.discontinuity),
+                                MUK_EXT_X_BYTERANGE : (seg.byteRange.location != NSNotFound
+                                                           ? [NSString stringWithFormat:@"%tu@%tu",
+                                                                                        seg.byteRange.length, seg.byteRange.location]
+                                                           : @NO),
+                                MUK_EXT_X_KEY : xKey ?: @NO,
+                                MUK_EXT_X_MAP : xMap ?: @NO,
+                                MUK_EXT_X_PROGRAM_DATE_TIME : (seg.programDate ? [NSString muk_stringWithDate:seg.programDate] : @NO),
+                                @"DURATION" : @(seg.duration),
+                                @"TITLE" : seg.title ?: @"",
+                                @"URL" : seg.uri.absoluteString } mutableCopy]];
+    }
+
+    if (xExtInfs.count > 0) {
+        xExtInfs[0][MUK_EXT_X_DISCONTINUITY] = @NO;
+    }
+
+    NSUInteger index = 0;
+    for (NSUInteger i = 1; i < xExtInfs.count; i++) {
+        if ([xExtInfs[i][MUK_EXT_X_KEY] isEqual:xExtInfs[index][MUK_EXT_X_KEY]]) {
+            xExtInfs[i][MUK_EXT_X_KEY] = @NO;
+        } else {
+            index = i;
+        }
+    }
+
+    return @{ MUK_EXT_X_VERSION : @(self.version ?: 1),
+              MUK_EXT_X_TARGETDURATION : @(self.targetDuration ?: NO),
+              MUK_EXT_X_MEDIA_SEQUENCE : @(self.firstSequenceNumber ?: NO),
+              MUK_EXT_X_DISCONTINUITY_SEQUENCE : @(self.firstDiscontinuitySequenceNumber ?: NO),
+              MUK_EXT_X_PLAYLIST_TYPE : ([self.class playlistTypeToString:self.playlistType] ?: @NO),
+              MUK_EXT_X_I_FRAMES_ONLY : @(self.isIframesOnly),
+              MUK_EXT_X_INDEPENDENT_SEGMENT : @(self.isIndependentSegment),
+              MUK_EXT_X_START : (xStart ?: @(NO)),
+              MUK_EXT_X_DATERANGE : xDateRanges,
+
+              MUK_EXTINF : xExtInfs,
+
+              MUK_EXT_X_ENDLIST : @(self.hasEndList) };
+}
+
+- (NSString* _Nonnull)renderTemplate
+{
+    NSString* path = [[NSBundle bundleForClass:MUKMediaPlaylist.class] pathForResource:@"media" ofType:@"mustache"];
+    return [NSString stringWithContentsOfFile:path
+                                     encoding:NSUTF8StringEncoding
+                                        error:nil];
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

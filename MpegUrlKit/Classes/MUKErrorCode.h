@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, MUKErrorCode) {
     MUKErrorInvalidStreamInf,
     MUKErrorInvalidSesseionData,
     MUKErrorUnsupportedVersion,
+    MUKErrorBuildSettings,
 };
 
 extern NSString* const MUKErrorDomain;

@@ -32,11 +32,7 @@ typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError*
 @required
 - (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url;
 
-/**
- * If you want to do specific processing when starting serialize, initialize here.
- */
-@optional
-- (void)beginSerialization;
+#pragma mark Conversion to Model
 
 /**
  * Processing on a line.
@@ -50,14 +46,27 @@ typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError*
 - (MUKTagActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error;
 
 /**
- * If you want to do specific processing when ending serialize, processing here.
+ * If you want to do specific processing when ending for to model, processing here.
  * It will NOT be called if serialize finished by an error.
  */
 @optional
-- (void)endSerialization;
+- (void)finalizeForToModel;
+
+#pragma mark Conversion from Model
+
+@required
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject;
+
+@required
+- (NSString* _Nonnull)renderTemplate;
+
+#pragma mark Validation
 
 /**
- * If you want to execute validate after serialize, please define it.
+ * If you want to execute validate after conversion to model, please define it.
+ *
+ * @param error  When it returns NO, more detailed error information needs to be stored here.
+ * @return If validation succeeded, it returns YES. Otherwise, it returns NO.
  */
 @optional
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error;
@@ -85,5 +94,12 @@ typedef MUKTagActionResult (^MUKTagAction)(NSString* _Nonnull tagValue, NSError*
  *         The key of the empty string has a special meaning of action when it does not match any other.
  */
 - (NSDictionary<NSString*, MUKTagAction>* _Nonnull)tagActions;
+
+#pragma mark - MUKSerializing (Protocol)
+
+/**
+ * It MUST be overrided.
+ */
+- (NSArray* _Nonnull)arrayOfElements;
 
 @end

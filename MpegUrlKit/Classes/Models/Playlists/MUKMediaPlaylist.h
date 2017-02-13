@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, MUKPlaylistType) {
 @property (nonatomic, assign) NSUInteger firstDiscontinuitySequenceNumber;
 @property (nonatomic, assign) MUKPlaylistType playlistType;
 @property (nonatomic, assign) BOOL hasEndList;
-@property (nonatomic, assign) BOOL isIframesOnly;
+@property (nonatomic, assign, getter=isIframesOnly) BOOL iframesOnly;
 @property (nonatomic, nonnull, copy) NSArray<MUKMediaSegment*>* mediaSegments;
 @property (nonatomic, nonnull, copy) NSArray<MUKXDateRange*>* dateRanges;
 @property (nonatomic, assign, getter=isIndependentSegment) BOOL independentSegment;

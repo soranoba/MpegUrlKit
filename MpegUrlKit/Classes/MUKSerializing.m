@@ -12,6 +12,14 @@
 
 #pragma mark - Lifecycle
 
+- (instancetype _Nullable)init
+{
+    if (self = [super init]) {
+        self.playlistUrl = nil;
+    }
+    return self;
+}
+
 - (instancetype _Nullable)initWithPlaylistUrl:(NSURL* _Nullable)url
 {
     if (self = [super init]) {
@@ -35,12 +43,7 @@
     return @{};
 }
 
-#pragma mark - MUKSerializable
-
-- (void)beginSerialization
-{
-    // NOP
-}
+#pragma mark - MUKSerializing
 
 - (MUKTagActionResult)appendLine:(NSString* _Nonnull)line error:(NSError* _Nullable* _Nullable)error
 {
@@ -59,9 +62,19 @@
     return MUKTagActionResultIgnored;
 }
 
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     // NOP
+}
+
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject
+{
+    return @{};
+}
+
+- (NSString* _Nonnull)renderTemplate
+{
+    return @"";
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

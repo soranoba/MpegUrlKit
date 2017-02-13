@@ -72,7 +72,7 @@
               @"DURATION" : @"duration",
               @"PLANNED-DURATION" : @"plannedDuration",
               @"END-ON-NEXT" : @"endOnNext",
-              @"SCTE35-CMD" : @"scte35cmd",
+              @"SCTE35-CMD" : @"scte35Cmd",
               @"SCTE35-OUT" : @"scte35Out",
               @"SCTE35-IN" : @"scte35In" };
 }

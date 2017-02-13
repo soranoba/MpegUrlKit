@@ -193,22 +193,84 @@
                   MUK_EXT_X_I_FRAME_STREAM_INF : ACTION([self onIframeStreamInf:tagValue error:error]),
                   MUK_EXT_X_SESSION_DATA : ACTION([self onSessionData:tagValue error:error]),
                   MUK_EXT_X_SESSION_KEY : ACTION([self onSessionKey:tagValue error:error]),
-                  MUK_EXT_X_INDEPENDENZT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
+                  MUK_EXT_X_INDEPENDENT_SEGMENT : ACTION([self onIndependentSegment:tagValue error:error]),
                   MUK_EXT_X_START : ACTION([self onStart:tagValue error:error]) };
     }
 }
 
-- (void)beginSerialization
-{
-    // NOP
-}
+#pragma mark - MUKSerializing
 
-- (void)endSerialization
+- (void)finalizeForToModel
 {
     self.medias = self.processingMedias;
     self.streamInfs = self.processingStreamInfs;
     self.sessionDatas = self.processingSessionDatas;
     self.sessionKeys = self.processingSessionKeys;
+}
+
+- (NSDictionary<NSString*, id>* _Nonnull)renderObject
+{
+    NSString* xStart = nil;
+    if (self.startOffset) {
+        xStart = [self.serializer stringFromModel:self.startOffset error:nil];
+        if (!xStart) {
+            return nil;
+        }
+    }
+
+    NSMutableArray<NSString*>* xKeys = [NSMutableArray arrayWithCapacity:self.sessionKeys.count];
+    for (MUKXKey* key in self.sessionKeys) {
+        NSString* keyStr = [self.serializer stringFromModel:key error:nil];
+        if (!keyStr) {
+            return nil;
+        }
+        [xKeys addObject:keyStr];
+    }
+
+    NSMutableArray<NSString*>* xMedias = [NSMutableArray arrayWithCapacity:self.medias.count];
+    for (MUKXMedia* media in self.medias) {
+        NSString* mediaStr = [self.serializer stringFromModel:media error:nil];
+        if (!mediaStr) {
+            return nil;
+        }
+        [xMedias addObject:mediaStr];
+    }
+
+    NSMutableArray* xStreamInfs = [NSMutableArray arrayWithCapacity:self.streamInfs.count];
+    for (MUKXStreamInf* inf in self.streamInfs) {
+        NSString* infStr = [self.serializer stringFromModel:inf error:nil];
+
+        if ([inf isKindOfClass:MUKXIframeStreamInf.class]) {
+            [xStreamInfs addObject:@{ @"KEY" : MUK_EXT_X_I_FRAME_STREAM_INF,
+                                      @"ATTRIBUTE" : infStr }];
+        } else if ([inf isKindOfClass:MUKXStreamInf.class]) {
+            [xStreamInfs addObject:@{ @"KEY" : MUK_EXT_X_STREAM_INF,
+                                      @"ATTRIBUTE" : infStr }];
+        }
+    }
+
+    NSMutableArray<NSString*>* xSessionDatas = [NSMutableArray arrayWithCapacity:self.sessionDatas.count];
+    for (MUKXSessionData* data in self.sessionDatas) {
+        NSString* dataStr = [self.serializer stringFromModel:data error:nil];
+        if (!dataStr) {
+            return nil;
+        }
+        [xSessionDatas addObject:dataStr];
+    }
+    return @{ MUK_EXT_X_INDEPENDENT_SEGMENT : @(self.independentSegment),
+              MUK_EXT_X_START : xStart ?: @NO,
+              MUK_EXT_X_SESSION_KEY : xKeys,
+              MUK_EXT_X_MEDIA : xMedias,
+              MUK_EXT_X_STREAM_INF : xStreamInfs,
+              MUK_EXT_X_SESSION_DATA : xSessionDatas };
+}
+
+- (NSString* _Nonnull)renderTemplate
+{
+    NSString* path = [[NSBundle bundleForClass:MUKMasterPlaylist.class] pathForResource:@"master" ofType:@"mustache"];
+    return [NSString stringWithContentsOfFile:path
+                                     encoding:NSUTF8StringEncoding
+                                        error:nil];
 }
 
 - (BOOL)validate:(NSError* _Nullable* _Nullable)error

@@ -48,15 +48,39 @@ MUKSerializer* serializer = [MUKSerializer new];
 serializer.serializableClasses = @[ MUKMediaPlaylist.class ];
 
 NSError* error;
-MUKMediaPlaylist* playlist = [serializer serializeFromString:@"#EXTM3U\n"
-                                                             @"#EXT-X-TARGETDURATION:5\n"
-                                                             @"...."
-                                                       error:&error];
+MUKMediaPlaylist* playlist = [serializer modelFromString:@"#EXTM3U\n"
+                                                         @"#EXT-X-TARGETDURATION:5\n"
+                                                         @"...."
+                                                   error:&error];
 ```
+
+For more details, please see below
+- [MUKSerializer's document](MpegUrlKit/Classes/MUKSerializer.h)
 
 ### Generate a M3U8 file
 
-TODO
+```objc
+// #import <MpegUrlKit/MUKSerializer.h>
+// #import <MpegUrlKit/MUKMediaPlaylist.h>
+
+MUKMediaPlaylist* mediaPlaylist = .....
+
+MUKSerializer* serializer = [MUKSerializer new];
+NSError* error;
+NSString* playlistStr = [serializer stringFromMode:mediaPlaylist
+                                             error:&error];
+```
+
+It use [GRMustache](https://github.com/groue/GRMustache) to generate M3U8 files.
+
+If you want to **enable** this function, change the specification method in podfile.
+
+```ruby
+pod 'MpegUrlKit/Full'
+```
+
+For more details, please see below
+- [MUKSerializer's document](MpegUrlKit/Classes/MUKSerializer.h)
 
 ### Create a parser corresponding to your own tag
 

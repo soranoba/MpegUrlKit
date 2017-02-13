@@ -26,5 +26,5 @@
                                  resolution:(CGSize)resolution
                                   hdcpLevel:(MUKXStreamInfHdcpLevel)hdcpLevel
                                videoGroupId:(NSString* _Nullable)videoGroupId
-                                        uri:(NSString* _Nonnull)uri;
+                                        uri:(NSURL* _Nonnull)uri;
 @end

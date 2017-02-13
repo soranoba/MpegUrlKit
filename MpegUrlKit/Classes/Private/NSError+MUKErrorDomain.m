@@ -68,6 +68,8 @@
             return @"Invalid EXT-X-SESSION-DATA";
         case MUKErrorUnsupportedVersion:
             return @"Unsupported version";
+        case MUKErrorBuildSettings:
+            return @"It is disabled in the build settings";
         default:
             return @"Unknown error";
     }
